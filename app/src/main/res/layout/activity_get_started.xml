@@ -5,22 +5,23 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/back1"
+    android:background="@drawable/back2"
     tools:context=".GetStartedActivity">
 
     <TextView
         android:id="@+id/mainHeading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_425sdp"
+        android:fontFamily="@font/inter_semibold"
         android:text="Say Goodbye To Getting Caught In The Rain"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_24ssp"
+        android:padding="@dimen/_2sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="@dimen/_500sdp"
-        android:fontFamily="@font/inter_semibold"
-        android:textSize="@dimen/_26ssp"
-        android:textColor="@color/white"
-        android:textAlignment="center"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/subHeading"
@@ -29,26 +30,28 @@
         android:textColor="@color/white"
         android:fontFamily="@font/inter_regular"
         android:textAlignment="center"
-        android:textSize="@dimen/_13ssp"
-        android:layout_marginTop="@dimen/_8sdp"
+        android:textSize="@dimen/_12ssp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:paddingEnd="@dimen/_8sdp"
         android:paddingStart="@dimen/_8sdp"
-        android:text="Get accurate, real-time weather updates, forecasts, and alerts for your location, all in one simple app"
+        android:text="Get accurate, real-time weather updates, forecasts, and alerts for your location, all in\none simple app"
         app:layout_constraintEnd_toEndOf="@+id/mainHeading"
         app:layout_constraintStart_toStartOf="@+id/mainHeading"
         app:layout_constraintTop_toBottomOf="@+id/mainHeading" />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonGetStarted"
         android:layout_width="@dimen/_260sdp"
         android:layout_height="@dimen/_45sdp"
-        android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_35sdp"
         android:background="@drawable/custom_button"
         android:fontFamily="@font/inter_semibold"
-        android:text="Get Stared"
+        android:text="Get Started"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="@dimen/_22ssp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/subHeading" />
 </androidx.constraintlayout.widget.ConstraintLayout>
