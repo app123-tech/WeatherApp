@@ -22,6 +22,95 @@
             android:layout_height="match_parent"
             android:background="@drawable/back3">
 
+            <ImageView
+                android:id="@+id/imageViewMenuBar"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:contentDescription="menubar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/menu" />
+
+            <ImageView
+                android:id="@+id/imageViewSearch"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewMenuBar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imageViewMenuBar"
+                app:srcCompat="@drawable/search" />
+
+            <ImageView
+                android:id="@+id/imageViewSun"
+                android:layout_width="@dimen/_95sdp"
+                android:layout_height="@dimen/_95sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/sun1" />
+
+            <TextView
+                android:id="@+id/textViewCityName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:fontFamily="@font/inter_semibold"
+                android:text="Kathmandu"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_24sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewSun" />
+
+            <TextView
+                android:id="@+id/textViewTemp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_medium"
+                android:text="19\u00b0C"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_18ssp"
+                app:layout_constraintEnd_toEndOf="@+id/textViewCityName"
+                app:layout_constraintStart_toStartOf="@+id/textViewCityName"
+                app:layout_constraintTop_toBottomOf="@+id/textViewCityName" />
+
+            <TextView
+                android:id="@+id/textViewTempTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mostly Clear"
+                android:fontFamily="@font/inter_semibold"
+                android:textSize="@dimen/_18ssp"
+                android:textColor="#EBEBF5"
+                app:layout_constraintEnd_toEndOf="@+id/textViewTemp"
+                app:layout_constraintStart_toStartOf="@+id/textViewTemp"
+                app:layout_constraintTop_toBottomOf="@+id/textViewTemp" />
+
+            <TextView
+                android:id="@+id/textViewHigh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="H:24\u00b0C"
+                android:fontFamily="@font/inter_semibold"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14ssp"
+                app:layout_constraintStart_toStartOf="@+id/textViewTempTitle"
+                app:layout_constraintTop_toBottomOf="@+id/textViewTempTitle" />
+
+            <TextView
+                android:id="@+id/textViewLow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="L:08\u00b0C"
+                android:fontFamily="@font/inter_semibold"
+                android:textSize="@dimen/_14ssp"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="@+id/textViewTempTitle"
+                app:layout_constraintTop_toBottomOf="@+id/textViewTempTitle" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
