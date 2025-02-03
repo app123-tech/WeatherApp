@@ -12,10 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_250sdp"
         android:layout_marginTop="@dimen/_24sdp"
+        android:background="@drawable/rounded_card"
         android:backgroundTint="@color/white"
         android:elevation="0dp"
         app:cardCornerRadius="0dp"
-        android:background="@drawable/rounded_card"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -23,8 +23,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:elevation="0dp"
-            android:background="@drawable/back3">
+            android:background="@drawable/back3"
+            android:elevation="0dp">
 
             <ImageView
                 android:id="@+id/imageViewMenuBar"
@@ -87,10 +87,10 @@
                 android:id="@+id/textViewTempTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mostly Clear"
                 android:fontFamily="@font/inter_semibold"
-                android:textSize="@dimen/_18ssp"
+                android:text="Mostly Clear"
                 android:textColor="#EBEBF5"
+                android:textSize="@dimen/_18ssp"
                 app:layout_constraintEnd_toEndOf="@+id/textViewTemp"
                 app:layout_constraintStart_toStartOf="@+id/textViewTemp"
                 app:layout_constraintTop_toBottomOf="@+id/textViewTemp" />
@@ -99,8 +99,8 @@
                 android:id="@+id/textViewHigh"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="H:24\u00b0C"
                 android:fontFamily="@font/inter_semibold"
+                android:text="H:24\u00b0C"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14ssp"
                 app:layout_constraintStart_toStartOf="@+id/textViewTempTitle"
@@ -110,10 +110,10 @@
                 android:id="@+id/textViewLow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="L:08\u00b0C"
                 android:fontFamily="@font/inter_semibold"
-                android:textSize="@dimen/_14ssp"
+                android:text="L:08\u00b0C"
                 android:textColor="@color/white"
+                android:textSize="@dimen/_14ssp"
                 app:layout_constraintEnd_toEndOf="@+id/textViewTempTitle"
                 app:layout_constraintTop_toBottomOf="@+id/textViewTempTitle" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -123,14 +123,14 @@
         android:id="@+id/buttonToday"
         android:layout_width="@dimen/_80sdp"
         android:layout_height="@dimen/_40sdp"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:layout_marginStart="@dimen/_8sdp"
-        android:text="Today"
-        android:fontFamily="@font/inter_regular"
-        android:textAllCaps="false"
-        android:textSize="@dimen/_13ssp"
-        android:textColor="@color/white"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/custom_button_second"
+        android:fontFamily="@font/inter_regular"
+        android:text="Today"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_13ssp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
@@ -138,13 +138,13 @@
         android:id="@+id/buttonTomorrow"
         android:layout_width="@dimen/_100sdp"
         android:layout_height="@dimen/_40sdp"
+        android:background="@drawable/custom_button_second"
+        android:backgroundTint="@color/white"
+        android:fontFamily="@font/inter_regular"
         android:text="Tomorrow"
         android:textAllCaps="false"
-        android:textSize="@dimen/_13ssp"
-        android:backgroundTint="@color/white"
         android:textColor="#004F98"
-        android:fontFamily="@font/inter_regular"
-        android:background="@drawable/custom_button_second"
+        android:textSize="@dimen/_13ssp"
         app:layout_constraintBottom_toBottomOf="@+id/buttonToday"
         app:layout_constraintEnd_toStartOf="@+id/buttonTenDays"
         app:layout_constraintStart_toEndOf="@+id/buttonToday"
@@ -154,617 +154,632 @@
         android:id="@+id/buttonTenDays"
         android:layout_width="@dimen/_80sdp"
         android:layout_height="@dimen/_40sdp"
-        android:text="10 Days"
-        android:backgroundTint="@color/white"
-        android:textColor="#004F98"
-        android:fontFamily="@font/inter_regular"
-        android:textAllCaps="false"
-        android:textSize="@dimen/_13ssp"
-        android:background="@drawable/custom_button_second"
         android:layout_marginEnd="@dimen/_8sdp"
+        android:background="@drawable/custom_button_second"
+        android:backgroundTint="@color/white"
+        android:fontFamily="@font/inter_regular"
+        android:text="10 Days"
+        android:textAllCaps="false"
+        android:textColor="#004F98"
+        android:textSize="@dimen/_13ssp"
         app:layout_constraintBottom_toBottomOf="@+id/buttonTomorrow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/buttonTomorrow" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView3"
-        android:layout_width="@dimen/_123sdp"
-        android:layout_height="@dimen/_130sdp"
-        android:layout_marginStart="@dimen/_8sdp"
-        android:layout_marginTop="@dimen/_15sdp"
-        app:cardCornerRadius="@dimen/_7sdp"
-        android:elevation="0dp"
-        app:cardBackgroundColor="@color/black"
-        android:backgroundTint="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonTomorrow">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#EBDEFF">
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardView"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_marginStart="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_8sdp"
-                app:cardCornerRadius="@dimen/_40sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:id="@+id/imageView"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/air" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
-
-            <TextView
-                android:id="@+id/textViewWind"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="WIND"
-                android:fontFamily="@font/inter_medium"
-                android:textSize="@dimen/_14sdp"
-                android:textColor="#004F98"
-                android:layout_marginStart="@dimen/_8sdp"
-                app:layout_constraintBottom_toBottomOf="@+id/cardView"
-                app:layout_constraintStart_toEndOf="@+id/cardView"
-                app:layout_constraintTop_toTopOf="@+id/cardView" />
-
-            <TextView
-                android:id="@+id/textViewWindSecond"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Wind"
-                android:layout_marginStart="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:fontFamily="@font/inter_regular"
-                android:textColor="#004F98"
-                android:textSize="@dimen/_12ssp"
-                android:textAllCaps="false"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView" />
-
-            <TextView
-                android:id="@+id/textViewWindSpeed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="9 km/h"
-                android:layout_marginEnd="@dimen/_8sdp"
-                android:fontFamily="@font/inter_regular"
-                android:textSize="@dimen/_11ssp"
-                android:textColor="#004F98"
-                app:layout_constraintBottom_toBottomOf="@+id/textViewWindSecond"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textViewWindSecond" />
-
-            <View
-                android:id="@+id/view1"
-                android:layout_width="@dimen/_130sdp"
-                android:layout_height="@dimen/_1sdp"
-                android:layout_marginTop="@dimen/_3sdp"
-                android:background="#36454f"
-                android:alpha="0.2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewWindSpeed" />
-
-            <TextView
-                android:id="@+id/textViewAQI"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="AQI"
-                android:layout_marginStart="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_4sdp"
-                android:fontFamily="@font/inter_regular"
-                android:textColor="#004F98"
-                android:textSize="@dimen/_12ssp"
-                android:textAllCaps="false"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view1" />
-
-            <TextView
-                android:id="@+id/textViewAQISpeed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10"
-                android:layout_marginEnd="@dimen/_8sdp"
-                android:fontFamily="@font/inter_regular"
-                android:textSize="@dimen/_11ssp"
-                android:textColor="#004F98"
-                app:layout_constraintBottom_toBottomOf="@+id/textViewAQI"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textViewAQI" />
-
-            <View
-                android:id="@+id/view2"
-                android:layout_width="@dimen/_130sdp"
-                android:layout_height="@dimen/_1sdp"
-                android:layout_marginTop="@dimen/_3sdp"
-                android:background="#36454f"
-                android:alpha="0.2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewAQI" />
-
-            <TextView
-                android:id="@+id/textViewDirection"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Direction"
-                android:layout_marginStart="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_4sdp"
-                android:fontFamily="@font/inter_regular"
-                android:textColor="#004F98"
-                android:textSize="@dimen/_12ssp"
-                android:textAllCaps="false"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view2" />
-
-            <TextView
-                android:id="@+id/textViewDirectionSpeed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="246 \u00b0W"
-                android:layout_marginEnd="@dimen/_8sdp"
-                android:fontFamily="@font/inter_regular"
-                android:textSize="@dimen/_11ssp"
-                android:textColor="#004F98"
-                app:layout_constraintBottom_toBottomOf="@+id/textViewDirection"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textViewDirection" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView4"
-        android:layout_width="@dimen/_123sdp"
-        android:layout_height="@dimen/_130sdp"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:layout_marginEnd="@dimen/_8sdp"
-        android:backgroundTint="@color/white"
-        android:elevation="0dp"
-        app:cardBackgroundColor="@color/black"
-        app:cardCornerRadius="@dimen/_7sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonTomorrow">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#EBDEFF">
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardView5"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_marginStart="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_8sdp"
-                app:cardCornerRadius="@dimen/_40sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:id="@+id/imageViewHumidity"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:layout_marginEnd="@dimen/_4sdp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/humidity" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
-
-            <TextView
-                android:id="@+id/textViewHumidity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="WIND"
-                android:fontFamily="@font/inter_medium"
-                android:textSize="@dimen/_14sdp"
-                android:textColor="#004F98"
-                android:layout_marginStart="@dimen/_8sdp"
-                app:layout_constraintBottom_toBottomOf="@+id/cardView5"
-                app:layout_constraintStart_toEndOf="@+id/cardView5"
-                app:layout_constraintTop_toTopOf="@+id/cardView5" />
-
-            <TextView
-                android:id="@+id/textViewHumidityValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:fontFamily="@font/inter_regular"
-                android:text="37%"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:textColor="#004F98"
-                android:textSize="@dimen/_20sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView5" />
-
-            <TextView
-                android:id="@+id/textViewHumidityContent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/inter_regular"
-                android:text="The dew point is 5\u00b0 right now"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:textColor="#004F98"
-                android:textSize="@dimen/_14sdp"
-                android:textAlignment="center"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewHumidityValue" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView6"
-        android:layout_width="@dimen/_295sdp"
-        android:layout_height="@dimen/_100sdp"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:backgroundTint="@color/white"
-        android:elevation="0dp"
-        app:cardBackgroundColor="@color/black"
-        app:cardCornerRadius="@dimen/_7sdp"
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView3">
+        app:layout_constraintTop_toBottomOf="@id/buttonTomorrow">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#EBDEFF">
+            android:layout_height="wrap_content">
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardView7"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
+                android:id="@+id/cardView3"
+                android:layout_width="@dimen/_123sdp"
+                android:layout_height="@dimen/_130sdp"
                 android:layout_marginStart="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_8sdp"
-                app:cardCornerRadius="@dimen/_40sdp"
+                android:backgroundTint="@color/white"
+                android:elevation="0dp"
+                app:cardBackgroundColor="@color/black"
+                app:cardCornerRadius="@dimen/_7sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="#EBDEFF">
 
-                    <ImageView
-                        android:id="@+id/imageViewHourlyForecast"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardView"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        app:cardCornerRadius="@dimen/_40sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:id="@+id/imageView"
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/air" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:id="@+id/textViewWind"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="WIND"
+                        android:textColor="#004F98"
+                        android:textSize="@dimen/_14sdp"
+                        app:layout_constraintBottom_toBottomOf="@+id/cardView"
+                        app:layout_constraintStart_toEndOf="@+id/cardView"
+                        app:layout_constraintTop_toTopOf="@+id/cardView" />
+
+                    <TextView
+                        android:id="@+id/textViewWindSecond"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="Wind"
+                        android:textAllCaps="false"
+                        android:textColor="#004F98"
+                        android:textSize="@dimen/_12ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+                    <TextView
+                        android:id="@+id/textViewWindSpeed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_8sdp"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="9 km/h"
+                        android:textColor="#004F98"
+                        android:textSize="@dimen/_11ssp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textViewWindSecond"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textViewWindSecond" />
+
+                    <View
+                        android:id="@+id/view1"
+                        android:layout_width="@dimen/_130sdp"
+                        android:layout_height="@dimen/_1sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:alpha="0.2"
+                        android:background="#36454f"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/history" />
+                        app:layout_constraintTop_toBottomOf="@+id/textViewWindSpeed" />
+
+                    <TextView
+                        android:id="@+id/textViewAQI"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="AQI"
+                        android:textAllCaps="false"
+                        android:textColor="#004F98"
+                        android:textSize="@dimen/_12ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/view1" />
+
+                    <TextView
+                        android:id="@+id/textViewAQISpeed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_8sdp"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="10"
+                        android:textColor="#004F98"
+                        android:textSize="@dimen/_11ssp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textViewAQI"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textViewAQI" />
+
+                    <View
+                        android:id="@+id/view2"
+                        android:layout_width="@dimen/_130sdp"
+                        android:layout_height="@dimen/_1sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:alpha="0.2"
+                        android:background="#36454f"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewAQI" />
+
+                    <TextView
+                        android:id="@+id/textViewDirection"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="Direction"
+                        android:textAllCaps="false"
+                        android:textColor="#004F98"
+                        android:textSize="@dimen/_12ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+                    <TextView
+                        android:id="@+id/textViewDirectionSpeed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_8sdp"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="246 \u00b0W"
+                        android:textColor="#004F98"
+                        android:textSize="@dimen/_11ssp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textViewDirection"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textViewDirection" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/textViewHourlyForecast"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_8sdp"
-                android:fontFamily="@font/inter_medium"
-                android:text="HOURLY FORECAST"
-                android:textColor="#004F98"
-                android:textSize="@dimen/_14sdp"
-                app:layout_constraintBottom_toBottomOf="@+id/cardView7"
-                app:layout_constraintStart_toEndOf="@+id/cardView7"
-                app:layout_constraintTop_toTopOf="@+id/cardView7" />
-
-            <TextView
-                android:id="@+id/textViewHourlyForecastNow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Now"
-                android:fontFamily="@font/inter_regular"
-                android:textSize="@dimen/_12ssp"
-                android:textColor="#004f98"
-                android:layout_marginTop="@dimen/_6sdp"
-                app:layout_constraintEnd_toStartOf="@+id/textViewHourlyForecast10AM"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView7" />
-
-            <TextView
-                android:id="@+id/textViewHourlyForecast10AM"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10AM"
-                android:fontFamily="@font/inter_regular"
-                android:textSize="@dimen/_12ssp"
-                android:textColor="#004f98"
-                app:layout_constraintBottom_toBottomOf="@+id/textViewHourlyForecastNow"
-                app:layout_constraintEnd_toStartOf="@+id/textViewHourlyForecast11AM"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textViewHourlyForecastNow"
-                app:layout_constraintTop_toTopOf="@+id/textViewHourlyForecastNow" />
-
-            <TextView
-                android:id="@+id/textViewHourlyForecast11AM"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="11AM"
-                android:fontFamily="@font/inter_regular"
-                android:textSize="@dimen/_12ssp"
-                android:textColor="#004f98"
-                app:layout_constraintBottom_toBottomOf="@+id/textViewHourlyForecast10AM"
-                app:layout_constraintEnd_toStartOf="@+id/textViewHourlyForecast12PM"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textViewHourlyForecast10AM"
-                app:layout_constraintTop_toTopOf="@+id/textViewHourlyForecast10AM" />
-
-            <TextView
-                android:id="@+id/textViewHourlyForecast12PM"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="12PM"
-                android:fontFamily="@font/inter_regular"
-                android:textSize="@dimen/_12ssp"
-                android:textColor="#004f98"
-                app:layout_constraintBottom_toBottomOf="@+id/textViewHourlyForecast11AM"
-                app:layout_constraintEnd_toStartOf="@+id/textViewHourlyForecast1PM"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textViewHourlyForecast11AM"
-                app:layout_constraintTop_toTopOf="@+id/textViewHourlyForecast11AM" />
-
-            <TextView
-                android:id="@+id/textViewHourlyForecast1PM"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1PM"
-                android:fontFamily="@font/inter_regular"
-                android:textSize="@dimen/_12ssp"
-                android:textColor="#004f98"
-                app:layout_constraintBottom_toBottomOf="@+id/textViewHourlyForecast12PM"
-                app:layout_constraintEnd_toStartOf="@+id/textViewHourlyForecast2PM"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textViewHourlyForecast12PM"
-                app:layout_constraintTop_toTopOf="@+id/textViewHourlyForecast12PM" />
-
-            <TextView
-                android:id="@+id/textViewHourlyForecast2PM"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2PM"
-                android:fontFamily="@font/inter_regular"
-                android:textSize="@dimen/_12ssp"
-                android:textColor="#004f98"
-                app:layout_constraintBottom_toBottomOf="@+id/textViewHourlyForecast1PM"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView4"
+                android:layout_width="@dimen/_123sdp"
+                android:layout_height="@dimen/_130sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:backgroundTint="@color/white"
+                android:elevation="0dp"
+                app:cardBackgroundColor="@color/black"
+                app:cardCornerRadius="@dimen/_7sdp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textViewHourlyForecast1PM"
-                app:layout_constraintTop_toTopOf="@+id/textViewHourlyForecast1PM" />
-
-            <ImageView
-                android:id="@+id/imageViewHourlyForecastNow"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:layout_marginTop="@dimen/_4sdp"
-                app:layout_constraintEnd_toEndOf="@+id/textViewHourlyForecastNow"
-                app:layout_constraintStart_toStartOf="@+id/textViewHourlyForecastNow"
-                app:layout_constraintTop_toBottomOf="@+id/textViewHourlyForecastNow"
-                app:srcCompat="@drawable/cloudy_sun" />
-
-            <ImageView
-                android:id="@+id/imageViewHourlyForecast10AM"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:layout_marginTop="@dimen/_4sdp"
-                app:layout_constraintEnd_toEndOf="@+id/textViewHourlyForecast10AM"
-                app:layout_constraintStart_toStartOf="@+id/textViewHourlyForecast10AM"
-                app:layout_constraintTop_toBottomOf="@+id/textViewHourlyForecast10AM"
-                app:srcCompat="@drawable/cloud" />
-
-            <ImageView
-                android:id="@+id/imageViewHourlyForecast11AM"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:layout_marginTop="@dimen/_4sdp"
-                app:layout_constraintEnd_toEndOf="@+id/textViewHourlyForecast11AM"
-                app:layout_constraintStart_toStartOf="@+id/textViewHourlyForecast11AM"
-                app:layout_constraintTop_toBottomOf="@+id/textViewHourlyForecast11AM"
-                app:srcCompat="@drawable/cloud" />
-
-            <ImageView
-                android:id="@+id/imageViewHourlyForecast12PM"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:layout_marginTop="@dimen/_4sdp"
-                app:layout_constraintEnd_toEndOf="@+id/textViewHourlyForecast12PM"
-                app:layout_constraintStart_toStartOf="@+id/textViewHourlyForecast12PM"
-                app:layout_constraintTop_toBottomOf="@+id/textViewHourlyForecast12PM"
-                app:srcCompat="@drawable/cloud2" />
-
-            <ImageView
-                android:id="@+id/imageViewHourlyForecast1PM"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:layout_marginTop="@dimen/_4sdp"
-                app:layout_constraintEnd_toEndOf="@+id/textViewHourlyForecast1PM"
-                app:layout_constraintStart_toStartOf="@+id/textViewHourlyForecast1PM"
-                app:layout_constraintTop_toBottomOf="@+id/textViewHourlyForecast1PM"
-                app:srcCompat="@drawable/cloud2" />
-
-            <ImageView
-                android:id="@+id/imageViewHourlyForecast2PM"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:layout_marginTop="@dimen/_4sdp"
-                app:layout_constraintEnd_toEndOf="@+id/textViewHourlyForecast2PM"
-                app:layout_constraintStart_toStartOf="@+id/textViewHourlyForecast2PM"
-                app:layout_constraintTop_toBottomOf="@+id/textViewHourlyForecast2PM"
-                app:srcCompat="@drawable/cloud" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView8"
-        android:layout_width="@dimen/_123sdp"
-        android:layout_height="@dimen/_60sdp"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:backgroundTint="@color/white"
-        android:elevation="0dp"
-        android:layout_marginStart="@dimen/_8sdp"
-        app:cardBackgroundColor="@color/black"
-        app:cardCornerRadius="@dimen/_7sdp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView6">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#EBDEFF">
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardView9"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_marginStart="@dimen/_8sdp"
-                app:cardCornerRadius="@dimen/_40sdp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="#EBDEFF">
 
-                    <ImageView
-                        android:id="@+id/imageViewSunrise"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardView5"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        app:cardCornerRadius="@dimen/_40sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:id="@+id/imageViewHumidity"
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_marginEnd="@dimen/_4sdp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/humidity" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:id="@+id/textViewHumidity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="WIND"
+                        android:textColor="#004F98"
+                        android:textSize="@dimen/_14sdp"
+                        app:layout_constraintBottom_toBottomOf="@+id/cardView5"
+                        app:layout_constraintStart_toEndOf="@+id/cardView5"
+                        app:layout_constraintTop_toTopOf="@+id/cardView5" />
+
+                    <TextView
+                        android:id="@+id/textViewHumidityValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="37%"
+                        android:textColor="#004F98"
+                        android:textSize="@dimen/_20sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cardView5" />
+
+                    <TextView
+                        android:id="@+id/textViewHumidityContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="The dew point is 5\u00b0 right now"
+                        android:textAlignment="center"
+                        android:textColor="#004F98"
+                        android:textSize="@dimen/_14sdp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/sunrise" />
+                        app:layout_constraintTop_toBottomOf="@+id/textViewHumidityValue" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/textViewSunrise"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_18sdp"
-                android:text="Sunrise"
-                android:fontFamily="@font/inter_medium"
-                android:textColor="#1367b4"
-                android:textSize="@dimen/_13ssp"
-                android:layout_marginStart="@dimen/_10sdp"
-                app:layout_constraintStart_toEndOf="@+id/cardView9"
-                app:layout_constraintTop_toTopOf="parent" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView6"
+            android:layout_width="@dimen/_295sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:backgroundTint="@color/white"
+            android:elevation="0dp"
+            app:cardBackgroundColor="@color/black"
+            app:cardCornerRadius="@dimen/_7sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView3">
 
-            <TextView
-                android:id="@+id/textViewSunriseTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="5:20 AM"
-                android:fontFamily="@font/inter_regular"
-                android:textSize="@dimen/_12ssp"
-                android:textColor="#1367b4"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_15sdp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/cardView9"
-                app:layout_constraintTop_toBottomOf="@+id/textViewSunrise" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#EBDEFF">
 
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView7"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    app:cardCornerRadius="@dimen/_40sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/imageViewHourlyForecast"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/history" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/textViewHourlyForecast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:fontFamily="@font/inter_medium"
+                    android:text="HOURLY FORECAST"
+                    android:textColor="#004F98"
+                    android:textSize="@dimen/_14sdp"
+                    app:layout_constraintBottom_toBottomOf="@+id/cardView7"
+                    app:layout_constraintStart_toEndOf="@+id/cardView7"
+                    app:layout_constraintTop_toTopOf="@+id/cardView7" />
+
+                <TextView
+                    android:id="@+id/textViewHourlyForecastNow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:fontFamily="@font/inter_regular"
+                    android:text="Now"
+                    android:textColor="#004f98"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintEnd_toStartOf="@+id/textViewHourlyForecast10AM"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView7" />
+
+                <TextView
+                    android:id="@+id/textViewHourlyForecast10AM"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_regular"
+                    android:text="10AM"
+                    android:textColor="#004f98"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textViewHourlyForecastNow"
+                    app:layout_constraintEnd_toStartOf="@+id/textViewHourlyForecast11AM"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/textViewHourlyForecastNow"
+                    app:layout_constraintTop_toTopOf="@+id/textViewHourlyForecastNow" />
+
+                <TextView
+                    android:id="@+id/textViewHourlyForecast11AM"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_regular"
+                    android:text="11AM"
+                    android:textColor="#004f98"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textViewHourlyForecast10AM"
+                    app:layout_constraintEnd_toStartOf="@+id/textViewHourlyForecast12PM"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/textViewHourlyForecast10AM"
+                    app:layout_constraintTop_toTopOf="@+id/textViewHourlyForecast10AM" />
+
+                <TextView
+                    android:id="@+id/textViewHourlyForecast12PM"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_regular"
+                    android:text="12PM"
+                    android:textColor="#004f98"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textViewHourlyForecast11AM"
+                    app:layout_constraintEnd_toStartOf="@+id/textViewHourlyForecast1PM"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/textViewHourlyForecast11AM"
+                    app:layout_constraintTop_toTopOf="@+id/textViewHourlyForecast11AM" />
+
+                <TextView
+                    android:id="@+id/textViewHourlyForecast1PM"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_regular"
+                    android:text="1PM"
+                    android:textColor="#004f98"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textViewHourlyForecast12PM"
+                    app:layout_constraintEnd_toStartOf="@+id/textViewHourlyForecast2PM"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/textViewHourlyForecast12PM"
+                    app:layout_constraintTop_toTopOf="@+id/textViewHourlyForecast12PM" />
+
+                <TextView
+                    android:id="@+id/textViewHourlyForecast2PM"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_regular"
+                    android:text="2PM"
+                    android:textColor="#004f98"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textViewHourlyForecast1PM"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/textViewHourlyForecast1PM"
+                    app:layout_constraintTop_toTopOf="@+id/textViewHourlyForecast1PM" />
+
+                <ImageView
+                    android:id="@+id/imageViewHourlyForecastNow"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    app:layout_constraintEnd_toEndOf="@+id/textViewHourlyForecastNow"
+                    app:layout_constraintStart_toStartOf="@+id/textViewHourlyForecastNow"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewHourlyForecastNow"
+                    app:srcCompat="@drawable/cloudy_sun" />
+
+                <ImageView
+                    android:id="@+id/imageViewHourlyForecast10AM"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    app:layout_constraintEnd_toEndOf="@+id/textViewHourlyForecast10AM"
+                    app:layout_constraintStart_toStartOf="@+id/textViewHourlyForecast10AM"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewHourlyForecast10AM"
+                    app:srcCompat="@drawable/cloud" />
+
+                <ImageView
+                    android:id="@+id/imageViewHourlyForecast11AM"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    app:layout_constraintEnd_toEndOf="@+id/textViewHourlyForecast11AM"
+                    app:layout_constraintStart_toStartOf="@+id/textViewHourlyForecast11AM"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewHourlyForecast11AM"
+                    app:srcCompat="@drawable/cloud" />
+
+                <ImageView
+                    android:id="@+id/imageViewHourlyForecast12PM"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    app:layout_constraintEnd_toEndOf="@+id/textViewHourlyForecast12PM"
+                    app:layout_constraintStart_toStartOf="@+id/textViewHourlyForecast12PM"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewHourlyForecast12PM"
+                    app:srcCompat="@drawable/cloud2" />
+
+                <ImageView
+                    android:id="@+id/imageViewHourlyForecast1PM"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    app:layout_constraintEnd_toEndOf="@+id/textViewHourlyForecast1PM"
+                    app:layout_constraintStart_toStartOf="@+id/textViewHourlyForecast1PM"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewHourlyForecast1PM"
+                    app:srcCompat="@drawable/cloud2" />
+
+                <ImageView
+                    android:id="@+id/imageViewHourlyForecast2PM"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    app:layout_constraintEnd_toEndOf="@+id/textViewHourlyForecast2PM"
+                    app:layout_constraintStart_toStartOf="@+id/textViewHourlyForecast2PM"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewHourlyForecast2PM"
+                    app:srcCompat="@drawable/cloud" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView8"
+            android:layout_width="@dimen/_123sdp"
+            android:layout_height="@dimen/_60sdp"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:backgroundTint="@color/white"
+            android:elevation="0dp"
+            app:cardBackgroundColor="@color/black"
+            app:cardCornerRadius="@dimen/_7sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView6">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#EBDEFF">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView9"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    app:cardCornerRadius="@dimen/_40sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/imageViewSunrise"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/sunrise" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/textViewSunrise"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_18sdp"
+                    android:fontFamily="@font/inter_medium"
+                    android:text="Sunrise"
+                    android:textColor="#1367b4"
+                    android:textSize="@dimen/_13ssp"
+                    app:layout_constraintStart_toEndOf="@+id/cardView9"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textViewSunriseTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    android:fontFamily="@font/inter_regular"
+                    android:text="5:20 AM"
+                    android:textColor="#1367b4"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/cardView9"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewSunrise" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView10"
+            android:layout_width="@dimen/_123sdp"
+            android:layout_height="@dimen/_60sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:backgroundTint="@color/white"
+            android:elevation="0dp"
+            app:cardBackgroundColor="@color/black"
+            app:cardCornerRadius="@dimen/_7sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView6">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#EBDEFF">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView11"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    app:cardCornerRadius="@dimen/_40sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/imageViewSunset"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/sunset" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/textViewSunset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_18sdp"
+                    android:fontFamily="@font/inter_medium"
+                    android:text="Sunrise"
+                    android:textColor="#1367b4"
+                    android:textSize="@dimen/_13ssp"
+                    app:layout_constraintStart_toEndOf="@+id/cardView11"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textViewSunsetTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    android:fontFamily="@font/inter_regular"
+                    android:text="5:20 AM"
+                    android:textColor="#1367b4"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/cardView11"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewSunset" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView10"
-        android:layout_width="@dimen/_123sdp"
-        android:layout_height="@dimen/_60sdp"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:backgroundTint="@color/white"
-        android:elevation="0dp"
-        app:cardBackgroundColor="@color/black"
-        app:cardCornerRadius="@dimen/_7sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView6">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#EBDEFF">
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardView11"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_marginStart="@dimen/_8sdp"
-                app:cardCornerRadius="@dimen/_40sdp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:id="@+id/imageViewSunset"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/sunset" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
-
-            <TextView
-                android:id="@+id/textViewSunset"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_18sdp"
-                android:text="Sunrise"
-                android:fontFamily="@font/inter_medium"
-                android:textSize="@dimen/_13ssp"
-                android:textColor="#1367b4"
-                app:layout_constraintStart_toEndOf="@+id/cardView11"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textViewSunsetTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_15sdp"
-                android:text="5:20 AM"
-                android:fontFamily="@font/inter_regular"
-                android:textColor="#1367b4"
-                android:textSize="@dimen/_12ssp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/cardView11"
-                app:layout_constraintTop_toBottomOf="@+id/textViewSunset" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

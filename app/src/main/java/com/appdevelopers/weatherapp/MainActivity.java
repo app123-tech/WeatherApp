@@ -1,11 +1,13 @@
 package com.appdevelopers.weatherapp;
 
 import android.os.Bundle;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
+    private Button buttonToday, buttonTomorrow, buttonTenDays;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
