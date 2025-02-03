@@ -2,9 +2,11 @@ package com.appdevelopers.weatherapp;
 
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -15,6 +17,8 @@ import com.appdevelopers.weatherapp.Fragment.FragmentTomorrow;
 
 public class MainActivity extends AppCompatActivity {
     private Button buttonToday, buttonTomorrow, buttonTenDays;
+    private ImageView imageViewMenuBar;
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         buttonToday = findViewById(R.id.buttonToday);
         buttonTomorrow = findViewById(R.id.buttonTomorrow);
         buttonTenDays = findViewById(R.id.buttonTenDays);
+        imageViewMenuBar = findViewById(R.id.imageViewMenuBar);
 
         buttonToday.setOnClickListener(v -> {
             loadFragment(new FragmentTodayActivity());
@@ -36,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
 
         buttonTenDays.setOnClickListener(v -> {
             loadFragment(new FragmentTenDays());
+        });
+
+        imageViewMenuBar.setOnClickListener(v -> {
+            drawerLayout.open();
         });
     }
 
