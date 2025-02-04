@@ -17,6 +17,7 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         noLocationFound = findViewById(R.id.noLocationFound);
+        noLocationFound.setVisibility(View.GONE);
 
         handleSearchResult(false);
     }

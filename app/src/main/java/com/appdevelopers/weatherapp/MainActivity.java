@@ -7,6 +7,7 @@ import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -18,7 +19,8 @@ import com.appdevelopers.weatherapp.Fragment.FragmentTomorrow;
 
 public class MainActivity extends AppCompatActivity {
     private Button buttonToday, buttonTomorrow, buttonTenDays;
-    private ImageView imageViewSearch;
+    private ImageView imageViewSearch, imageViewMenuBar;
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,12 @@ public class MainActivity extends AppCompatActivity {
         buttonTomorrow = findViewById(R.id.buttonTomorrow);
         buttonTenDays = findViewById(R.id.buttonTenDays);
         imageViewSearch = findViewById(R.id.imageViewSearch);
+        drawerLayout = findViewById(R.id.drawerLayout);
+        imageViewMenuBar = findViewById(R.id.imageViewMenuBar);
+
+        imageViewMenuBar.setOnClickListener(v -> {
+            drawerLayout.openDrawer(GravityCompat.START);
+        });
 
         imageViewSearch.setOnClickListener(v ->{
             Intent intent = new Intent(MainActivity.this, SearchActivity.class);
@@ -48,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
             loadFragment(new FragmentTenDays());
         });
 
+        if (savedInstanceState == null) {
+            loadFragment(new FragmentTodayActivity());
+        }
     }
 
     private void loadFragment(Fragment fragment){
