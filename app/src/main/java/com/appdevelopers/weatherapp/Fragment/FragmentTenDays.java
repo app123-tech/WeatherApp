@@ -28,11 +28,20 @@ public class FragmentTenDays extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-      View view = inflater.inflate(R.layout.fragment_ten_days, container, false);
-      recyclerView = view.findViewById(R.id.tenDaysWeatherRecyclerView);
-      recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-      itemModels = new ArrayList<>();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_ten_days, container, false);
+        recyclerView = view.findViewById(R.id.tenDaysWeatherRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        itemModels = new ArrayList<>();
+        itemModels.add(new tenDaysWeatherItemModel("Today", "Cloudy", "10", "5", R.drawable.cloud));
+        itemModels.add(new tenDaysWeatherItemModel("Wednesday", "Cloudy", "10", "5", R.drawable.cloud2));
+        itemModels.add(new tenDaysWeatherItemModel("Thursday", "Cloudy", "10", "5", R.drawable.cloud));
+        itemModels.add(new tenDaysWeatherItemModel("Friday", "Cloudy", "10", "5", R.drawable.cloudy_sun));
+
+        adapter = new tenDaysWeatherAdapter(itemModels);
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        return view;
     }
 }

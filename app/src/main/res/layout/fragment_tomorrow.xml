@@ -218,7 +218,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_8sdp"
                 android:fontFamily="@font/inter_medium"
-                android:text="WIND"
+                android:text="HU"
                 android:textColor="#004F98"
                 android:textSize="@dimen/_14sdp"
                 app:layout_constraintBottom_toBottomOf="@+id/cardView5"

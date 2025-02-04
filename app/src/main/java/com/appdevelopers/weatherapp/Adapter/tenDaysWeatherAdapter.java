@@ -1,6 +1,7 @@
 package com.appdevelopers.weatherapp.Adapter;
 
 import android.media.Image;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,20 +25,21 @@ public class tenDaysWeatherAdapter extends RecyclerView.Adapter<tenDaysWeatherAd
 
     @NonNull
     @Override
-    public tenDaysWeatherAdapter.tenDaysWeatherViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ten_days_weather_item, parent, false)
+    public tenDaysWeatherViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ten_days_weather_item, parent, false);
         return new tenDaysWeatherViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull tenDaysWeatherAdapter.tenDaysWeatherViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull tenDaysWeatherViewHolder holder, int position) {
         tenDaysWeatherItemModel item = itemModels.get(position);
-        tenDaysWeatherViewHolder.textViewWeatherDays.setText(item.getWeatherDay());
-        tenDaysWeatherViewHolder.textViewWeatherTitle.setText(item.getWeatherTitle());
-        tenDaysWeatherViewHolder.textViewMaxTemperature.setText(item.getMaxTemperature());
-        tenDaysWeatherViewHolder.textViewMinTemperature.setText(item.getMinTemperature());
-        tenDaysWeatherViewHolder.imageViewWeather.setText(item.getWeatherImage());
+        holder.textViewWeatherDays.setText(item.getWeatherDay());
+        holder.textViewWeatherTitle.setText(item.getWeatherTitle());
+        holder.textViewMaxTemperature.setText(item.getMaxTemperature());
+        holder.textViewMinTemperature.setText(item.getMinTemperature());
+        holder.imageViewWeather.setImageResource(item.getWeatherImage());
 
+        Log.d("RecyclerViewDebug", "item displayed: "+ item.getWeatherDay());
     }
 
     @Override
@@ -46,8 +48,8 @@ public class tenDaysWeatherAdapter extends RecyclerView.Adapter<tenDaysWeatherAd
     }
 
     public class tenDaysWeatherViewHolder extends RecyclerView.ViewHolder {
-        private TextView textViewWeatherDays, textViewWeatherTitle, textViewMaxTemperature,textViewMinTemperature;
-        private ImageView imageViewWeather;
+        TextView textViewWeatherDays, textViewWeatherTitle, textViewMaxTemperature,textViewMinTemperature;
+        ImageView imageViewWeather;
         public tenDaysWeatherViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewWeatherDays = itemView.findViewById(R.id.textViewWeatherDays);
