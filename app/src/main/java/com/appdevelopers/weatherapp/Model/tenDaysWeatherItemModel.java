@@ -1,0 +1,57 @@
+package com.appdevelopers.weatherapp.Model;
+
+public class tenDaysWeatherItemModel {
+    private String weatherDay;
+    private String weatherTitle;
+    private String maxTemperature;
+    private String minTemperature;
+    private Integer weatherImage;
+
+    public tenDaysWeatherItemModel(String weatherDay, String weatherTitle, String maxTemperature, String minTemperature, Integer weatherImage){
+        this.weatherDay = weatherDay;
+        this.weatherTitle = weatherTitle;
+        this.maxTemperature = maxTemperature;
+        this.minTemperature = minTemperature;
+        this.weatherImage = weatherImage;
+    }
+
+    public String getWeatherDay() {
+        return weatherDay;
+    }
+
+    public void setWeatherDay(String weatherDay) {
+        this.weatherDay = weatherDay;
+    }
+
+    public String getWeatherTitle() {
+        return weatherTitle;
+    }
+
+    public void setWeatherTitle(String weatherTitle) {
+        this.weatherTitle = weatherTitle;
+    }
+
+    public String getMaxTemperature() {
+        return maxTemperature;
+    }
+
+    public void setMaxTemperature(String maxTemperature) {
+        this.maxTemperature = maxTemperature;
+    }
+
+    public String getMinTemperature() {
+        return minTemperature;
+    }
+
+    public void setMinTemperature(String minTemperature) {
+        this.minTemperature = minTemperature;
+    }
+
+    public Integer getWeatherImage() {
+        return weatherImage;
+    }
+
+    public void setWeatherImage(Integer weatherImage) {
+        this.weatherImage = weatherImage;
+    }
+}
