@@ -19,8 +19,7 @@ import com.appdevelopers.weatherapp.Fragment.FragmentTomorrow;
 
 public class MainActivity extends AppCompatActivity {
     private Button buttonToday, buttonTomorrow, buttonTenDays;
-    private ImageView imageViewSearch, imageViewMenuBar;
-    private DrawerLayout drawerLayout;
+    private ImageView imageViewSearch, imageViewSetting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +31,11 @@ public class MainActivity extends AppCompatActivity {
         buttonTomorrow = findViewById(R.id.buttonTomorrow);
         buttonTenDays = findViewById(R.id.buttonTenDays);
         imageViewSearch = findViewById(R.id.imageViewSearch);
-        drawerLayout = findViewById(R.id.drawerLayout);
-        imageViewMenuBar = findViewById(R.id.imageViewMenuBar);
+        imageViewSetting = findViewById(R.id.imageViewSetting);
 
-        imageViewMenuBar.setOnClickListener(v -> {
-            drawerLayout.openDrawer(GravityCompat.START);
+        imageViewSetting.setOnClickListener(v -> {
+          Intent intent = new Intent(MainActivity.this, String.class);
+          startActivity(intent);
         });
 
         imageViewSearch.setOnClickListener(v ->{

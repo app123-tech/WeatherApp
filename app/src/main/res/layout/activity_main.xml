@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:openDrawer="start"
     tools:context=".MainActivity">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
@@ -32,7 +27,7 @@
             android:elevation="0dp">
 
             <ImageView
-                android:id="@+id/imageViewMenuBar"
+                android:id="@+id/imageViewSetting"
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"
                 android:layout_marginStart="@dimen/_8sdp"
@@ -41,16 +36,16 @@
                 android:elevation="0dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/menu" />
+                app:srcCompat="@drawable/setting" />
 
             <ImageView
                 android:id="@+id/imageViewSearch"
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"
                 android:layout_marginEnd="@dimen/_8sdp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewMenuBar"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewSetting"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imageViewMenuBar"
+                app:layout_constraintTop_toTopOf="@+id/imageViewSetting"
                 app:srcCompat="@drawable/search" />
 
             <ImageView
@@ -176,6 +171,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginBottom="@dimen/_24sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -201,31 +197,32 @@
 <!--    </ScrollView>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:menu="@menu/drawer_item"> <!-- Correct way to load menu items -->
+<!--    <com.google.android.material.navigation.NavigationView-->
+<!--        android:id="@+id/nav_view"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_gravity="start"-->
+<!--        app:itemTextAppearance="@style/DrawerItemTextStyle"-->
+<!--        app:headerLayout="@layout/drawer_header"-->
+<!--        app:menu="@menu/drawer_item"> &lt;!&ndash; Correct way to load menu items &ndash;&gt;-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:orientation="vertical">-->
 
-            <!-- Menu items are handled via app:menu -->
+<!--            &lt;!&ndash; Menu items are handled via app:menu &ndash;&gt;-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" /> <!-- This pushes drawer_bottom to the bottom -->
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:layout_weight="1" /> &lt;!&ndash; This pushes drawer_bottom to the bottom &ndash;&gt;-->
 
-            <!-- Bottom content -->
-            <include
-                layout="@layout/drawer_bottom"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+<!--            &lt;!&ndash; Bottom content &ndash;&gt;-->
+<!--            <include-->
+<!--                layout="@layout/drawer_bottom"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content" />-->
+<!--        </LinearLayout>-->
 
-    </com.google.android.material.navigation.NavigationView>
-</androidx.drawerlayout.widget.DrawerLayout>
+<!--    </com.google.android.material.navigation.NavigationView>-->

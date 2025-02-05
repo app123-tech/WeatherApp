@@ -1,32 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/setting"
         android:icon="@drawable/setting"
-        android:title="Setting" />
+        android:title="Setting"
+        app:itemTextAppearance="@style/DrawerItemTextStyle" />
     <item
         android:id="@+id/share"
         android:icon="@drawable/share"
-        android:title="Share Our App" />
+        android:title="Share Our App"
+        app:itemTextAppearance="@style/DrawerItemTextStyle" />
     <item
         android:id="@+id/language"
         android:icon="@drawable/language"
-        android:title="Language" />
+        android:title="Language"
+        app:itemTextAppearance="@style/DrawerItemTextStyle" />
     <item
         android:id="@+id/privacyPolicy"
         android:icon="@drawable/privacy"
-        android:title="Privacy Policy" />
+        android:title="Privacy Policy"
+        android:textAppearance="@style/DrawerItemTextStyle" />
     <item
         android:id="@+id/termsAndConditions"
         android:icon="@drawable/terms_and_conditions"
-        android:title="Terms &amp; Conditions" />
+        android:title="Terms &amp; Conditions"
+        app:itemTextAppearance="@style/DrawerItemTextStyle" />
     <item
         android:id="@+id/rateOurApp"
         android:icon="@drawable/language"
-        android:title="Rate Our App" />
+        android:title="Rate Our App"
+        app:itemTextAppearance="@style/DrawerItemTextStyle" />
     <item
         android:id="@+id/aboutApp"
         android:icon="@drawable/about"
-        android:title="About App" />
-
+        android:title="About App"
+        app:itemTextAppearance="@style/DrawerItemTextStyle" />
 </menu>
