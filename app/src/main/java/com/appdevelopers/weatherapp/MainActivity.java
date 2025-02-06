@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         imageViewSetting = findViewById(R.id.imageViewSetting);
 
         imageViewSetting.setOnClickListener(v -> {
-          Intent intent = new Intent(MainActivity.this, String.class);
+          Intent intent = new Intent(MainActivity.this, Setting.class);
           startActivity(intent);
         });
 
