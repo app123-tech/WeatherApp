@@ -46,7 +46,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/imageViewSetting"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/imageViewSetting"
-                app:srcCompat="@drawable/search" />
+                app:srcCompat="@drawable/location" />
 
             <ImageView
                 android:id="@+id/imageViewSun"

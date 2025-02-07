@@ -21,7 +21,7 @@
         android:imeOptions="actionSearch"
         android:queryBackground="@android:color/transparent"
         android:queryHint="Search for location"
-        android:searchIcon="@drawable/search_copy"
+        android:searchIcon="@drawable/location_coy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

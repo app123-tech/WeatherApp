@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AboutOurApp">
+
+
+    <ImageView
+        android:id="@+id/imageViewLogo"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAboutApp"
+        app:srcCompat="@drawable/logo1" />
+
+    <TextView
+        android:id="@+id/textViewAppName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="Temp-Track"
+        android:fontFamily="@font/inter_semibold"
+        android:textSize="@dimen/_24ssp"
+        android:textColor="#004F98"
+        android:layout_marginTop="@dimen/_20sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewLogo" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Weather Forecast"
+        android:fontFamily="@font/inter_medium"
+        android:textSize="@dimen/_17ssp"
+        android:textColor="#004F98"
+        app:layout_constraintEnd_toEndOf="@+id/textViewAppName"
+        app:layout_constraintStart_toStartOf="@+id/textViewAppName"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAppName" />
+
+    <TextView
+        android:id="@+id/textViewVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Version "
+        android:layout_marginTop="@dimen/_30sdp"
+        android:fontFamily="@font/inter_regular"
+        android:textColor="#004F98"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+    <TextView
+        android:id="@+id/textViewLatestVersionInstallMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="The Latest Version is already installed."
+        android:layout_marginTop="@dimen/_4sdp"
+        android:fontFamily="@font/inter_regular"
+        android:textSize="@dimen/_10ssp"
+        android:textColor="#004F98"
+        app:layout_constraintEnd_toEndOf="@+id/textViewVersion"
+        app:layout_constraintStart_toStartOf="@+id/textViewVersion"
+        app:layout_constraintTop_toBottomOf="@+id/textViewVersion" />
+
+    <ImageView
+        android:id="@+id/imageViewBackArrow"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewAboutApp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textViewAboutApp"
+        app:srcCompat="@drawable/left_arrow" />
+
+    <TextView
+        android:id="@+id/textViewAboutApp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_24sdp"
+        android:layout_marginStart="@dimen/_14sdp"
+        android:text="About Our App"
+        android:fontFamily="@font/inter_medium"
+        android:textColor="#004F98"
+        android:textSize="@dimen/_20ssp"
+        app:layout_constraintStart_toEndOf="@+id/imageViewBackArrow"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
