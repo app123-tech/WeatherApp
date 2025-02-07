@@ -5,10 +5,10 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TermsAndConditions">
+    tools:context=".PrivacyPolicy">
 
     <WebView
-        android:id="@+id/termsAndConditionsWebView"
+        android:id="@+id/privacyPolicyWebView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
