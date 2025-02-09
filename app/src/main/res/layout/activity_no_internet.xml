@@ -5,6 +5,58 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/slashback"
     tools:context=".NoInternetActivity">
+
+    <ImageView
+        android:id="@+id/imageViewError"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_marginTop="@dimen/_180sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/error" />
+
+    <TextView
+        android:id="@+id/textViewCannotReach"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:textSize="@dimen/_18ssp"
+        android:fontFamily="@font/inter_medium"
+        android:textColor="#004F98"
+        android:text="@string/cannot_reach_the_internet"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewError"
+        app:layout_constraintStart_toStartOf="@+id/imageViewError"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewError" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Check your internet connection"
+        android:fontFamily="@font/inter_regular"
+        android:textColor="#004F98"
+        android:textSize="@dimen/_14sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="@+id/textViewCannotReach"
+        app:layout_constraintStart_toStartOf="@+id/textViewCannotReach"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCannotReach" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonToday"
+        android:layout_width="@dimen/_180sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:background="@drawable/custom_button_second"
+        android:fontFamily="@font/inter_regular"
+        android:text="@string/today"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_13ssp"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="@+id/textView10"
+        app:layout_constraintStart_toStartOf="@+id/textView10"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -86,4 +86,5 @@
     <string name="a_new_version_is_available">A new version is available</string>
     <string name="version_info_not_available">Version info not available</string>
     <string name="version_information_error">Version Information Error</string>
+    <string name="cannot_reach_the_internet">Cannot reach to the internet</string>
 </resources>
