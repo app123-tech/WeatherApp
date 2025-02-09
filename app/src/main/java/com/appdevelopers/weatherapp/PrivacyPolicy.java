@@ -20,6 +20,6 @@ public class PrivacyPolicy extends AppCompatActivity {
         setContentView(R.layout.activity_privacy_policy);
        privacyPolicyWebView = findViewById(R.id.privacyPolicyWebView);
        privacyPolicyWebView.setWebViewClient(new WebViewClient());
-       privacyPolicyWebView.loadUrl("D:\\Android\\WeatherApp\\app\\src\\main\\assets\\terms.html");
+       privacyPolicyWebView.loadUrl("file:///android_asset/privacy.html");
     }
 }

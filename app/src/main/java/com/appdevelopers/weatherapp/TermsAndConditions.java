@@ -21,6 +21,6 @@ public class TermsAndConditions extends AppCompatActivity {
 
         termsAndConditionsWebView = findViewById(R.id.termsAndConditionsWebView);
         termsAndConditionsWebView.setWebViewClient(new WebViewClient());
-        termsAndConditionsWebView.loadUrl("D:\\Android\\WeatherApp\\app\\src\\main\\assets\\terms.html");
+        termsAndConditionsWebView.loadUrl("file:///android_assets/terms.html");
     }
 }

@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FAF9F6"
     tools:context=".Setting">
 
     <ImageView
@@ -25,7 +26,7 @@
         android:layout_marginTop="@dimen/_24sdp"
         android:fontFamily="@font/inter_semibold"
         android:letterSpacing=".05"
-        android:text="Settings"
+        android:text="@string/settings"
         android:textAlignment="center"
         android:textColor="#004F98"
         android:textSize="@dimen/_20ssp"
@@ -57,7 +58,7 @@
                 android:layout_marginTop="@dimen/_4sdp"
                 android:fontFamily="@font/inter_semibold"
                 android:letterSpacing=".01"
-                android:text="Units"
+                android:text="@string/units"
                 android:textAlignment="center"
                 android:textColor="#004F98"
                 android:textSize="@dimen/_16ssp"
@@ -85,7 +86,7 @@
                         android:layout_marginStart="@dimen/_8sdp"
                         android:fontFamily="@font/inter_medium"
                         android:letterSpacing=".01"
-                        android:text="Temprature Units"
+                        android:text="@string/temprature_units"
                         android:textColor="#004F98"
                         android:textSize="@dimen/_14ssp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -98,7 +99,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/_4sdp"
                         android:fontFamily="@font/inter_regular"
-                        android:text="\u00b0C"
+                        android:text="@string/u00b0c"
                         android:textColor="#004F98"
                         android:textSize="@dimen/_12ssp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -139,7 +140,7 @@
                         android:layout_marginStart="@dimen/_8sdp"
                         android:fontFamily="@font/inter_medium"
                         android:letterSpacing=".01"
-                        android:text="Wind Speed Units"
+                        android:text="@string/wind_speed_units"
                         android:textColor="#004F98"
                         android:textSize="@dimen/_14ssp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -152,7 +153,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/_4sdp"
                         android:fontFamily="@font/inter_regular"
-                        android:text="km/h"
+                        android:text="@string/km_h"
                         android:textColor="#004F98"
                         android:textSize="@dimen/_12ssp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -179,7 +180,7 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:fontFamily="@font/inter_semibold"
                 android:letterSpacing=".01"
-                android:text="Notifications"
+                android:text="@string/notifications"
                 android:textAlignment="center"
                 android:textColor="#004F98"
                 android:textSize="@dimen/_16ssp"
@@ -208,7 +209,7 @@
                         android:layout_marginStart="@dimen/_8sdp"
                         android:fontFamily="@font/inter_medium"
                         android:letterSpacing=".01"
-                        android:text="Daily Forecast Notification"
+                        android:text="@string/daily_forecast_notification"
                         android:textColor="#004F98"
                         android:textSize="@dimen/_14ssp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -236,7 +237,7 @@
                 android:layout_marginTop="@dimen/_10ssp"
                 android:fontFamily="@font/inter_semibold"
                 android:letterSpacing=".01"
-                android:text="App Language"
+                android:text="@string/app_language"
                 android:textAlignment="center"
                 android:textColor="#004F98"
                 android:textSize="@dimen/_16ssp"
@@ -265,7 +266,7 @@
                         android:layout_marginStart="@dimen/_8sdp"
                         android:fontFamily="@font/inter_medium"
                         android:letterSpacing=".01"
-                        android:text="Change App Language"
+                        android:text="@string/change_app_language"
                         android:textColor="#004F98"
                         android:textSize="@dimen/_14ssp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -278,7 +279,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/_4sdp"
                         android:fontFamily="@font/inter_regular"
-                        android:text="English"
+                        android:text="@string/english"
                         android:textColor="#004F98"
                         android:textSize="@dimen/_12ssp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -305,7 +306,7 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:fontFamily="@font/inter_semibold"
                 android:letterSpacing=".01"
-                android:text="Legal"
+                android:text="@string/legal"
                 android:textAlignment="center"
                 android:textColor="#004F98"
                 android:textSize="@dimen/_16ssp"
@@ -343,7 +344,7 @@
                         android:layout_marginStart="@dimen/_8sdp"
                         android:fontFamily="@font/inter_medium"
                         android:letterSpacing=".01"
-                        android:text="Terms &amp; Conditions"
+                        android:text="@string/terms_amp_conditions"
                         android:textColor="#004F98"
                         android:textSize="@dimen/_14ssp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -362,16 +363,6 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
-            <View
-                android:id="@+id/view3"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_1sdp"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:background="#c0c0c0"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView6" />
-
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView7"
                 android:layout_width="match_parent"
@@ -381,7 +372,7 @@
                 app:cardCornerRadius="@dimen/_7sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view3">
+                app:layout_constraintTop_toBottomOf="@+id/cardView6">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -404,7 +395,7 @@
                         android:layout_marginStart="@dimen/_8sdp"
                         android:fontFamily="@font/inter_medium"
                         android:letterSpacing=".01"
-                        android:text="Privacy Policy"
+                        android:text="@string/privacy_policy"
                         android:textColor="#004F98"
                         android:textSize="@dimen/_14ssp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -426,7 +417,7 @@
                 android:id="@+id/textViewSupportAndShare"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Support &amp; Share"
+                android:text="@string/support_amp_share"
                 android:layout_marginStart="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:fontFamily="@font/inter_semibold"
@@ -435,7 +426,7 @@
                 android:textColor="#004F98"
                 android:textSize="@dimen/_16ssp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view4" />
+                app:layout_constraintTop_toBottomOf="@+id/cardView7" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView8"
@@ -468,7 +459,7 @@
                         android:layout_marginStart="@dimen/_8sdp"
                         android:fontFamily="@font/inter_medium"
                         android:letterSpacing=".01"
-                        android:text="Share Our App"
+                        android:text="@string/share_our_app"
                         android:textColor="#004F98"
                         android:textSize="@dimen/_14ssp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -486,26 +477,6 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
-            <View
-                android:id="@+id/view4"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_1sdp"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:background="#c0c0c0"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView7" />
-
-            <View
-                android:id="@+id/view5"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_1sdp"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:background="#c0c0c0"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView8" />
-
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView9"
                 android:layout_width="match_parent"
@@ -515,7 +486,7 @@
                 app:cardCornerRadius="@dimen/_7sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view5">
+                app:layout_constraintTop_toBottomOf="@+id/cardView8">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -538,7 +509,7 @@
                         android:layout_marginStart="@dimen/_8sdp"
                         android:fontFamily="@font/inter_medium"
                         android:letterSpacing=".01"
-                        android:text="Rate Our App"
+                        android:text="@string/rate_our_app"
                         android:textColor="#004F98"
                         android:textSize="@dimen/_14ssp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -557,16 +528,6 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
-            <View
-                android:id="@+id/view6"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_1sdp"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:background="#c0c0c0"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView9" />
-
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView10"
                 android:layout_width="match_parent"
@@ -576,7 +537,7 @@
                 app:cardCornerRadius="@dimen/_7sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view6">
+                app:layout_constraintTop_toBottomOf="@+id/cardView9">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -598,7 +559,7 @@
                         android:layout_marginStart="@dimen/_8sdp"
                         android:fontFamily="@font/inter_medium"
                         android:letterSpacing=".01"
-                        android:text="About Our App"
+                        android:text="@string/about"
                         android:textColor="#004F98"
                         android:textSize="@dimen/_14ssp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -615,36 +576,27 @@
                         app:srcCompat="@drawable/greaterthan_circle" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
-            <View
-                android:id="@+id/view7"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_1sdp"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:background="#c0c0c0"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView10" />
 
             <TextView
                 android:id="@+id/textViewAppName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:text="Temp-Track: Weather Forecast"
+                android:text="@string/temp_track_weather_forecast"
                 android:textAlignment="center"
                 android:textSize="@dimen/_12ssp"
                 android:fontFamily="@font/inter_medium"
                 android:textColor="#004F98"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view7"/>
+                app:layout_constraintTop_toBottomOf="@+id/cardView10"/>
 
             <TextView
                 android:id="@+id/textViewCopyright"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_regular"
-                android:text="Copyright © 2025 CodePati"
+                android:text="@string/copyright_2025_codepati"
                 android:textColor="#004F98"
                 android:textSize="@dimen/_9ssp"
                 app:layout_constraintStart_toStartOf="@id/textViewAppName"
@@ -656,7 +608,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_medium"
-                android:text="Version: 1.0"
+                android:text="@string/version_1_0"
                 android:textColor="#004F98"
                 android:textSize="@dimen/_9ssp"
                 android:layout_marginBottom="@dimen/_24sdp"

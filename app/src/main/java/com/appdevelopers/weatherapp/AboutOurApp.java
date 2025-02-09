@@ -39,14 +39,14 @@ public class AboutOurApp extends AppCompatActivity {
 
             String latestVersion = "1.0";
             if (versionName.equals(latestVersion)) {
-                textViewLatestVersionInstallMessage.setText("The latest version is already installed");
+                textViewLatestVersionInstallMessage.setText(R.string.the_latest_version_is_already_installed);
             } else {
-                textViewLatestVersionInstallMessage.setText("A new version is available");
+                textViewLatestVersionInstallMessage.setText(R.string.a_new_version_is_available);
             }
         } catch (PackageManager.NameNotFoundException e){
             e.printStackTrace();
-            textViewVersion.setText("Version info not available");
-            textViewLatestVersionInstallMessage.setText("Version Information Error");
+            textViewVersion.setText(R.string.version_info_not_available);
+            textViewLatestVersionInstallMessage.setText(R.string.version_information_error);
         }
     }
 }

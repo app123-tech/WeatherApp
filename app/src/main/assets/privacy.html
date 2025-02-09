@@ -1,210 +1,281 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Privacy Policy - Temp-Track: Weather Forecast</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-      :root {
-        --primary: #1A73E8;
-        --secondary: #4CAF50;
-        --accent: #FF9800;
-        --text: #2D3748;
-        --background: #F7FAFC;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy - Temp-Track: Weather Forecast</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #1A73E8;
+      --secondary: #4CAF50;
+      --accent: #FF9800;
+      --text: #2D3748;
+      --background: #F7FAFC;
+    }
 
-      body {
-        font-family: 'Inter', sans-serif;
-        line-height: 1.6;
-        margin: 0;
-        padding: 20px;
-        background-color: var(--background);
-        color: var(--text);
-      }
+    body {
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+      background-color: var(--background);
+      color: var(--text);
+    }
 
-      .container {
-        max-width: 800px;
-        margin: 0 auto;
-        background: white;
-        padding: 40px;
-        border-radius: 16px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-        position: relative;
-        overflow: hidden;
-      }
+    .container {
+      max-width: 800px;
+      width: 100%;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
 
-      .container::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 8px;
-        background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
-      }
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 8px;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+    }
 
-      h1, h2 {
-        color: var(--primary);
-      }
+    h1, h2 {
+      color: var(--primary);
+    }
 
+    h1 {
+      text-align: center;
+      margin: 20px 0;
+      font-size: 2rem;
+      position: relative;
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    h1 i {
+      color: var(--secondary);
+      font-size: 1.8rem;
+    }
+
+    h2 {
+      margin-top: 25px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #E2E8F0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.3rem;
+    }
+
+    h2 i {
+      color: var(--accent);
+      width: 30px;
+      text-align: center;
+    }
+
+    .effective-date {
+      text-align: center;
+      color: #718096;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+    }
+
+    ul {
+      padding-left: 20px;
+      list-style: none;
+    }
+
+    li {
+      margin: 10px 0;
+      padding-left: 25px;
+      position: relative;
+    }
+
+    li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--secondary);
+      font-weight: bold;
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    a:hover {
+      color: var(--secondary);
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      color: #718096;
+      font-size: 0.85rem;
+      border-top: 1px solid #E2E8F0;
+      padding-top: 20px;
+    }
+
+    .highlight {
+      color: var(--secondary);
+      font-weight: 600;
+    }
+
+    .emoji {
+      font-style: normal;
+      margin-right: 8px;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
       h1 {
-        text-align: center;
-        margin: 30px 0;
-        font-size: 2.5rem;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 12px;
+        font-size: 1.8rem;
       }
 
       h1 i {
-        color: var(--secondary);
-        font-size: 2.2rem;
+        font-size: 1.6rem;
       }
 
       h2 {
-        margin-top: 35px;
-        padding-bottom: 8px;
-        border-bottom: 2px solid #E2E8F0;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 1.5rem;
+        font-size: 1.2rem;
       }
 
-      h2 i {
-        color: var(--accent);
-        width: 30px;
-        text-align: center;
+      .container {
+        padding: 15px;
       }
 
       .effective-date {
-        text-align: center;
-        color: #718096;
-        margin-bottom: 40px;
-        font-size: 0.95rem;
+        font-size: 0.85rem;
       }
 
       ul {
-        padding-left: 25px;
-        list-style: none;
+        padding-left: 15px;
       }
 
       li {
-        margin: 12px 0;
-        padding-left: 30px;
-        position: relative;
-      }
-
-      li::before {
-        content: '✓';
-        position: absolute;
-        left: 0;
-        color: var(--secondary);
-        font-weight: bold;
-      }
-
-      a {
-        color: var(--primary);
-        text-decoration: none;
-        font-weight: 600;
-        transition: color 0.3s ease;
-      }
-
-      a:hover {
-        color: var(--secondary);
+        padding-left: 20px;
       }
 
       .footer {
-        text-align: center;
-        margin-top: 40px;
-        color: #718096;
-        font-size: 0.9rem;
-        border-top: 1px solid #E2E8F0;
-        padding-top: 25px;
+        font-size: 0.8rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.5rem;
       }
 
-      .highlight {
-        color: var(--secondary);
-        font-weight: 600;
+      h1 i {
+        font-size: 1.4rem;
       }
 
-      .emoji {
-        font-style: normal;
-        margin-right: 8px;
+      h2 {
+        font-size: 1.1rem;
       }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <h1>
-        <i class="fas fa-cloud-sun-rain"></i>
-        Temp-Track Privacy Policy</h1>
-      <p class="effective-date">Effective Date: 7th February 2025</p>
-      <p>
-        Welcome to Temp-Track: Weather Forecast ("we," "our," or "us"). We are
-        committed to protecting your personal information and your right to
-        privacy. This Privacy Policy explains how we collect, use, and disclose
-        your information when you use our mobile application.
-      </p>
 
-      <h2><i class="fas fa-info-circle"></i> Information We Collect</h2>
-      <ul>
-        <li><strong><span class="emoji">📍</span>Location Data:</strong> We collect approximate location data for weather forecasts. You can disable location services in your device settings.</li>
-        <li><strong><span class="emoji">📱</span>Device Information:</strong> We collect device-specific information (e.g., device model, OS version) for app functionality and analytics.</li>
-        <li><strong><span class="emoji">📊</span>Usage Data:</strong> We analyze app interactions to enhance performance and user experience.</li>
-      </ul>
+      .container {
+        padding: 10px;
+      }
 
-      <h2><i class="fas fa-cogs"></i>2. How We Use Your Information</h2>
-      <ul>
-        <li><span class="emoji">🌤️</span>Provide weather forecasting services</li>
-        <li>><span class="emoji">🎨</span>Enhance and personalize user experience</li>
-        <li><span class="emoji">📈</span>Analyze app performance and usage trends</li>
-        <li><span class="emoji">🔧</span>Detect and resolve technical issues</li>
-      </ul>
+      .effective-date {
+        font-size: 0.8rem;
+      }
 
-      <h2><i class="fas fa-handshake"></i>3. Third-Party Services</h2>
-      <p><span class="emoji">🌍</span>
-        We use OpenWeatherMap API to provide weather data. Their privacy policy
-        can be found at:
-        <a href="https://openweather.co.uk/privacy-policy" target="_blank">https://openweather.co.uk/privacy-policy</a>
-      </p>
+      ul {
+        padding-left: 10px;
+      }
 
-      <h2><i class="fas fa-shield-alt"></i>4. Data Security</h2>
-      <p><span class="emoji">🔐</span>
-        We implement security measures to protect your information, but no electronic transmission or storage is 100% secure.
-      </p>
+      li {
+        padding-left: 15px;
+      }
 
-      <h2><i class="fas fa-user-shield"></i>5. Your Rights</h2>
-      <ul>
-        <li><span class="emoji">📂</span>Access, update, or delete your personal data</li>
-        <li><span class="emoji">🚫</span>Opt-out of location data collection</li>
-        <li><span class="emoji">📄</span>Request information about data processing</li>
-      </ul>
+      .footer {
+        font-size: 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>
+    <i class="fas fa-cloud-sun-rain"></i>
+    Temp-Track Privacy Policy</h1>
+  <p class="effective-date">Effective Date: 7th February 2025</p>
+  <p>
+    Welcome to Temp-Track: Weather Forecast ("we," "our," or "us"). We are
+    committed to protecting your personal information and your right to
+    privacy. This Privacy Policy explains how we collect, use, and disclose
+    your information when you use our mobile application.
+  </p>
 
-      <h2><i class="fas fa-child"></i>6. Children's Privacy</h2>
-      <p>
-        <span class="emoji">🌦️</span>Temp-Track is a weather application designed for general audiences of all ages. 
-        <span class="highlight">We do not specifically target children under 13</span>, and our service does not collect 
-        any personal information that could identify a user's age.
-      </p>
-      <p>
-        <span class="emoji">🔒</span>As a location-based weather service, we only collect necessary technical information 
-        (like approximate location and device data) to provide forecasts. <span class="highlight">No personal 
+  <h2><i class="fas fa-info-circle"></i> Information We Collect</h2>
+  <ul>
+    <li><strong><span class="emoji">📍</span>Location Data:</strong> We collect approximate location data for weather forecasts. You can disable location services in your device settings.</li>
+    <li><strong><span class="emoji">📱</span>Device Information:</strong> We collect device-specific information (e.g., device model, OS version) for app functionality and analytics.</li>
+    <li><strong><span class="emoji">📊</span>Usage Data:</strong> We analyze app interactions to enhance performance and user experience.</li>
+  </ul>
+
+  <h2><i class="fas fa-cogs"></i>2. How We Use Your Information</h2>
+  <ul>
+    <li><span class="emoji">🌤️</span>Provide weather forecasting services</li>
+    <li><span class="emoji">🎨</span>Enhance and personalize user experience</li>
+    <li><span class="emoji">📈</span>Analyze app performance and usage trends</li>
+    <li><span class="emoji">🔧</span>Detect and resolve technical issues</li>
+  </ul>
+
+  <h2><i class="fas fa-handshake"></i>3. Third-Party Services</h2>
+  <p><span class="emoji">🌍</span>
+    We use OpenWeatherMap API to provide weather data. Their privacy policy
+    can be found at:
+    <a href="https://openweather.co.uk/privacy-policy" target="_blank">https://openweather.co.uk/privacy-policy</a>
+  </p>
+
+  <h2><i class="fas fa-shield-alt"></i>4. Data Security</h2>
+  <p><span class="emoji">🔐</span>
+    We implement security measures to protect your information, but no electronic transmission or storage is 100% secure.
+  </p>
+
+  <h2><i class="fas fa-user-shield"></i>5. Your Rights</h2>
+  <ul>
+    <li><span class="emoji">📂</span>Access, update, or delete your personal data</li>
+    <li><span class="emoji">🚫</span>Opt-out of location data collection</li>
+    <li><span class="emoji">📄</span>Request information about data processing</li>
+  </ul>
+
+  <h2><i class="fas fa-child"></i>6. Children's Privacy</h2>
+  <p>
+    <span class="emoji">🌦️</span>Temp-Track is a weather application designed for general audiences of all ages.
+    <span class="highlight">We do not specifically target children under 13</span>, and our service does not collect
+    any personal information that could identify a user's age.
+  </p>
+  <p>
+    <span class="emoji">🔒</span>As a location-based weather service, we only collect necessary technical information
+    (like approximate location and device data) to provide forecasts. <span class="highlight">No personal
         information about users of any age is collected, stored, or shared</span>.
-      </p>
-      <p>
-        <span class="emoji">👪</span>Parents and guardians can feel confident allowing children to use Temp-Track, as our 
-        service contains no social features, content restrictions, or data collection beyond 
-        what's required for basic weather functionality.
-      </p>
+  </p>
+  <p>
+    <span class="emoji">👪</span>Parents and guardians can feel confident allowing children to use Temp-Track, as our
+    service contains no social features, content restrictions, or data collection beyond
+    what's required for basic weather functionality.
+  </p>
 
-      <div class="footer">
-        <p>&copy; 2025 Temp-Track: Weather Forecast | Powered by Codepati. All rights reserved.</p>
-      </div>
-    </div>
-  </body>
+  <div class="footer">
+    <p>&copy; 2025 Temp-Track: Weather Forecast | Powered by Codepati. All rights reserved.</p>
+  </div>
+</div>
+</body>
 </html>

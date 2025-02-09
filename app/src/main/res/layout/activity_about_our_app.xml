@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".AboutOurApp">
 
-
     <ImageView
         android:id="@+id/imageViewLogo"
         android:layout_width="@dimen/_100sdp"
@@ -23,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:text="Temp-Track"
+        android:text="@string/temp_track"
         android:fontFamily="@font/inter_semibold"
         android:textSize="@dimen/_24ssp"
         android:textColor="#004F98"
@@ -36,7 +35,7 @@
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Weather Forecast"
+        android:text="@string/weather_forecast"
         android:fontFamily="@font/inter_medium"
         android:textSize="@dimen/_17ssp"
         android:textColor="#004F98"
@@ -48,7 +47,7 @@
         android:id="@+id/textViewVersion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Version "
+        android:text="@string/version"
         android:layout_marginTop="@dimen/_30sdp"
         android:fontFamily="@font/inter_regular"
         android:textColor="#004F98"
@@ -61,7 +60,7 @@
         android:id="@+id/textViewLatestVersionInstallMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="The Latest Version is already installed."
+        android:text="@string/the_latest_version_is_already_installed"
         android:layout_marginTop="@dimen/_4sdp"
         android:fontFamily="@font/inter_regular"
         android:textSize="@dimen/_10ssp"
@@ -86,7 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_24sdp"
         android:layout_marginStart="@dimen/_14sdp"
-        android:text="About Our App"
+        android:text="@string/about_our_app"
         android:fontFamily="@font/inter_medium"
         android:textColor="#004F98"
         android:textSize="@dimen/_20ssp"

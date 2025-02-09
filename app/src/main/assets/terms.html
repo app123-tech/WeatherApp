@@ -1,171 +1,253 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Terms & Conditions - Temp-Track: Weather Forecast</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-      :root {
-        --primary: #1A73E8;
-        --secondary: #4CAF50;
-        --accent: #FF9800;
-        --text: #2D3748;
-        --background: #F7FAFC;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms & Conditions - Temp-Track: Weather Forecast</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #1A73E8;
+      --secondary: #4CAF50;
+      --accent: #FF9800;
+      --text: #2D3748;
+      --background: #F7FAFC;
+    }
 
-      body {
-        font-family: 'Inter', sans-serif;
-        line-height: 1.6;
-        margin: 0;
-        padding: 20px;
-        background-color: var(--background);
-        color: var(--text);
-      }
+    body {
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+      background-color: var(--background);
+      color: var(--text);
+    }
 
-      .container {
-        max-width: 800px;
-        margin: 0 auto;
-        background: white;
-        padding: 40px;
-        border-radius: 16px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-        position: relative;
-        overflow: hidden;
-      }
+    .container {
+      max-width: 800px;
+      width: 100%;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
 
-      .container::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 8px;
-        background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
-      }
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 8px;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+    }
 
-      h1, h2 {
-        color: var(--primary);
-      }
+    h1, h2 {
+      color: var(--primary);
+    }
 
+    h1 {
+      text-align: center;
+      margin: 20px 0;
+      font-size: 2rem;
+      position: relative;
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    h1 i {
+      color: var(--secondary);
+      font-size: 1.8rem;
+    }
+
+    h2 {
+      margin-top: 25px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #E2E8F0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.3rem;
+    }
+
+    h2 i {
+      color: var(--accent);
+      width: 30px;
+      text-align: center;
+    }
+
+    .effective-date {
+      text-align: center;
+      color: #718096;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+    }
+
+    ul {
+      padding-left: 20px;
+      list-style: none;
+    }
+
+    li {
+      margin: 10px 0;
+      padding-left: 25px;
+      position: relative;
+    }
+
+    li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--secondary);
+      font-weight: bold;
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    a:hover {
+      color: var(--secondary);
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      color: #718096;
+      font-size: 0.85rem;
+      border-top: 1px solid #E2E8F0;
+      padding-top: 20px;
+    }
+
+    .highlight {
+      color: var(--secondary);
+      font-weight: 600;
+    }
+
+    .emoji {
+      font-style: normal;
+      margin-right: 8px;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
       h1 {
-        text-align: center;
-        margin: 30px 0;
-        font-size: 2.5rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 12px;
+        font-size: 1.8rem;
       }
 
       h1 i {
-        color: var(--secondary);
-        font-size: 2.2rem;
+        font-size: 1.6rem;
       }
 
       h2 {
-        margin-top: 35px;
-        padding-bottom: 8px;
-        border-bottom: 2px solid #E2E8F0;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 1.5rem;
+        font-size: 1.2rem;
       }
 
-      h2 i {
-        color: var(--accent);
-        width: 30px;
-        text-align: center;
+      .container {
+        padding: 15px;
       }
 
       .effective-date {
-        text-align: center;
-        color: #718096;
-        margin-bottom: 40px;
-        font-size: 0.95rem;
+        font-size: 0.85rem;
       }
 
       ul {
-        padding-left: 25px;
-        list-style: none;
+        padding-left: 15px;
       }
 
       li {
-        margin: 12px 0;
-        padding-left: 30px;
-        position: relative;
-      }
-
-      li::before {
-        content: '✓';
-        position: absolute;
-        left: 0;
-        color: var(--secondary);
-        font-weight: bold;
-      }
-
-      a {
-        color: var(--primary);
-        text-decoration: none;
-        font-weight: 600;
-        transition: color 0.3s ease;
-      }
-
-      a:hover {
-        color: var(--secondary);
+        padding-left: 20px;
       }
 
       .footer {
-        text-align: center;
-        margin-top: 40px;
-        color: #718096;
-        font-size: 0.9rem;
-        border-top: 1px solid #E2E8F0;
-        padding-top: 25px;
+        font-size: 0.8rem;
       }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <h1>
-        <i class="fas fa-file-contract"></i>
-        Temp-Track Terms & Conditions
-      </h1>
-      <p class="effective-date">Effective Date: 7th February 2025</p>
-      <p>
-        Welcome to Temp-Track: Weather Forecast ("we," "our," or "us"). By using our app,
-        you agree to these terms and conditions. Please read them carefully.
-      </p>
+    }
 
-      <h2><i class="fas fa-user-check"></i> 1. User Agreement</h2>
-      <ul>
-        <li><span class="emoji">📱</span>You must comply with all applicable laws when using our app.</li>
-        <li><span class="emoji">⚖️</span>By using our services, you accept these terms in full.</li>
-      </ul>
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.5rem;
+      }
 
-      <h2><i class="fas fa-cloud-sun"></i> 2. Service Description</h2>
-      <ul>
-        <li><span class="emoji">🌦️</span>We provide weather forecasting services.</li>
-        <li><span class="emoji">📊</span>Data accuracy is not guaranteed.</li>
-      </ul>
+      h1 i {
+        font-size: 1.4rem;
+      }
 
-      <h2><i class="fas fa-lock"></i> 3. Privacy</h2>
-      <p><span class="emoji">🔒</span>Your privacy is important. Our Privacy Policy explains how we handle your data.</p>
+      h2 {
+        font-size: 1.1rem;
+      }
 
-      <h2><i class="fas fa-ban"></i> 4. Prohibited Activities</h2>
-      <ul>
-        <li><span class="emoji">🚫</span>Misuse of the service is prohibited.</li>
-        <li><span class="emoji">⚠️</span>Unauthorized data extraction is not allowed.</li>
-      </ul>
+      .container {
+        padding: 10px;
+      }
 
-      <h2><i class="fas fa-gavel"></i> 5. Limitation of Liability</h2>
-      <p><span class="emoji">⚠️</span>We are not responsible for any inaccuracies in weather data.</p>
+      .effective-date {
+        font-size: 0.8rem;
+      }
 
-      <div class="footer">
-        <p>&copy; 2025 Temp-Track: Weather Forecast | Powered by Codepati. All rights reserved.</p>
-      </div>
-    </div>
-  </body>
+      ul {
+        padding-left: 10px;
+      }
+
+      li {
+        padding-left: 15px;
+      }
+
+      .footer {
+        font-size: 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>
+    <i class="fas fa-file-contract"></i>
+    Temp-Track Terms & Conditions
+  </h1>
+  <p class="effective-date">Effective Date: 7th February 2025</p>
+  <p>
+    Welcome to Temp-Track: Weather Forecast ("we," "our," or "us"). By using our app,
+    you agree to these terms and conditions. Please read them carefully.
+  </p>
+
+  <h2><i class="fas fa-user-check"></i> 1. User Agreement</h2>
+  <ul>
+    <li><span class="emoji">📱</span>You must comply with all applicable laws when using our app.</li>
+    <li><span class="emoji">⚖️</span>By using our services, you accept these terms in full.</li>
+  </ul>
+
+  <h2><i class="fas fa-cloud-sun"></i> 2. Service Description</h2>
+  <ul>
+    <li><span class="emoji">🌦️</span>We provide weather forecasting services.</li>
+    <li><span class="emoji">📊</span>Data accuracy is not guaranteed.</li>
+  </ul>
+
+  <h2><i class="fas fa-lock"></i> 3. Privacy</h2>
+  <p><span class="emoji">🔒</span>Your privacy is important. Our Privacy Policy explains how we handle your data.</p>
+
+  <h2><i class="fas fa-ban"></i> 4. Prohibited Activities</h2>
+  <ul>
+    <li><span class="emoji">🚫</span>Misuse of the service is prohibited.</li>
+    <li><span class="emoji">⚠️</span>Unauthorized data extraction is not allowed.</li>
+  </ul>
+
+  <h2><i class="fas fa-gavel"></i> 5. Limitation of Liability</h2>
+  <p><span class="emoji">⚠️</span>We are not responsible for any inaccuracies in weather data.</p>
+
+  <div class="footer">
+    <p>&copy; 2025 Temp-Track: Weather Forecast | Powered by Codepati. All rights reserved.</p>
+  </div>
+</div>
+</body>
 </html>

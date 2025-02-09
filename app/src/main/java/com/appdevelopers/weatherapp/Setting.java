@@ -1,10 +1,13 @@
 package com.appdevelopers.weatherapp;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -54,5 +57,70 @@ public class Setting extends AppCompatActivity {
             startActivity(intent);
         });
 
+        imageViewGreaterThanCircle.setOnClickListener(v -> {
+            Intent intent = new Intent(Setting.this, PrivacyPolicy.class);
+            startActivity(intent);
+        });
+
+        cardView7.setOnClickListener(v -> {
+            Intent intent = new Intent(Setting.this, PrivacyPolicy.class);
+            startActivity(intent);
+        });
+
+        imageViewGreaterThanCircle5.setOnClickListener(v -> {
+            Intent intent = new Intent(Setting.this, PrivacyPolicy.class);
+            startActivity(intent);
+        });
+
+        cardView6.setOnClickListener(v -> {
+            Intent intent = new Intent(Setting.this, PrivacyPolicy.class);
+            startActivity(intent);
+        });
+
+        cardView9.setOnClickListener(v -> {
+            try {
+                Uri uri = Uri.parse("market://details?id=" + getPackageName());
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName());
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            } catch (Exception e) {
+                Toast.makeText(Setting.this, "App not found on Play Store.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        imageViewGreaterThanCircle3.setOnClickListener(v -> {
+            try {
+                Uri uri = Uri.parse("market://details?id=" + getPackageName());
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName());
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            } catch (Exception e) {
+                Toast.makeText(Setting.this, "App not found on Play Store.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        cardView8.setOnClickListener(v -> {
+            String appPackageName = getPackageName();
+            String playStoreLink = "https://play.google.com/store/apps/details?id=" + appPackageName;
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            String shareMessage = "Check out this amazing Weather App: " + playStoreLink;
+            shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+            try {
+                startActivity(Intent.createChooser(shareIntent, "Share via"));
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(Setting.this, "No application found to share the app.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
