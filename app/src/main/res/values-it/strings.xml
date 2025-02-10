@@ -16,10 +16,10 @@
     <string name="temp_track">Monitoraggio temperatura</string>
     <string name="weather_forecast">Previsioni meteo</string>
     <string name="version">Versione</string>
-    <string name="the_latest_version_is_already_installed">L'ultima versione è già installata.</string>
+    <string name="the_latest_version_is_already_installed">L\'ultima versione è già installata.</string>
     <string name="about_our_app">Informazioni sulla nostra app</string>
     <string name="say_goodbye_to_getting_caught_in_the_rain">Dì addio a essere sorpreso dalla pioggia</string>
-    <string name="get_accurate_real_time_weather_updates_forecasts_and_alerts_for_your_location_all_in_none_simple_app">Ricevi aggiornamenti meteo accurati in tempo reale, previsioni e avvisi per la tua posizione, tutto in un'unica app semplice</string>
+    <string name="get_accurate_real_time_weather_updates_forecasts_and_alerts_for_your_location_all_in_none_simple_app">Ricevi aggiornamenti meteo accurati in tempo reale, previsioni e avvisi per la tua posizione, tutto in un\'unica app semplice</string>
     <string name="get_started">Inizia</string>
     <string name="menubar">Barra dei menu</string>
     <string name="kathmandu">Kathmandu</string>
@@ -39,8 +39,8 @@
     <string name="km_h">km/h</string>
     <string name="notifications">Notifiche</string>
     <string name="daily_forecast_notification">Notifica previsioni giornaliere</string>
-    <string name="app_language">Lingua dell'app</string>
-    <string name="change_app_language">Cambia la lingua dell'app</string>
+    <string name="app_language">Lingua dell\'app</string>
+    <string name="change_app_language">Cambia la lingua dell\'app</string>
     <string name="english">Inglese</string>
     <string name="legal">Legale</string>
     <string name="terms_amp_conditions"><![CDATA[Termini e condizioni]]></string>
