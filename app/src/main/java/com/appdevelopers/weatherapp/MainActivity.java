@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -43,17 +44,38 @@ public class MainActivity extends AppCompatActivity {
     private static final String PREFS_NAME = "WeatherAppPrefs";
     private static final String KEY_CITY = "City";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    private Button buttonToday, buttonTomorrow, buttonTenDays;
+    private AppCompatButton buttonToday, buttonTomorrow, buttonTenDays;
     private ImageView imageViewSearch, imageViewSetting, imageViewSun;
     private TextView textViewCityName, textViewTempTitle, textViewHigh, textViewLow, textViewTemp;
     private SharedPreferences sharedPreferences;
     private String selectedCity = "Kathmandu"; //Default City
     private FusedLocationProviderClient fusedLocationProviderClient;
 
+    private void setButtonColors(AppCompatButton selectedButton){
+        buttonToday.setBackgroundTintList(getResources().getColorStateList(R.color.light));
+        buttonTomorrow.setBackgroundTintList(getResources().getColorStateList(R.color.light));
+        buttonTenDays.setBackgroundTintList(getResources().getColorStateList(R.color.light));
+
+        buttonToday.setTextColor(getResources().getColor(R.color.blue));
+        buttonTomorrow.setTextColor(getResources().getColor(R.color.blue));
+        buttonTenDays.setTextColor(getResources().getColor(R.color.blue));
+
+        selectedButton.setBackgroundTintList(getResources().getColorStateList(R.color.blue));
+        selectedButton.setTextColor(getResources().getColor(R.color.light));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+
+        if (!NetworkUtils.isConnected(this)) {
+            Intent intent = new Intent(MainActivity.this, NoInternetActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_main);
 
         buttonToday = findViewById(R.id.buttonToday);
@@ -73,6 +95,8 @@ public class MainActivity extends AppCompatActivity {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         requestLocation();
 
+        setButtonColors(buttonToday);
+
         imageViewSetting.setOnClickListener(v -> {
           Intent intent = new Intent(MainActivity.this, Setting.class);
           startActivity(intent);
@@ -85,14 +109,17 @@ public class MainActivity extends AppCompatActivity {
 
         buttonToday.setOnClickListener(v -> {
             loadFragment(new FragmentTodayActivity());
+            setButtonColors(buttonToday);
         });
 
         buttonTomorrow.setOnClickListener(v -> {
             loadFragment(new FragmentTomorrow());
+            setButtonColors(buttonTomorrow);
         });
 
         buttonTenDays.setOnClickListener(v -> {
             loadFragment(new FragmentTenDays());
+            setButtonColors(buttonTenDays);
         });
 
         if (savedInstanceState == null) {

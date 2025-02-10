@@ -45,12 +45,12 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewCannotReach" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonToday"
+        android:id="@+id/buttonTryAgain"
         android:layout_width="@dimen/_180sdp"
         android:layout_height="@dimen/_40sdp"
         android:background="@drawable/custom_button_second"
         android:fontFamily="@font/inter_regular"
-        android:text="@string/today"
+        android:text="@string/try_again"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="@dimen/_13ssp"
