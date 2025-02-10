@@ -1,7 +1,9 @@
 package com.appdevelopers.weatherapp;
 
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -20,7 +23,11 @@ public class Setting extends AppCompatActivity {
     private ImageView imageViewBack, imageViewGreaterThanCircle5, imageViewGreaterThanCircle, imageViewGreaterThanCircle2, imageViewGreaterThanCircle3, imageViewGreaterThanCircle4;
     private CardView cardView2, cardView3, cardView4, cardView5, cardView6, cardView7, cardView8, cardView9, cardView10;
     private TextView textViewTemperature, textViewWindSpeedInKilometerPerHour, textViewLanguage;
-    private Switch switch1;
+    private Switch toggleSwitch;
+    private int thumbOnColor;
+    private int thumbOffColor;
+    private int trackOnColor;
+    private int trackOffColor;
 
 
     @Override
@@ -50,7 +57,12 @@ public class Setting extends AppCompatActivity {
         textViewWindSpeedInKilometerPerHour = findViewById(R.id.textViewWindSpeedInKilometerPerHour);
         textViewLanguage = findViewById(R.id.textViewLanguage);
 
-        switch1 = findViewById(R.id.switch1);
+        toggleSwitch = findViewById(R.id.toggleSwitch);
+
+        thumbOnColor = ContextCompat.getColor(this, R.color.switch_thumb_on);
+        thumbOffColor = ContextCompat.getColor(this, R.color.switch_thumb_off);
+        trackOnColor = ContextCompat.getColor(this, R.color.switch_track_on);
+        trackOffColor = ContextCompat.getColor(this, R.color.switch_track_off);
 
         cardView10.setOnClickListener(v -> {
             Intent intent = new Intent(Setting.this, AboutOurApp.class);
@@ -122,5 +134,64 @@ public class Setting extends AppCompatActivity {
                 Toast.makeText(Setting.this, "No application found to share the app.", Toast.LENGTH_SHORT).show();
             }
         });
+
+        cardView5.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(Setting.this);
+            android.view.LayoutInflater inflater = getLayoutInflater();
+            android.view.View dialogView = inflater.inflate(R.layout.custom_multi_language_selection, null);
+            builder.setView(dialogView);
+
+            android.widget.RadioGroup radioGroup = dialogView.findViewById(R.id.radioGroup);
+            android.widget.TextView textViewAccept = dialogView.findViewById(R.id.textViewAccept);
+            android.widget.TextView textViewCancel = dialogView.findViewById(R.id.textViewCancel);
+
+            android.app.AlertDialog dialog = builder.create();
+
+            SharedPreferences sharedPreferences = getSharedPreferences("AppSetting", MODE_PRIVATE);
+            String selectedLanguage = sharedPreferences.getString("Language", "English");
+
+            if (selectedLanguage.equals("English")) {
+                radioGroup.check(R.id.radioButtonEnglish);
+            } else if (selectedLanguage.equals("Nepali")) {
+                radioGroup.check(R.id.radioButtonNepali);
+            } else if (selectedLanguage.equals("Italian")) {
+                radioGroup.check(R.id.radioButtonItalian);
+            } else if (selectedLanguage.equals("Korean")) {
+                radioGroup.check(R.id.radioButtonKorean);
+            }
+
+            textViewAccept.setOnClickListener(v1 -> {
+                int selectedId = radioGroup.getCheckedRadioButtonId();
+                String newLanguage = "English";
+
+                if (selectedId == R.id.radioButtonNepali) {
+                    newLanguage = "Nepali";
+                } else if (selectedId == R.id.radioButtonItalian) {
+                    newLanguage = "Italian";
+                } else if (selectedId == R.id.radioButtonKorean) {
+                    newLanguage = "Korean";
+                }
+
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("Language", newLanguage);
+                editor.apply();
+            });
+            textViewCancel.setOnClickListener(v1 -> {
+                dialog.dismiss();
+            });
+            dialog.show();
+        });
+    }
+
+    private void setLocale(String languageCode){
+        android.content.res.Configuration config = new android.content.res.Configuration();
+        java.util.Locale locale = new java.util.Locale(languageCode);
+        java.util.Locale.setDefault(locale);
+        config.setLocale(locale);
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
     }
 }

@@ -217,11 +217,15 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <Switch
-                        android:id="@+id/switch1"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/toggleSwitch"
+                        android:layout_width="@dimen/_40sdp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/_8sdp"
                         android:text=""
+                        android:scaleX="1.5"
+                        android:scaleY="1.5"
+                        android:thumbTint="@color/switch_thumb_off"
+                        android:trackTint="@color/switch_thumb_off"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"

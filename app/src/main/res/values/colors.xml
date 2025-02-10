@@ -4,4 +4,9 @@
     <color name="white">#FFFFFFFF</color>
     <color name="light">#FEFDFF</color>
     <color name="blue">#1367B4</color>
+
+    <color name="switch_thumb_off">#D1D8DC</color>
+    <color name="switch_track_off">#B0BEC5</color>
+    <color name="switch_thumb_on">#1E88E5</color>
+    <color name="switch_track_on">#81D4FA</color>
 </resources>
