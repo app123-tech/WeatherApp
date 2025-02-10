@@ -2,6 +2,7 @@ package com.appdevelopers.weatherapp;
 
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -148,50 +149,57 @@ public class Setting extends AppCompatActivity {
             android.app.AlertDialog dialog = builder.create();
 
             SharedPreferences sharedPreferences = getSharedPreferences("AppSetting", MODE_PRIVATE);
-            String selectedLanguage = sharedPreferences.getString("Language", "English");
+            String selectedLanguageCode = sharedPreferences.getString("Language", "en"); // Default to "en"
 
-            if (selectedLanguage.equals("English")) {
+            // Check the corresponding radio button based on the stored language code
+            if (selectedLanguageCode.equals("en")) {
                 radioGroup.check(R.id.radioButtonEnglish);
-            } else if (selectedLanguage.equals("Nepali")) {
+            } else if (selectedLanguageCode.equals("ne")) {
                 radioGroup.check(R.id.radioButtonNepali);
-            } else if (selectedLanguage.equals("Italian")) {
+            } else if (selectedLanguageCode.equals("it")) {
                 radioGroup.check(R.id.radioButtonItalian);
-            } else if (selectedLanguage.equals("Korean")) {
+            } else if (selectedLanguageCode.equals("ko")) {
                 radioGroup.check(R.id.radioButtonKorean);
             }
 
             textViewAccept.setOnClickListener(v1 -> {
                 int selectedId = radioGroup.getCheckedRadioButtonId();
-                String newLanguage = "English";
+                String newLanguageCode = "en"; // Default to English
 
                 if (selectedId == R.id.radioButtonNepali) {
-                    newLanguage = "Nepali";
+                    newLanguageCode = "ne";
                 } else if (selectedId == R.id.radioButtonItalian) {
-                    newLanguage = "Italian";
+                    newLanguageCode = "it";
                 } else if (selectedId == R.id.radioButtonKorean) {
-                    newLanguage = "Korean";
+                    newLanguageCode = "ko";
                 }
 
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("Language", newLanguage);
+                editor.putString("Language", newLanguageCode);
                 editor.apply();
-            });
-            textViewCancel.setOnClickListener(v1 -> {
+                setLocale(newLanguageCode);
                 dialog.dismiss();
             });
+            textViewCancel.setOnClickListener(v1 -> dialog.dismiss());
             dialog.show();
         });
     }
 
-    private void setLocale(String languageCode){
-        android.content.res.Configuration config = new android.content.res.Configuration();
-        java.util.Locale locale = new java.util.Locale(languageCode);
-        java.util.Locale.setDefault(locale);
-        config.setLocale(locale);
-        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        SharedPreferences sharedPreferences = newBase.getSharedPreferences("AppSetting", MODE_PRIVATE);
+        String languageCode = sharedPreferences.getString("Language", "en"); // Use "en" as default
+        super.attachBaseContext(LocaleHelper.setLocale(newBase, languageCode));
+    }
 
-        Intent intent = getIntent();
-        finish();
-        startActivity(intent);
+
+    private void setLocale(String languageCode) {
+        SharedPreferences sharedPreferences = getSharedPreferences("AppSetting", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("Language", languageCode);
+        editor.apply();
+
+        LocaleHelper.setLocale(this, languageCode);  // Apply language using helper
+        recreate();  // Restart activity to apply language change
     }
 }
