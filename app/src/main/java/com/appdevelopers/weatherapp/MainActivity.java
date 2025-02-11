@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -26,6 +25,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.appdevelopers.weatherapp.Fragment.FragmentTenDays;
 import com.appdevelopers.weatherapp.Fragment.FragmentTodayActivity;
 import com.appdevelopers.weatherapp.Fragment.FragmentTomorrow;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -45,10 +45,10 @@ public class MainActivity extends BaseActivity {
     private static final String KEY_CITY = "City";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private AppCompatButton buttonToday, buttonTomorrow, buttonTenDays;
-    private ImageView imageViewSearch, imageViewSetting, imageViewSun;
-    private TextView textViewCityName, textViewTempTitle, textViewHigh, textViewLow, textViewTemp;
+    private ImageView imageViewSearch, imageViewSetting, imageViewIcon;
+    private TextView textViewCityName, textViewFeelsLike, textViewHighTemp, textViewLowTemp, textViewTemp;
     private SharedPreferences sharedPreferences;
-    private String selectedCity = "Kathmandu"; //Default City
+    private String selectedCity = "Kathmandu";
     private FusedLocationProviderClient fusedLocationProviderClient;
 
     private void setButtonColors(AppCompatButton selectedButton){
@@ -83,11 +83,11 @@ public class MainActivity extends BaseActivity {
         buttonTenDays = findViewById(R.id.buttonTenDays);
         imageViewSearch = findViewById(R.id.imageViewSearch);
         imageViewSetting = findViewById(R.id.imageViewSetting);
-        imageViewSun = findViewById(R.id.imageViewSun);
+        imageViewIcon = findViewById(R.id.imageViewIcon);
         textViewCityName = findViewById(R.id.textViewCityName);
-        textViewTempTitle = findViewById(R.id.textViewTempTitle);
-        textViewHigh = findViewById(R.id.textViewHigh);
-        textViewLow = findViewById(R.id.textViewLow);
+        textViewFeelsLike = findViewById(R.id.textViewFeelsLike);
+        textViewHighTemp = findViewById(R.id.textViewHighTemp);
+        textViewLowTemp = findViewById(R.id.textViewLowTemp);
         textViewTemp = findViewById(R.id.textViewTemp);
 
         sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
@@ -164,16 +164,25 @@ public class MainActivity extends BaseActivity {
             if (addresses != null && !addresses.isEmpty()) {
                 Address address = addresses.get(0);
 
-                String fullAddress = address.getAddressLine(0);
-                String subLocality = address.getSubLocality();
-                String city = address.getLocality();
+                String featureName = address.getFeatureName(); // Specific location (e.g., "4th Floor, Radha Bhawan")
+                String subLocality = address.getSubLocality(); // Nearby locality (e.g., "Tripureshwor")
+                String locality = address.getLocality(); // City (e.g., "Kathmandu")
+                String thoroughfare = address.getThoroughfare(); // Street name
+                String postalCode = address.getPostalCode(); // Postal code (we will ignore this)
 
-                if (fullAddress != null && !fullAddress.isEmpty()){
-                    selectedCity = fullAddress;
-                } else if (subLocality != null && !subLocality.isEmpty()) {
-                    selectedCity = subLocality + ", " + city;
+                if (featureName != null && !featureName.isEmpty()) {
+                    selectedCity = featureName;
+                    if (subLocality != null && !subLocality.isEmpty()) {
+                        selectedCity += ", " + subLocality;
+                    } else if (thoroughfare != null && !thoroughfare.isEmpty()) {
+                        selectedCity += ", " + thoroughfare;
+                    }
                 } else {
-                    selectedCity = city;
+                    selectedCity = (subLocality != null) ? subLocality : locality;
+                }
+
+                if (selectedCity.contains(postalCode)) {
+                    selectedCity = selectedCity.replace(postalCode, "").trim();
                 }
 
                 textViewCityName.setText(selectedCity);
@@ -197,9 +206,13 @@ public class MainActivity extends BaseActivity {
 
                     textViewCityName.setText(weatherData.getName());
                     textViewTemp.setText(String.format("%.1f°C", weatherData.getMain().getTemp()));
-                    textViewHigh.setText(String.format("H: %.1f°C", weatherData.getMain().getTemp_max()));
-                    textViewLow.setText(String.format("L: %.1f°C", weatherData.getMain().getTemp_min()));
+                    textViewFeelsLike.setText(String.format("Feels like: %.1f°C", weatherData.getMain().getFeels_like()));
+                    textViewHighTemp.setText(String.format("H: %.1f°C", weatherData.getMain().getTemp_max()));
+                    textViewLowTemp.setText(String.format("L: %.1f°C", weatherData.getMain().getTemp_min()));
 
+                    String iconCode = weatherData.getWeather().get(0).getIcon();
+                    String iconUrl = "https://openweathermap.org/img/wn/" + iconCode + "@2x.png";
+                    Glide.with(MainActivity.this).load(iconUrl).into(imageViewIcon);
                     sharedPreferences.edit().putString(KEY_CITY, city).apply();
                 } else {
                     Toast.makeText(MainActivity.this, "Failed to retrieve weather data", Toast.LENGTH_SHORT).show();
