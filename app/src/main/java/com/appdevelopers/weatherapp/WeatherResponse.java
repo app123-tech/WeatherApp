@@ -56,7 +56,6 @@ public class WeatherResponse {
         private String main;
         private String description;
         private String icon;
-
         public String getMain(){
             return main;
         }

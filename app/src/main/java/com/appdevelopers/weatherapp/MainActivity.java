@@ -195,6 +195,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void fetchWeatherData(String city){
+        Log.d("WeatherApi", "Fetching weather data for city: " + city);
         OpenWeatherMapService apiService = ApiClient.getClient().create(OpenWeatherMapService.class);
         Call<WeatherResponse> call = apiService.getCurrentWeather(city, API_KEY, "metric");
 
@@ -203,6 +204,7 @@ public class MainActivity extends BaseActivity {
             public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response){
                 if (response.isSuccessful() && response.body() != null) {
                     WeatherResponse weatherData = response.body();
+                    Log.d("WeatherApi", "Weather data fetched successfully" + weatherData.toString());
 
                     textViewCityName.setText(weatherData.getName());
                     textViewTemp.setText(String.format("%.1f°C", weatherData.getMain().getTemp()));
@@ -213,10 +215,12 @@ public class MainActivity extends BaseActivity {
                     if (weatherData.getWeather() != null && !weatherData.getWeather().isEmpty()) {
                         String iconCode = weatherData.getWeather().get(0).getIcon();  // Get the first Weather object
                         String iconUrl = "https://openweathermap.org/img/wn/" + iconCode + "@2x.png";
+                        Log.d("WeatherApi", "Icon URL: " + iconUrl);
                         Glide.with(MainActivity.this).load(iconUrl).into(imageViewIcon);
                     }
                     sharedPreferences.edit().putString(KEY_CITY, city).apply();
                 } else {
+                    Log.e("WeatherApi", "Error fetching data: " + response.message());
                     Toast.makeText(MainActivity.this, "Failed to retrieve weather data", Toast.LENGTH_SHORT).show();
                 }
             }
