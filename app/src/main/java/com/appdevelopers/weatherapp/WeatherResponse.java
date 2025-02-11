@@ -1,15 +1,17 @@
 package com.appdevelopers.weatherapp;
 
+import java.util.List;
+
 public class WeatherResponse {
     private Main main;
-    private Weather[] weather;
+    private List<Weather> weather;
     private String name;
 
     public Main getMain(){
         return main;
     }
 
-    public Weather[] getWeather(){
+    public List<Weather> getWeather(){
         return weather;
     }
 

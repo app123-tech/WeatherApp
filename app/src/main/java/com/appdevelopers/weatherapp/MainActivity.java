@@ -210,9 +210,11 @@ public class MainActivity extends BaseActivity {
                     textViewHighTemp.setText(String.format("H: %.1f°C", weatherData.getMain().getTemp_max()));
                     textViewLowTemp.setText(String.format("L: %.1f°C", weatherData.getMain().getTemp_min()));
 
-                    String iconCode = weatherData.getWeather().get(0).getIcon();
-                    String iconUrl = "https://openweathermap.org/img/wn/" + iconCode + "@2x.png";
-                    Glide.with(MainActivity.this).load(iconUrl).into(imageViewIcon);
+                    if (weatherData.getWeather() != null && !weatherData.getWeather().isEmpty()) {
+                        String iconCode = weatherData.getWeather().get(0).getIcon();  // Get the first Weather object
+                        String iconUrl = "https://openweathermap.org/img/wn/" + iconCode + "@2x.png";
+                        Glide.with(MainActivity.this).load(iconUrl).into(imageViewIcon);
+                    }
                     sharedPreferences.edit().putString(KEY_CITY, city).apply();
                 } else {
                     Toast.makeText(MainActivity.this, "Failed to retrieve weather data", Toast.LENGTH_SHORT).show();
