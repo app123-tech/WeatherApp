@@ -1,6 +1,8 @@
 package com.appdevelopers.weatherapp;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +21,8 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import java.util.Calendar;
 
 public class Setting extends AppCompatActivity {
     private ImageView imageViewBack, imageViewGreaterThanCircle5, imageViewGreaterThanCircle, imageViewGreaterThanCircle2, imageViewGreaterThanCircle3, imageViewGreaterThanCircle4;
@@ -183,15 +187,57 @@ public class Setting extends AppCompatActivity {
             textViewCancel.setOnClickListener(v1 -> dialog.dismiss());
             dialog.show();
         });
+
+        cardView4.setOnClickListener(v -> {
+            SharedPreferences sharedPreferences = getSharedPreferences("AppSetting", MODE_PRIVATE);
+            boolean isEnabled = sharedPreferences.getBoolean("DailyForecastNotification", false);
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            if (!isEnabled) {
+                scheduleDailyNotification();
+                Toast.makeText(Setting.this, "Daily forecast notifications enabled.", Toast.LENGTH_SHORT).show();
+            } else {
+                cancelDailyNotification();
+                Toast.makeText(Setting.this, "Daily forecast notifications disabled.", Toast.LENGTH_SHORT).show();
+            }
+            editor.putBoolean("DailyForecastNotification", !isEnabled);
+            editor.apply();
+        });
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        SharedPreferences sharedPreferences = newBase.getSharedPreferences("AppSetting", MODE_PRIVATE);
-        String languageCode = sharedPreferences.getString("Language", "en"); // Use "en" as default
-        super.attachBaseContext(LocaleHelper.setLocale(newBase, languageCode));
+    void scheduleDailyNotification() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, NotificationReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 7);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        if (calendar.getTimeInMillis() < System.currentTimeMillis()) {
+            calendar.add(Calendar.DAY_OF_YEAR, 1); // If it's already past 7 AM today, set for tomorrow
+        }
+
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 
+    private void cancelDailyNotification() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, NotificationReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        alarmManager.cancel(pendingIntent);
+    }
+
+    public class BaseActivity extends AppCompatActivity {
+        @Override
+        protected void attachBaseContext(Context newBase) {
+            SharedPreferences sharedPreferences = newBase.getSharedPreferences("AppSetting", MODE_PRIVATE);
+            String languageCode = sharedPreferences.getString("Language", "en"); // Use "en" as default
+            super.attachBaseContext(LocaleHelper.setLocale(newBase, languageCode));
+        }
+    }
 
     private void setLocale(String languageCode) {
         SharedPreferences sharedPreferences = getSharedPreferences("AppSetting", MODE_PRIVATE);
