@@ -243,6 +243,8 @@ public class Setting extends AppCompatActivity {
         imageViewBack.setOnClickListener(v -> {
             getOnBackPressedDispatcher().onBackPressed();
         });
+
+
     }
 
     void scheduleDailyNotification() {
