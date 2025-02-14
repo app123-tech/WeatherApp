@@ -26,6 +26,7 @@ public class WeatherResponse {
         private double temp_max;
         private int pressure;
         private int humidity;
+        private int wind;
 
         public double getTemp() {
             return temp;

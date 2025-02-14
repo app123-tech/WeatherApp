@@ -65,6 +65,7 @@
                 android:layout_marginTop="@dimen/_4sdp"
                 android:fontFamily="@font/inter_semibold"
                 android:text=""
+                android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_22sdp"
                 android:padding="@dimen/_4sdp"

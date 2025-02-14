@@ -226,7 +226,7 @@ public class MainActivity extends BaseActivity {
     private void fetchWeatherByCity(String city) {
         Log.d("WeatherApi", "Fetching weather data for city: " + city);
         OpenWeatherMapService apiService = ApiClient.getClient().create(OpenWeatherMapService.class);
-        Call<WeatherResponse> call = apiService.getCurrentWeather(city, API_KEY, "metric");
+        Call<WeatherResponse> call = apiService.getCurrentWeatherByCity(city, API_KEY, "metric");
 
         call.enqueue(new Callback<WeatherResponse>() {
             @Override
