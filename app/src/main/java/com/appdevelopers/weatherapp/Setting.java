@@ -178,9 +178,9 @@ public class Setting extends AppCompatActivity {
                     newLanguageCode = "ko";
                 }
 
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("Language", newLanguageCode);
-                editor.apply();
+//                SharedPreferences.Editor editor = sharedPreferences.edit();
+//                editor.putString("Language", newLanguageCode);
+//                editor.apply();
                 setLocale(newLanguageCode);
                 dialog.dismiss();
             });
@@ -246,6 +246,6 @@ public class Setting extends AppCompatActivity {
         editor.apply();
 
         LocaleHelper.setLocale(this, languageCode);  // Apply language using helper
-        recreate();  // Restart activity to apply language change
+        //recreate();  // Restart activity to apply language change
     }
 }

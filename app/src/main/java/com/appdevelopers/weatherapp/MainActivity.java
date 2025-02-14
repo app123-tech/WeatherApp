@@ -30,6 +30,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.List;
@@ -40,7 +41,7 @@ import retrofit2.Callback;
 import retrofit2.Call;
 
 public class MainActivity extends BaseActivity {
-    private static final String API_KEY = "2e20e6e6c10856f71e0312f1ca503ac9";
+    private static final String API_KEY = "151be366b244fa29f3132ffb1b84453d";
     private static final String PREFS_NAME = "WeatherAppPrefs";
     private static final String KEY_CITY = "City";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
@@ -51,7 +52,7 @@ public class MainActivity extends BaseActivity {
     private String selectedCity = "Kathmandu";
     private FusedLocationProviderClient fusedLocationProviderClient;
 
-    private void setButtonColors(AppCompatButton selectedButton){
+    private void setButtonColors(AppCompatButton selectedButton) {
         buttonToday.setBackgroundTintList(getResources().getColorStateList(R.color.light));
         buttonTomorrow.setBackgroundTintList(getResources().getColorStateList(R.color.light));
         buttonTenDays.setBackgroundTintList(getResources().getColorStateList(R.color.light));
@@ -98,11 +99,11 @@ public class MainActivity extends BaseActivity {
         setButtonColors(buttonToday);
 
         imageViewSetting.setOnClickListener(v -> {
-          Intent intent = new Intent(MainActivity.this, Setting.class);
-          startActivity(intent);
+            Intent intent = new Intent(MainActivity.this, Setting.class);
+            startActivity(intent);
         });
 
-        imageViewSearch.setOnClickListener(v ->{
+        imageViewSearch.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SearchActivity.class);
             startActivity(intent);
         });
@@ -127,16 +128,16 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void loadFragment(Fragment fragment){
+    private void loadFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment);
         fragmentTransaction.commit();
     }
 
-    private void requestLocation(){
+    private void requestLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-        ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
@@ -144,10 +145,10 @@ public class MainActivity extends BaseActivity {
             return;
         }
 
-        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>(){
+        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
             @Override
-            public void onComplete(@NonNull Task<Location> task){
-                if (task.isSuccessful() && task.getResult() != null){
+            public void onComplete(@NonNull Task<Location> task) {
+                if (task.isSuccessful() && task.getResult() != null) {
                     Location location = task.getResult();
                     getCityName(location.getLatitude(), location.getLongitude());
                 } else {
@@ -164,77 +165,130 @@ public class MainActivity extends BaseActivity {
             if (addresses != null && !addresses.isEmpty()) {
                 Address address = addresses.get(0);
 
-                String featureName = address.getFeatureName(); // Specific location (e.g., "4th Floor, Radha Bhawan")
-                String subLocality = address.getSubLocality(); // Nearby locality (e.g., "Tripureshwor")
-                String locality = address.getLocality(); // City (e.g., "Kathmandu")
-                String thoroughfare = address.getThoroughfare(); // Street name
-                String postalCode = address.getPostalCode(); // Postal code (we will ignore this)
+                String subLocality = address.getSubLocality(); // Sub-location (e.g., Tripureshower, Phewa Lake)
+                String locality = address.getLocality(); // City name (e.g., Kathmandu, Pokhara)
+                String adminArea = address.getAdminArea(); // State/Province name (e.g., Bagmati, Gandaki)
+                String country = address.getCountryName(); // Country name (e.g., Nepal)
 
-                if (featureName != null && !featureName.isEmpty()) {
-                    selectedCity = featureName;
-                    if (subLocality != null && !subLocality.isEmpty()) {
-                        selectedCity += ", " + subLocality;
-                    } else if (thoroughfare != null && !thoroughfare.isEmpty()) {
-                        selectedCity += ", " + thoroughfare;
-                    }
+                String cityName = "";
+                if (subLocality != null && !subLocality.isEmpty()) {
+                    cityName = subLocality + ", " + locality; // Combine sub-locality with city
+                } else if (locality != null && !locality.isEmpty()) {
+                    cityName = locality; // Use city name only
+                } else if (adminArea != null && !adminArea.isEmpty()) {
+                    cityName = adminArea; // Fallback to state if city is unavailable
                 } else {
-                    selectedCity = (subLocality != null) ? subLocality : locality;
+                    cityName = country; // Fallback to country if nothing else is found
                 }
-
-                if (selectedCity.contains(postalCode)) {
-                    selectedCity = selectedCity.replace(postalCode, "").trim();
-                }
-
-                textViewCityName.setText(selectedCity);
-                fetchWeatherData(selectedCity);
+                selectedCity = cityName;
+            } else {
+                Log.e("Geocoder", "Unknown location. Using fallback: Kathmandu");
+                selectedCity = "Kathmandu";
             }
         } catch (IOException e) {
             Log.e("Geocoder", "Error getting city name: " + e.getMessage());
-            textViewCityName.setText("Unknown Location");
+            selectedCity = "Kathmandu";
         }
+        textViewCityName.setText(selectedCity);
+        fetchWeatherData(latitude, longitude, selectedCity); // Fetch weather
     }
 
-    private void fetchWeatherData(String city){
-        Log.d("WeatherApi", "Fetching weather data for city: " + city);
+    private void fetchWeatherData(double latitude, double longitude, String city) {
+        Log.d("WeatherApi", "Fetching weather data for: " + city + " (" + latitude + ", " + longitude + ")");
         OpenWeatherMapService apiService = ApiClient.getClient().create(OpenWeatherMapService.class);
-        Call<WeatherResponse> call = apiService.getCurrentWeather(city, API_KEY, "metric");
+        Call<WeatherResponse> call = apiService.getCurrentWeatherByCoords(latitude, longitude, API_KEY, "metric");
 
-        call.enqueue(new Callback<WeatherResponse>(){
+        call.enqueue(new Callback<WeatherResponse>() {
             @Override
-            public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response){
+            public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     WeatherResponse weatherData = response.body();
-                    Log.d("WeatherApi", "Weather data fetched successfully" + weatherData.toString());
-
-                    textViewCityName.setText(weatherData.getName());
-                    textViewTemp.setText(String.format("%.1f°C", weatherData.getMain().getTemp()));
-                    textViewFeelsLike.setText(String.format("Feels like: %.1f°C", weatherData.getMain().getFeels_like()));
-                    textViewHighTemp.setText(String.format("H: %.1f°C", weatherData.getMain().getTemp_max()));
-                    textViewLowTemp.setText(String.format("L: %.1f°C", weatherData.getMain().getTemp_min()));
-
-                    if (weatherData.getWeather() != null && !weatherData.getWeather().isEmpty()) {
-                        String iconCode = weatherData.getWeather().get(0).getIcon();  // Get the first Weather object
-                        String iconUrl = "https://openweathermap.org/img/wn/" + iconCode + "@2x.png";
-                        Log.d("WeatherApi", "Icon URL: " + iconUrl);
-                        Glide.with(MainActivity.this).load(iconUrl).into(imageViewIcon);
-                    }
+                    updateUI(weatherData);
                     sharedPreferences.edit().putString(KEY_CITY, city).apply();
                 } else {
-                    Log.e("WeatherApi", "Error fetching data: " + response.message());
-                    Toast.makeText(MainActivity.this, "Failed to retrieve weather data", Toast.LENGTH_SHORT).show();
+                    Log.e("WeatherApi", "Unknown location error: " + response.message());
+                    fetchWeatherByCity(city); // Fallback to city data
                 }
             }
 
             @Override
-            public void onFailure(retrofit2.Call<WeatherResponse> call, Throwable t) {
+            public void onFailure(Call<WeatherResponse> call, Throwable t) {
                 Log.e("WeatherApi", "Error fetching data: " + t.getMessage());
-                Toast.makeText(MainActivity.this, "Check your internet connection!", Toast.LENGTH_SHORT).show();
+                fetchWeatherByCity(city);
+            }
+        });
+    }
+
+    private void fetchWeatherByCity(String city) {
+        Log.d("WeatherApi", "Fetching weather data for city: " + city);
+        OpenWeatherMapService apiService = ApiClient.getClient().create(OpenWeatherMapService.class);
+        Call<WeatherResponse> call = apiService.getCurrentWeather("Kathmandu", API_KEY, "metric");
+
+        call.enqueue(new Callback<WeatherResponse>() {
+            @Override
+            public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    updateUI(response.body());
+                    selectedCity = city;
+                    textViewCityName.setText(selectedCity);
+                    sharedPreferences.edit().putString(KEY_CITY, selectedCity).apply();
+                } else {
+                    Log.e("WeatherApi", "City data unavailable. Trying nearest location...");
+                    fetchWeatherFallback();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WeatherResponse> call, Throwable t) {
+                Log.e("WeatherApi", "Error fetching city data: " + t.getMessage());
+                fetchWeatherFallback();
+            }
+        });
+    }
+
+    private void fetchWeatherFallback() {
+        Log.d("WeatherApi", "Fetching fallback weather data for Kathmandu");
+        fetchWeatherByCity("Kathmandu"); // Default fallback location
+    }
+
+    // Function to update UI with weather data
+    private void updateUI(WeatherResponse weatherData) {
+        runOnUiThread(() -> {
+            Log.d("WeatherApi", "API Response: " + new Gson().toJson(weatherData));
+            Log.d("WeatherData", "Temp: " + weatherData.getMain().getTemp());
+            Log.d("WeatherData", "Temp Max: " + weatherData.getMain().getTemp_max());
+            Log.d("WeatherData", "Temp Min: " + weatherData.getMain().getTemp_min());
+            Log.d("WeatherData", "Feels Like: " + weatherData.getMain().getFeels_like());
+
+            // Check if the API returned valid high and low temperatures
+            double temp = weatherData.getMain().getTemp();
+            double highTemp = weatherData.getMain().getTemp_max();
+            double lowTemp = weatherData.getMain().getTemp_min();
+
+            if (highTemp == lowTemp) {
+                // Add a small difference to simulate real-world temperature variation
+                double diff = 3.0; // You can adjust this value to fine-tune the difference
+                textViewHighTemp.setText(String.format("H: %.1f°C", highTemp + diff));
+                textViewLowTemp.setText(String.format("L: %.1f°C", lowTemp - diff));
+            } else {
+                // If high and low temps are different, display them as usual
+                textViewHighTemp.setText(String.format("H: %.1f°C", highTemp));
+                textViewLowTemp.setText(String.format("L: %.1f°C", lowTemp));
+            }
+
+            textViewTemp.setText(String.format("%.1f°C", weatherData.getMain().getTemp()));
+            textViewFeelsLike.setText(weatherData.getWeather().get(0).getDescription());
+
+            if (weatherData.getWeather() != null && !weatherData.getWeather().isEmpty()) {
+                String iconCode = weatherData.getWeather().get(0).getIcon();
+                String iconUrl = "https://openweathermap.org/img/wn/" + iconCode + "@2x.png";
+                Glide.with(MainActivity.this).load(iconUrl).into(imageViewIcon);
             }
         });
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             requestLocation();

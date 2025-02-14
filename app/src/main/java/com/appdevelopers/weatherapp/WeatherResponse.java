@@ -19,7 +19,7 @@ public class WeatherResponse {
         return name;
     }
 
-    public class Main {
+    public static class Main {
         private double temp;
         private double feels_like;
         private double temp_min;
@@ -52,7 +52,7 @@ public class WeatherResponse {
         }
     }
 
-    public class Weather {
+    public static class Weather {
         private String main;
         private String description;
         private String icon;
