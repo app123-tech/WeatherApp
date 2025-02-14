@@ -7,6 +7,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
@@ -44,6 +45,8 @@ public class Setting extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_setting);
 
+        updateVersionNumber();
+
         imageViewBack = findViewById(R.id.imageViewBack);
         imageViewGreaterThanCircle = findViewById(R.id.imageViewGreaterThanCircle);     //Privacy Policy
         imageViewGreaterThanCircle2 = findViewById(R.id.imageViewGreaterThanCircle2);   //Share Our App
@@ -65,6 +68,7 @@ public class Setting extends AppCompatActivity {
         textViewWindSpeedInKilometerPerHour = findViewById(R.id.textViewWindSpeedInKilometerPerHour);
         textViewLanguage = findViewById(R.id.textViewLanguage);
         toggleSwitch = findViewById(R.id.toggleSwitch);
+        textViewVersion = findViewById(R.id.textViewVersion);
 
         thumbOnColor = ContextCompat.getColor(this, R.color.switch_thumb_on);
         thumbOffColor = ContextCompat.getColor(this, R.color.switch_thumb_off);
@@ -147,7 +151,9 @@ public class Setting extends AppCompatActivity {
             dialog.setOnShowListener(dialogInterface -> {
                 Window window = dialog.getWindow();
                 if (window != null) {
-                    window.setLayout(int) (getResources().getDisplayMetrics().widthPixels * 0.90), WindowManager.LayoutParams.WRAP_CONTENT);
+                    window.setLayout( int)
+                    (getResources().getDisplayMetrics().widthPixels * 0.90), WindowManager.LayoutParams.WRAP_CONTENT)
+                    ;
                     GradientDrawable drawable = new GradientDrawable();
                     drawable.setCornerRadius(60);
                     drawable.setColor(Color.WHITE);
@@ -216,24 +222,28 @@ public class Setting extends AppCompatActivity {
 
         cardView2.setOnClickListener(v -> {
             AlertDialog dialog = new AlertDialog.Builder(this).setView(dialogView).create();
-            dialog.setOnShowListener(dialogInterface ->{
+            dialog.setOnShowListener(dialogInterface -> {
                 Window window = dialog.getWindow();
                 if (window != null) {
-                    window.setLayout(int) (getResources().getDisplayMetrics().widthPixels *0.90), WindowManager.LayoutParams.WRAP_CONTENT);
-            GradientDrawable drawable = new GradientDrawable();
-            drawable.setCornerRadius(60);
-            drawable.setColor(Color.WHITE);
+                    window.setLayout( int)
+                    (getResources().getDisplayMetrics().widthPixels * 0.90), WindowManager.LayoutParams.WRAP_CONTENT)
+                    ;
+                    GradientDrawable drawable = new GradientDrawable();
+                    drawable.setCornerRadius(60);
+                    drawable.setColor(Color.WHITE);
 
-            window.setBackgroundDrawable(drawable);
+                    window.setBackgroundDrawable(drawable);
                 }
             });
         });
 
         cardView3.setOnClickListener(v -> {
             AlertDialog dialog = new AlertDialog.Builder(this).setView(dialogView).create();
-            dialog.setOnShowListener(dialogInterface ->{
+            dialog.setOnShowListener(dialogInterface -> {
                 Window window = dialog.getWindow();
-                if (window.setLayout(int) (getResources().getDisplayMetrics().widthPixels * 0.90), WindowManager.LayoutParams.WRAP_CONTENT);
+                if (window.setLayout( int)
+                (getResources().getDisplayMetrics().widthPixels * 0.90), WindowManager.LayoutParams.WRAP_CONTENT)
+                ;
                 GradientDrawable drawable = new GradientDrawable();
                 drawable.setCornerRadius(60);
                 drawable.setColor(Color.WHITE);
@@ -289,5 +299,15 @@ public class Setting extends AppCompatActivity {
 
         LocaleHelper.setLocale(this, languageCode);  // Apply language using helper
         //recreate();  // Restart activity to apply language change
+    }
+
+    public void updateVersionNumber() {
+        try {
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            String VersionName = packageInfo.versionName;
+            textViewVersion.setText("Version " + VersionName);
+        } catch (Exception e) {
+            textViewVersion.setText("Version is not available");
+        }
     }
 }
