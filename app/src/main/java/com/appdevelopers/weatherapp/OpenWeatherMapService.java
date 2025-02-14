@@ -14,7 +14,7 @@ public interface OpenWeatherMapService {
             @Query("units") String units
     );
 
-    @GET("data/2.5/weather")
+    @GET("data/2.5/weather")        // Fetch 5-day forecast in 3-hour intervals
     Call<WeatherResponse> getCurrentWeatherByCity(
             @Query("q") String city,
             @Query("appid") String apiKey,

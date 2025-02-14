@@ -92,4 +92,6 @@
     <string name="korean">Korean</string>
     <string name="italian">Italian</string>
     <string name="nepali">Nepali</string>
+    <string name="u00b0f">°F</string>
+    <string name="m_h">m/h</string>
 </resources>

@@ -7,8 +7,12 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -27,13 +31,12 @@ import java.util.Calendar;
 public class Setting extends AppCompatActivity {
     private ImageView imageViewBack, imageViewGreaterThanCircle5, imageViewGreaterThanCircle, imageViewGreaterThanCircle2, imageViewGreaterThanCircle3, imageViewGreaterThanCircle4;
     private CardView cardView2, cardView3, cardView4, cardView5, cardView6, cardView7, cardView8, cardView9, cardView10;
-    private TextView textViewTemperature, textViewWindSpeedInKilometerPerHour, textViewLanguage;
+    private TextView textViewTemperature, textViewWindSpeedInKilometerPerHour, textViewLanguage, textViewVersion;
     private Switch toggleSwitch;
     private int thumbOnColor;
     private int thumbOffColor;
     private int trackOnColor;
     private int trackOffColor;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,20 +51,19 @@ public class Setting extends AppCompatActivity {
         imageViewGreaterThanCircle4 = findViewById(R.id.imageViewGreaterThanCircle4);   //About Our App
         imageViewGreaterThanCircle5 = findViewById(R.id.imageViewGreaterThanCircle5);   //Terms & Conditions
 
-        cardView2 = findViewById(R.id.cardView2);       //Temperature Unit
-        cardView3 = findViewById(R.id.cardView3);       //Wind Speed Unit
+        cardView2 = findViewById(R.id.cardView2);       //Temperature Unit C (Celsius) F (Fahrenheit)
+        cardView3 = findViewById(R.id.cardView3);       //Wind Speed Unit km/h (kilometer per hour) m/h (meter per hour)
         cardView4 = findViewById(R.id.cardView4);       //Daily Forecast Notifications
         cardView5 = findViewById(R.id.cardView5);       //Change App Language
         cardView6 = findViewById(R.id.cardView6);       //Terms & Conditions
         cardView7 = findViewById(R.id.cardView7);       //Privacy Policy
         cardView8 = findViewById(R.id.cardView8);       //Share Our App
         cardView9 = findViewById(R.id.cardView9);       //Rate Our App
-        cardView10 = findViewById(R.id.cardView10);       //About Our App
+        cardView10 = findViewById(R.id.cardView10);     //About Our App
 
         textViewTemperature = findViewById(R.id.textViewTemperature);
         textViewWindSpeedInKilometerPerHour = findViewById(R.id.textViewWindSpeedInKilometerPerHour);
         textViewLanguage = findViewById(R.id.textViewLanguage);
-
         toggleSwitch = findViewById(R.id.toggleSwitch);
 
         thumbOnColor = ContextCompat.getColor(this, R.color.switch_thumb_on);
@@ -141,7 +143,19 @@ public class Setting extends AppCompatActivity {
         });
 
         cardView5.setOnClickListener(v -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(Setting.this);
+            AlertDialog dialog = new AlertDialog.Builder(this).setView(dialogView).create();
+            dialog.setOnShowListener(dialogInterface -> {
+                Window window = dialog.getWindow();
+                if (window != null) {
+                    window.setLayout(int) (getResources().getDisplayMetrics().widthPixels * 0.90), WindowManager.LayoutParams.WRAP_CONTENT);
+                    GradientDrawable drawable = new GradientDrawable();
+                    drawable.setCornerRadius(60);
+                    drawable.setColor(Color.WHITE);
+
+                    window.setBackgroundDrawable(drawable);
+                }
+            });
+            //AlertDialog.Builder builder = new AlertDialog.Builder(Setting.this);
             android.view.LayoutInflater inflater = getLayoutInflater();
             android.view.View dialogView = inflater.inflate(R.layout.custom_multi_language_selection, null);
             builder.setView(dialogView);
@@ -177,10 +191,6 @@ public class Setting extends AppCompatActivity {
                 } else if (selectedId == R.id.radioButtonKorean) {
                     newLanguageCode = "ko";
                 }
-
-//                SharedPreferences.Editor editor = sharedPreferences.edit();
-//                editor.putString("Language", newLanguageCode);
-//                editor.apply();
                 setLocale(newLanguageCode);
                 dialog.dismiss();
             });
@@ -202,6 +212,36 @@ public class Setting extends AppCompatActivity {
             }
             editor.putBoolean("DailyForecastNotification", !isEnabled);
             editor.apply();
+        });
+
+        cardView2.setOnClickListener(v -> {
+            AlertDialog dialog = new AlertDialog.Builder(this).setView(dialogView).create();
+            dialog.setOnShowListener(dialogInterface ->{
+                Window window = dialog.getWindow();
+                if (window != null) {
+                    window.setLayout(int) (getResources().getDisplayMetrics().widthPixels *0.90), WindowManager.LayoutParams.WRAP_CONTENT);
+            GradientDrawable drawable = new GradientDrawable();
+            drawable.setCornerRadius(60);
+            drawable.setColor(Color.WHITE);
+
+            window.setBackgroundDrawable(drawable);
+                }
+            });
+        });
+
+        cardView3.setOnClickListener(v -> {
+            AlertDialog dialog = new AlertDialog.Builder(this).setView(dialogView).create();
+            dialog.setOnShowListener(dialogInterface ->{
+                Window window = dialog.getWindow();
+                if (window.setLayout(int) (getResources().getDisplayMetrics().widthPixels * 0.90), WindowManager.LayoutParams.WRAP_CONTENT);
+                GradientDrawable drawable = new GradientDrawable();
+                drawable.setCornerRadius(60);
+                drawable.setColor(Color.WHITE);
+            });
+        });
+
+        imageViewBack.setOnClickListener(v -> {
+            getOnBackPressedDispatcher().onBackPressed();
         });
     }
 
