@@ -61,7 +61,7 @@
     <string name="humidity">HUMIDITY</string>
     <string name="_37">37%</string>
     <string name="the_dew_point_is_5_u00b0_right_now">The dew point is 5° right now</string>
-    <string name="hourly_forecast">HOURLY FORECAST</string>
+    <string name="hourly_forecast">24 HOUR FORECAST</string>
     <string name="now">Now</string>
     <string name="_10am">10AM</string>
     <string name="_11am">11AM</string>
@@ -92,4 +92,6 @@
     <string name="korean">Korean</string>
     <string name="italian">Italian</string>
     <string name="nepali">Nepali</string>
+    <string name="u00b0f">°F</string>
+    <string name="m_h">m/h</string>
 </resources>

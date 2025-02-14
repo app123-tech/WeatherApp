@@ -9,10 +9,15 @@ public interface OpenWeatherMapService {
     Call<WeatherResponse> getCurrentWeatherByCoords(
             @Query("lat") double latitude,
             @Query("lon") double longitude,
-           // @Query("q") String city,
+            //@Query("q") String city,
             @Query("appid") String apiKey,
             @Query("units") String units
     );
 
-    Call<WeatherResponse> getCurrentWeather(String kathmandu, String apiKey, String metric);
+    @GET("data/2.5/weather")        // Fetch 5-day forecast in 3-hour intervals
+    Call<WeatherResponse> getCurrentWeatherByCity(
+            @Query("q") String city,
+            @Query("appid") String apiKey,
+            @Query("units") String units
+    );
 }

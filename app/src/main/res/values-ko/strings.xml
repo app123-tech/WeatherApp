@@ -62,7 +62,7 @@
     <string name="humidity">습도</string>
     <string name="_37">37%</string>
     <string name="the_dew_point_is_5_u00b0_right_now">현재 이슬점은 5°입니다</string>
-    <string name="hourly_forecast">시간별 예보</string>
+    <string name="hourly_forecast">24시간 예보</string>
     <string name="now">현재</string>
     <string name="_10am">오전 10시</string>
     <string name="_11am">오전 11시</string>
