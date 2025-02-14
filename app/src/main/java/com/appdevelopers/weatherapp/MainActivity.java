@@ -33,6 +33,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -44,6 +45,9 @@ public class MainActivity extends BaseActivity {
     private static final String API_KEY = "151be366b244fa29f3132ffb1b84453d";
     private static final String PREFS_NAME = "WeatherAppPrefs";
     private static final String KEY_CITY = "City";
+    private static final String KEY_HIGH_TEMP = "HighTemp";
+    private static final String KEY_LOW_TEMP = "LowTemp";
+    private static final String KEY_LAST_UPDATED = "LastUpdated";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private AppCompatButton buttonToday, buttonTomorrow, buttonTenDays;
     private ImageView imageViewSearch, imageViewSetting, imageViewIcon;
@@ -222,7 +226,7 @@ public class MainActivity extends BaseActivity {
     private void fetchWeatherByCity(String city) {
         Log.d("WeatherApi", "Fetching weather data for city: " + city);
         OpenWeatherMapService apiService = ApiClient.getClient().create(OpenWeatherMapService.class);
-        Call<WeatherResponse> call = apiService.getCurrentWeather("Kathmandu", API_KEY, "metric");
+        Call<WeatherResponse> call = apiService.getCurrentWeather(city, API_KEY, "metric");
 
         call.enqueue(new Callback<WeatherResponse>() {
             @Override
@@ -230,8 +234,8 @@ public class MainActivity extends BaseActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     updateUI(response.body());
                     selectedCity = city;
-                    textViewCityName.setText(selectedCity);
-                    sharedPreferences.edit().putString(KEY_CITY, selectedCity).apply();
+                    // textViewCityName.setText(selectedCity);
+                    //sharedPreferences.edit().putString(KEY_CITY, selectedCity).apply();
                 } else {
                     Log.e("WeatherApi", "City data unavailable. Trying nearest location...");
                     fetchWeatherFallback();
@@ -265,18 +269,39 @@ public class MainActivity extends BaseActivity {
             double highTemp = weatherData.getMain().getTemp_max();
             double lowTemp = weatherData.getMain().getTemp_min();
 
-            if (highTemp == lowTemp) {
-                // Add a small difference to simulate real-world temperature variation
-                double diff = 3.0; // You can adjust this value to fine-tune the difference
-                textViewHighTemp.setText(String.format("H: %.1f°C", highTemp + diff));
-                textViewLowTemp.setText(String.format("L: %.1f°C", lowTemp - diff));
-            } else {
-                // If high and low temps are different, display them as usual
-                textViewHighTemp.setText(String.format("H: %.1f°C", highTemp));
-                textViewLowTemp.setText(String.format("L: %.1f°C", lowTemp));
-            }
+            long lastUpdated = sharedPreferences.getLong(KEY_LAST_UPDATED, 0);
+            Calendar today = Calendar.getInstance();
+            Calendar lastUpdatedDate = Calendar.getInstance();
+            lastUpdatedDate.setTimeInMillis(lastUpdated);
 
-            textViewTemp.setText(String.format("%.1f°C", weatherData.getMain().getTemp()));
+            if (lastUpdatedDate.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
+                    lastUpdatedDate.get(Calendar.MONTH) == today.get(Calendar.MONTH) &&
+                    lastUpdatedDate.get(Calendar.DAY_OF_MONTH) == today.get(Calendar.DAY_OF_MONTH)) {
+                // Use cached temperatures
+                highTemp = sharedPreferences.getFloat(KEY_HIGH_TEMP, (float) highTemp);
+                lowTemp = sharedPreferences.getFloat(KEY_LOW_TEMP, (float) lowTemp);
+            } else {
+                // Generate new temperatures and cache them
+                if (highTemp == lowTemp) {
+                    highTemp = temp + 2.5;  // Add 2.5°C for high
+                    lowTemp = temp - 2.5;   // Subtract 2.5°C for low
+                }
+
+                highTemp = addDeterministDecimal(highTemp, selectedCity.hashCode() + 1);
+                lowTemp = addDeterministDecimal(lowTemp, selectedCity.hashCode() + 2);
+                if (highTemp - lowTemp < 5.0) {
+                    highTemp = lowTemp + 5.0;
+                }
+
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putFloat(KEY_HIGH_TEMP, (float) highTemp);
+                editor.putFloat(KEY_LOW_TEMP, (float) lowTemp);
+                editor.putLong(KEY_LAST_UPDATED, today.getTimeInMillis());
+                editor.apply();
+            }
+            textViewHighTemp.setText(String.format("H: %.1f°C", highTemp));
+            textViewLowTemp.setText(String.format("L: %.1f°C", lowTemp));
+            textViewTemp.setText(String.format("%.1f°C", temp));
             textViewFeelsLike.setText(weatherData.getWeather().get(0).getDescription());
 
             if (weatherData.getWeather() != null && !weatherData.getWeather().isEmpty()) {
@@ -285,6 +310,12 @@ public class MainActivity extends BaseActivity {
                 Glide.with(MainActivity.this).load(iconUrl).into(imageViewIcon);
             }
         });
+    }
+
+    private double addDeterministDecimal(double value, int seed) {
+        double[] decimals = {0.1, 0.2, 0.3, 0.4, 0.6, 0.7, 0.8, 0.9};
+        int index = Math.abs(seed) % decimals.length;
+        return Math.floor(value) + decimals[index];
     }
 
     @Override
