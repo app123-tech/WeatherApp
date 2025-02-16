@@ -120,7 +120,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/view1" />
 
                 <TextView
-                    android:id="@+id/textViewAQISpeed"
+                    android:id="@+id/textViewAQIValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_8sdp"
@@ -305,7 +305,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <TextView
-                    android:id="@+id/textViewHourlyForecast"
+                    android:id="@+id/textView24HourlyForecast"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_8sdp"
@@ -318,7 +318,7 @@
                     app:layout_constraintTop_toTopOf="@+id/cardView7" />
 
                 <TextView
-                    android:id="@+id/textViewHourlyForecastNow"
+                    android:id="@+id/textViewHourlyForecast"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_6sdp"
@@ -326,139 +326,139 @@
                     android:text="@string/now"
                     android:textColor="#004f98"
                     android:textSize="@dimen/_12ssp"
-                    app:layout_constraintEnd_toStartOf="@+id/textViewHourlyForecast10AM"
+                    app:layout_constraintEnd_toStartOf="@+id/textViewHourlyForecast2"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cardView7" />
 
                 <TextView
-                    android:id="@+id/textViewHourlyForecast10AM"
+                    android:id="@+id/textViewHourlyForecast2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_regular"
                     android:text="@string/_10am"
                     android:textColor="#004f98"
                     android:textSize="@dimen/_12ssp"
-                    app:layout_constraintBottom_toBottomOf="@+id/textViewHourlyForecastNow"
-                    app:layout_constraintEnd_toStartOf="@+id/textViewHourlyForecast11AM"
+                    app:layout_constraintBottom_toBottomOf="@+id/textViewHourlyForecast"
+                    app:layout_constraintEnd_toStartOf="@+id/textViewHourlyForecast3"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/textViewHourlyForecastNow"
-                    app:layout_constraintTop_toTopOf="@+id/textViewHourlyForecastNow" />
+                    app:layout_constraintStart_toEndOf="@+id/textViewHourlyForecast"
+                    app:layout_constraintTop_toTopOf="@+id/textViewHourlyForecast" />
 
                 <TextView
-                    android:id="@+id/textViewHourlyForecast11AM"
+                    android:id="@+id/textViewHourlyForecast3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_regular"
                     android:text="@string/_11am"
                     android:textColor="#004f98"
                     android:textSize="@dimen/_12ssp"
-                    app:layout_constraintBottom_toBottomOf="@+id/textViewHourlyForecast10AM"
-                    app:layout_constraintEnd_toStartOf="@+id/textViewHourlyForecast12PM"
+                    app:layout_constraintBottom_toBottomOf="@+id/textViewHourlyForecast2"
+                    app:layout_constraintEnd_toStartOf="@+id/textViewHourlyForecast4"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/textViewHourlyForecast10AM"
-                    app:layout_constraintTop_toTopOf="@+id/textViewHourlyForecast10AM" />
+                    app:layout_constraintStart_toEndOf="@+id/textViewHourlyForecast2"
+                    app:layout_constraintTop_toTopOf="@+id/textViewHourlyForecast2" />
 
                 <TextView
-                    android:id="@+id/textViewHourlyForecast12PM"
+                    android:id="@+id/textViewHourlyForecast4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_regular"
                     android:text="@string/_12pm"
                     android:textColor="#004f98"
                     android:textSize="@dimen/_12ssp"
-                    app:layout_constraintBottom_toBottomOf="@+id/textViewHourlyForecast11AM"
-                    app:layout_constraintEnd_toStartOf="@+id/textViewHourlyForecast1PM"
+                    app:layout_constraintBottom_toBottomOf="@+id/textViewHourlyForecast3"
+                    app:layout_constraintEnd_toStartOf="@+id/textViewHourlyForecast5"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/textViewHourlyForecast11AM"
-                    app:layout_constraintTop_toTopOf="@+id/textViewHourlyForecast11AM" />
+                    app:layout_constraintStart_toEndOf="@+id/textViewHourlyForecast3"
+                    app:layout_constraintTop_toTopOf="@+id/textViewHourlyForecast3" />
 
                 <TextView
-                    android:id="@+id/textViewHourlyForecast1PM"
+                    android:id="@+id/textViewHourlyForecast5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_regular"
                     android:text="@string/_1pm"
                     android:textColor="#004f98"
                     android:textSize="@dimen/_12ssp"
-                    app:layout_constraintBottom_toBottomOf="@+id/textViewHourlyForecast12PM"
-                    app:layout_constraintEnd_toStartOf="@+id/textViewHourlyForecast2PM"
+                    app:layout_constraintBottom_toBottomOf="@+id/textViewHourlyForecast4"
+                    app:layout_constraintEnd_toStartOf="@+id/textViewHourlyForecast6"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/textViewHourlyForecast12PM"
-                    app:layout_constraintTop_toTopOf="@+id/textViewHourlyForecast12PM" />
+                    app:layout_constraintStart_toEndOf="@+id/textViewHourlyForecast4"
+                    app:layout_constraintTop_toTopOf="@+id/textViewHourlyForecast4" />
 
                 <TextView
-                    android:id="@+id/textViewHourlyForecast2PM"
+                    android:id="@+id/textViewHourlyForecast6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_regular"
                     android:text="@string/_2pm"
                     android:textColor="#004f98"
                     android:textSize="@dimen/_12ssp"
-                    app:layout_constraintBottom_toBottomOf="@+id/textViewHourlyForecast1PM"
+                    app:layout_constraintBottom_toBottomOf="@+id/textViewHourlyForecast5"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/textViewHourlyForecast1PM"
-                    app:layout_constraintTop_toTopOf="@+id/textViewHourlyForecast1PM" />
+                    app:layout_constraintStart_toEndOf="@+id/textViewHourlyForecast5"
+                    app:layout_constraintTop_toTopOf="@+id/textViewHourlyForecast5" />
 
                 <ImageView
                     android:id="@+id/imageViewHourlyForecastNow"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_marginTop="@dimen/_4sdp"
-                    app:layout_constraintEnd_toEndOf="@+id/textViewHourlyForecastNow"
-                    app:layout_constraintStart_toStartOf="@+id/textViewHourlyForecastNow"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewHourlyForecastNow"
+                    app:layout_constraintEnd_toEndOf="@+id/textViewHourlyForecast"
+                    app:layout_constraintStart_toStartOf="@+id/textViewHourlyForecast"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewHourlyForecast"
                     app:srcCompat="@drawable/cloudy_sun" />
 
                 <ImageView
-                    android:id="@+id/imageViewHourlyForecast10AM"
+                    android:id="@+id/imageViewHourlyForecast2"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_marginTop="@dimen/_4sdp"
-                    app:layout_constraintEnd_toEndOf="@+id/textViewHourlyForecast10AM"
-                    app:layout_constraintStart_toStartOf="@+id/textViewHourlyForecast10AM"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewHourlyForecast10AM"
+                    app:layout_constraintEnd_toEndOf="@+id/textViewHourlyForecast2"
+                    app:layout_constraintStart_toStartOf="@+id/textViewHourlyForecast2"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewHourlyForecast2"
                     app:srcCompat="@drawable/cloud" />
 
                 <ImageView
-                    android:id="@+id/imageViewHourlyForecast11AM"
+                    android:id="@+id/imageViewHourlyForecast3"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_marginTop="@dimen/_4sdp"
-                    app:layout_constraintEnd_toEndOf="@+id/textViewHourlyForecast11AM"
-                    app:layout_constraintStart_toStartOf="@+id/textViewHourlyForecast11AM"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewHourlyForecast11AM"
+                    app:layout_constraintEnd_toEndOf="@+id/textViewHourlyForecast3"
+                    app:layout_constraintStart_toStartOf="@+id/textViewHourlyForecast3"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewHourlyForecast3"
                     app:srcCompat="@drawable/cloud" />
 
                 <ImageView
-                    android:id="@+id/imageViewHourlyForecast12PM"
+                    android:id="@+id/imageViewHourlyForecast4"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_marginTop="@dimen/_4sdp"
-                    app:layout_constraintEnd_toEndOf="@+id/textViewHourlyForecast12PM"
-                    app:layout_constraintStart_toStartOf="@+id/textViewHourlyForecast12PM"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewHourlyForecast12PM"
+                    app:layout_constraintEnd_toEndOf="@+id/textViewHourlyForecast4"
+                    app:layout_constraintStart_toStartOf="@+id/textViewHourlyForecast4"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewHourlyForecast4"
                     app:srcCompat="@drawable/cloud2" />
 
                 <ImageView
-                    android:id="@+id/imageViewHourlyForecast1PM"
+                    android:id="@+id/imageViewHourlyForecast5"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_marginTop="@dimen/_4sdp"
-                    app:layout_constraintEnd_toEndOf="@+id/textViewHourlyForecast1PM"
-                    app:layout_constraintStart_toStartOf="@+id/textViewHourlyForecast1PM"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewHourlyForecast1PM"
+                    app:layout_constraintEnd_toEndOf="@+id/textViewHourlyForecast5"
+                    app:layout_constraintStart_toStartOf="@+id/textViewHourlyForecast5"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewHourlyForecast5"
                     app:srcCompat="@drawable/cloud2" />
 
                 <ImageView
-                    android:id="@+id/imageViewHourlyForecast2PM"
+                    android:id="@+id/imageViewHourlyForecast6"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_marginTop="@dimen/_4sdp"
-                    app:layout_constraintEnd_toEndOf="@+id/textViewHourlyForecast2PM"
-                    app:layout_constraintStart_toStartOf="@+id/textViewHourlyForecast2PM"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewHourlyForecast2PM"
+                    app:layout_constraintEnd_toEndOf="@+id/textViewHourlyForecast6"
+                    app:layout_constraintStart_toStartOf="@+id/textViewHourlyForecast6"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewHourlyForecast6"
                     app:srcCompat="@drawable/cloud" />
 
                 <TextView
@@ -475,7 +475,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/imageViewHourlyForecastNow" />
 
                 <TextView
-                    android:id="@+id/textViewTemp10AM"
+                    android:id="@+id/textViewTemp2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_4sdp"
@@ -483,12 +483,12 @@
                     android:text="@string/_8_u00b0"
                     android:textColor="#004F98"
                     android:textSize="@dimen/_12ssp"
-                    app:layout_constraintEnd_toEndOf="@+id/imageViewHourlyForecast10AM"
-                    app:layout_constraintStart_toStartOf="@+id/imageViewHourlyForecast10AM"
-                    app:layout_constraintTop_toBottomOf="@+id/imageViewHourlyForecast10AM" />
+                    app:layout_constraintEnd_toEndOf="@+id/imageViewHourlyForecast2"
+                    app:layout_constraintStart_toStartOf="@+id/imageViewHourlyForecast2"
+                    app:layout_constraintTop_toBottomOf="@+id/imageViewHourlyForecast2" />
 
                 <TextView
-                    android:id="@+id/textViewTemp11AM"
+                    android:id="@+id/textViewTemp3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_4sdp"
@@ -496,12 +496,12 @@
                     android:text="@string/_5_u00b0"
                     android:textColor="#004F98"
                     android:textSize="@dimen/_12ssp"
-                    app:layout_constraintEnd_toEndOf="@+id/imageViewHourlyForecast11AM"
-                    app:layout_constraintStart_toStartOf="@+id/imageViewHourlyForecast11AM"
-                    app:layout_constraintTop_toBottomOf="@+id/imageViewHourlyForecast11AM" />
+                    app:layout_constraintEnd_toEndOf="@+id/imageViewHourlyForecast3"
+                    app:layout_constraintStart_toStartOf="@+id/imageViewHourlyForecast3"
+                    app:layout_constraintTop_toBottomOf="@+id/imageViewHourlyForecast3" />
 
                 <TextView
-                    android:id="@+id/textViewTemp12PM"
+                    android:id="@+id/textViewTemp4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_4sdp"
@@ -509,12 +509,12 @@
                     android:text="@string/_15_u00b0"
                     android:textColor="#004F98"
                     android:textSize="@dimen/_12ssp"
-                    app:layout_constraintEnd_toEndOf="@+id/imageViewHourlyForecast12PM"
-                    app:layout_constraintStart_toStartOf="@+id/imageViewHourlyForecast12PM"
-                    app:layout_constraintTop_toBottomOf="@+id/imageViewHourlyForecast12PM" />
+                    app:layout_constraintEnd_toEndOf="@+id/imageViewHourlyForecast4"
+                    app:layout_constraintStart_toStartOf="@+id/imageViewHourlyForecast4"
+                    app:layout_constraintTop_toBottomOf="@+id/imageViewHourlyForecast4" />
 
                 <TextView
-                    android:id="@+id/textViewTemp1PM"
+                    android:id="@+id/textViewTemp5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_4sdp"
@@ -522,12 +522,12 @@
                     android:text="@string/_7_u00b0"
                     android:textColor="#004F98"
                     android:textSize="@dimen/_12ssp"
-                    app:layout_constraintEnd_toEndOf="@+id/imageViewHourlyForecast1PM"
-                    app:layout_constraintStart_toStartOf="@+id/imageViewHourlyForecast1PM"
-                    app:layout_constraintTop_toBottomOf="@+id/imageViewHourlyForecast1PM" />
+                    app:layout_constraintEnd_toEndOf="@+id/imageViewHourlyForecast5"
+                    app:layout_constraintStart_toStartOf="@+id/imageViewHourlyForecast5"
+                    app:layout_constraintTop_toBottomOf="@+id/imageViewHourlyForecast5" />
 
                 <TextView
-                    android:id="@+id/textViewTemp2PM"
+                    android:id="@+id/textViewTemp6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_4sdp"
@@ -535,9 +535,9 @@
                     android:text="@string/_6_u00b0"
                     android:textColor="#004F98"
                     android:textSize="@dimen/_12ssp"
-                    app:layout_constraintEnd_toEndOf="@+id/imageViewHourlyForecast2PM"
-                    app:layout_constraintStart_toStartOf="@+id/imageViewHourlyForecast2PM"
-                    app:layout_constraintTop_toBottomOf="@+id/imageViewHourlyForecast2PM" />
+                    app:layout_constraintEnd_toEndOf="@+id/imageViewHourlyForecast6"
+                    app:layout_constraintStart_toStartOf="@+id/imageViewHourlyForecast6"
+                    app:layout_constraintTop_toBottomOf="@+id/imageViewHourlyForecast6" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>

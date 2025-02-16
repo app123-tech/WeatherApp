@@ -55,6 +55,9 @@ public class MainActivity extends BaseActivity {
     private SharedPreferences sharedPreferences;
     private String selectedCity = "Kathmandu";
     private FusedLocationProviderClient fusedLocationProviderClient;
+    private double dailyHighTemp = Double.MIN_VALUE; // Track the highest temperature of the day
+    private double dailyLowTemp = Double.MAX_VALUE;  // Track the lowest temperature of the day
+    private long lastResetTime = 0; // Track the last time high and low were reset
 
     private void setButtonColors(AppCompatButton selectedButton) {
         buttonToday.setBackgroundTintList(getResources().getColorStateList(R.color.light));
@@ -101,6 +104,7 @@ public class MainActivity extends BaseActivity {
         requestLocation();
 
         setButtonColors(buttonToday);
+        loadHighAndLow();
 
         imageViewSetting.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, Setting.class);
@@ -264,43 +268,59 @@ public class MainActivity extends BaseActivity {
             Log.d("WeatherData", "Temp Min: " + weatherData.getMain().getTemp_min());
             Log.d("WeatherData", "Feels Like: " + weatherData.getMain().getFeels_like());
 
-            // Check if the API returned valid high and low temperatures
+            // Get current temperature
             double temp = weatherData.getMain().getTemp();
-            double highTemp = weatherData.getMain().getTemp_max();
-            double lowTemp = weatherData.getMain().getTemp_min();
 
-            long lastUpdated = sharedPreferences.getLong(KEY_LAST_UPDATED, 0);
-            Calendar today = Calendar.getInstance();
-            Calendar lastUpdatedDate = Calendar.getInstance();
-            lastUpdatedDate.setTimeInMillis(lastUpdated);
-
-            if (lastUpdatedDate.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
-                    lastUpdatedDate.get(Calendar.MONTH) == today.get(Calendar.MONTH) &&
-                    lastUpdatedDate.get(Calendar.DAY_OF_MONTH) == today.get(Calendar.DAY_OF_MONTH)) {
-                // Use cached temperatures
-                highTemp = sharedPreferences.getFloat(KEY_HIGH_TEMP, (float) highTemp);
-                lowTemp = sharedPreferences.getFloat(KEY_LOW_TEMP, (float) lowTemp);
-            } else {
-                // Generate new temperatures and cache them
-                if (highTemp == lowTemp) {
-                    highTemp = temp + 2.5;  // Add 2.5°C for high
-                    lowTemp = temp - 2.5;   // Subtract 2.5°C for low
-                }
-
-                highTemp = addDeterministDecimal(highTemp, selectedCity.hashCode() + 1);
-                lowTemp = addDeterministDecimal(lowTemp, selectedCity.hashCode() + 2);
-                if (highTemp - lowTemp < 5.0) {
-                    highTemp = lowTemp + 5.0;
-                }
-
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putFloat(KEY_HIGH_TEMP, (float) highTemp);
-                editor.putFloat(KEY_LOW_TEMP, (float) lowTemp);
-                editor.putLong(KEY_LAST_UPDATED, today.getTimeInMillis());
-                editor.apply();
+            // Check if a new day has started
+            if (isNewDay()) {
+                resetHighAndLow(temp); // Reset high and low for the new day
             }
-            textViewHighTemp.setText(String.format("H: %.1f°C", highTemp));
-            textViewLowTemp.setText(String.format("L: %.1f°C", lowTemp));
+
+            // Update high and low temperatures
+            if (temp > dailyHighTemp) {
+                dailyHighTemp = temp;
+            }
+            if (temp < dailyLowTemp) {
+                dailyLowTemp = temp;
+            }
+
+//            // Check if the API returned valid high and low temperatures
+//            double temp = weatherData.getMain().getTemp();
+//            double highTemp = weatherData.getMain().getTemp_max();
+//            double lowTemp = weatherData.getMain().getTemp_min();
+//
+//            long lastUpdated = sharedPreferences.getLong(KEY_LAST_UPDATED, 0);
+//            Calendar today = Calendar.getInstance();
+//            Calendar lastUpdatedDate = Calendar.getInstance();
+//            lastUpdatedDate.setTimeInMillis(lastUpdated);
+//
+//            if (lastUpdatedDate.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
+//                    lastUpdatedDate.get(Calendar.MONTH) == today.get(Calendar.MONTH) &&
+//                    lastUpdatedDate.get(Calendar.DAY_OF_MONTH) == today.get(Calendar.DAY_OF_MONTH)) {
+//                // Use cached temperatures
+//                highTemp = sharedPreferences.getFloat(KEY_HIGH_TEMP, (float) highTemp);
+//                lowTemp = sharedPreferences.getFloat(KEY_LOW_TEMP, (float) lowTemp);
+//            } else {
+//                // Generate new temperatures and cache them
+//                if (highTemp == lowTemp) {
+//                    highTemp = temp + 2.5;  // Add 2.5°C for high
+//                    lowTemp = temp - 2.5;   // Subtract 2.5°C for low
+//                }
+//
+//                highTemp = addDeterministDecimal(highTemp, selectedCity.hashCode() + 1);
+//                lowTemp = addDeterministDecimal(lowTemp, selectedCity.hashCode() + 2);
+//                if (highTemp - lowTemp < 5.0) {
+//                    highTemp = lowTemp + 5.0;
+//                }
+//
+//                SharedPreferences.Editor editor = sharedPreferences.edit();
+//                editor.putFloat(KEY_HIGH_TEMP, (float) highTemp);
+//                editor.putFloat(KEY_LOW_TEMP, (float) lowTemp);
+//                editor.putLong(KEY_LAST_UPDATED, today.getTimeInMillis());
+//                editor.apply();
+//            }
+            textViewHighTemp.setText(String.format("H: %.1f°C", dailyHighTemp));
+            textViewLowTemp.setText(String.format("L: %.1f°C", dailyLowTemp));
             textViewTemp.setText(String.format("%.1f°C", temp));
             textViewFeelsLike.setText(weatherData.getWeather().get(0).getDescription());
 
@@ -309,15 +329,51 @@ public class MainActivity extends BaseActivity {
                 String iconUrl = "https://openweathermap.org/img/wn/" + iconCode + "@2x.png";
                 Glide.with(MainActivity.this).load(iconUrl).into(imageViewIcon);
             }
+            saveHighAndLow();
         });
     }
 
-    private double addDeterministDecimal(double value, int seed) {
-        double[] decimals = {0.1, 0.2, 0.3, 0.4, 0.6, 0.7, 0.8, 0.9};
-        int index = Math.abs(seed) % decimals.length;
-        return Math.floor(value) + decimals[index];
+    private boolean isNewDay() {
+        Calendar today = Calendar.getInstance();
+        Calendar lastResetDate = Calendar.getInstance();
+        lastResetDate.setTimeInMillis(lastResetTime);
+
+        // Check if the year, month, and day are different
+        return today.get(Calendar.YEAR) != lastResetDate.get(Calendar.YEAR) ||
+                today.get(Calendar.MONTH) != lastResetDate.get(Calendar.MONTH) ||
+                today.get(Calendar.DAY_OF_MONTH) != lastResetDate.get(Calendar.DAY_OF_MONTH);
+    }
+//    private double addDeterministDecimal(double value, int seed) {
+//        double[] decimals = {0.1, 0.2, 0.3, 0.4, 0.6, 0.7, 0.8, 0.9};
+//        int index = Math.abs(seed) % decimals.length;
+//        return Math.floor(value) + decimals[index];
+//    }
+
+    private void resetHighAndLow(double currentTemp) {
+        dailyHighTemp = currentTemp; // Reset high to current temperature
+        dailyLowTemp = currentTemp;  // Reset low to current temperature
+        lastResetTime = System.currentTimeMillis(); // Update last reset time
     }
 
+    private void saveHighAndLow() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putFloat("dailyHighTemp", (float) dailyHighTemp);
+        editor.putFloat("dailyLowTemp", (float) dailyLowTemp);
+        editor.putLong("lastResetTime", lastResetTime);
+        editor.apply();
+    }
+
+    private void loadHighAndLow() {
+        dailyHighTemp = sharedPreferences.getFloat("dailyHighTemp", (float) Double.MIN_VALUE);
+        dailyLowTemp = sharedPreferences.getFloat("dailyLowTemp", (float) Double.MAX_VALUE);
+        lastResetTime = sharedPreferences.getLong("lastResetTime", 0);
+
+        // If no data is saved, initialize with current temperature
+        if (dailyHighTemp == Double.MIN_VALUE || dailyLowTemp == Double.MAX_VALUE) {
+            dailyHighTemp = Double.MIN_VALUE;
+            dailyLowTemp = Double.MAX_VALUE;
+        }
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

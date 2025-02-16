@@ -1,5 +1,12 @@
 package com.appdevelopers.weatherapp;
 
+import android.app.AlertDialog;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.view.Window;
+import android.view.WindowManager;
+
 public class readme {
 //    package com.appdevelopers.weatherapp;
 //
@@ -292,4 +299,60 @@ public class readme {
 //    SharedPreferences sharedPreferences = getSharedPreferences("AppSetting", MODE_PRIVATE);
 //    String temperatureUnit = sharedPreferences.getString("TemperatureUnit", "C"); // Default °C
 //textViewTemperature.setText(temperatureUnit.equals("C") ? "°C" : "°F");
+
+//    AlertDialog dialog = new AlertDialog.Builder(this).setView(dialogView).create();
+//            dialog.setOnShowListener(dialogInterface -> {
+//        Window window = dialog.getWindow();
+//        if (window != null) {
+//            window.setLayout( int)
+//            (getResources().getDisplayMetrics().widthPixels * 0.90), WindowManager.LayoutParams.WRAP_CONTENT)
+//            ;
+//            GradientDrawable drawable = new GradientDrawable();
+//            drawable.setCornerRadius(60);
+//            drawable.setColor(Color.WHITE);
+//
+//            window.setBackgroundDrawable(drawable);
+//        }
+//    });
+//    //AlertDialog.Builder builder = new AlertDialog.Builder(Setting.this);
+//    android.view.LayoutInflater inflater = getLayoutInflater();
+//    android.view.View dialogView = inflater.inflate(R.layout.custom_multi_language_selection, null);
+//            builder.setView(dialogView);
+//
+//    android.widget.RadioGroup radioGroup = dialogView.findViewById(R.id.radioGroup);
+//    android.widget.TextView textViewAccept = dialogView.findViewById(R.id.textViewAccept);
+//    android.widget.TextView textViewCancel = dialogView.findViewById(R.id.textViewCancel);
+//
+//    android.app.AlertDialog dialog = builder.create();
+//
+//    SharedPreferences sharedPreferences = getSharedPreferences("AppSetting", MODE_PRIVATE);
+//    String selectedLanguageCode = sharedPreferences.getString("Language", "en"); // Default to "en"
+//
+//    // Check the corresponding radio button based on the stored language code
+//            if (selectedLanguageCode.equals("en")) {
+//        radioGroup.check(R.id.radioButtonEnglish);
+//    } else if (selectedLanguageCode.equals("ne")) {
+//        radioGroup.check(R.id.radioButtonNepali);
+//    } else if (selectedLanguageCode.equals("it")) {
+//        radioGroup.check(R.id.radioButtonItalian);
+//    } else if (selectedLanguageCode.equals("ko")) {
+//        radioGroup.check(R.id.radioButtonKorean);
+//    }
+//
+//            textViewAccept.setOnClickListener(v1 -> {
+//        int selectedId = radioGroup.getCheckedRadioButtonId();
+//        String newLanguageCode = "en"; // Default to English
+//
+//        if (selectedId == R.id.radioButtonNepali) {
+//            newLanguageCode = "ne";
+//        } else if (selectedId == R.id.radioButtonItalian) {
+//            newLanguageCode = "it";
+//        } else if (selectedId == R.id.radioButtonKorean) {
+//            newLanguageCode = "ko";
+//        }
+//        setLocale(newLanguageCode);
+//        dialog.dismiss();
+//    });
+//            textViewCancel.setOnClickListener(v1 -> dialog.dismiss());
+//            dialog.show();
 }

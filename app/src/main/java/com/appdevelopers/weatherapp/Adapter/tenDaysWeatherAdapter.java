@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.appdevelopers.weatherapp.Model.tenDaysWeatherItemModel;
 import com.appdevelopers.weatherapp.R;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -37,9 +38,9 @@ public class tenDaysWeatherAdapter extends RecyclerView.Adapter<tenDaysWeatherAd
         holder.textViewWeatherTitle.setText(item.getWeatherTitle());
         holder.textViewMaxTemperature.setText(item.getMaxTemperature());
         holder.textViewMinTemperature.setText(item.getMinTemperature());
-        holder.imageViewWeather.setImageResource(item.getWeatherImage());
-
-        Log.d("RecyclerViewDebug", "item displayed: "+ item.getWeatherDay());
+        Glide.with(holder.imageViewWeather.getContext())
+                .load(item.getWeatherImage()) // The URL for the weather icon
+                .into(holder.imageViewWeather);
     }
 
     @Override

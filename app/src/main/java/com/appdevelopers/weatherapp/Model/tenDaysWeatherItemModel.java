@@ -7,7 +7,7 @@ public class tenDaysWeatherItemModel {
     private String minTemperature;
     private Integer weatherImage;
 
-    public tenDaysWeatherItemModel(String weatherDay, String weatherTitle, String maxTemperature, String minTemperature, Integer weatherImage){
+    public tenDaysWeatherItemModel(String weatherDay, String weatherTitle, String maxTemperature, String minTemperature, String weatherImage){
         this.weatherDay = weatherDay;
         this.weatherTitle = weatherTitle;
         this.maxTemperature = maxTemperature;

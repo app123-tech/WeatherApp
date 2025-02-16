@@ -62,13 +62,12 @@
                 android:id="@+id/textViewCityName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_4sdp"
                 android:fontFamily="@font/inter_semibold"
                 android:text=""
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_22sdp"
-                android:padding="@dimen/_4sdp"
+                android:padding="@dimen/_2sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageViewIcon" />
@@ -80,7 +79,7 @@
                 android:fontFamily="@font/inter_medium"
                 android:text=""
                 android:textColor="@color/white"
-                android:textSize="@dimen/_18ssp"
+                android:textSize="@dimen/_16ssp"
                 app:layout_constraintEnd_toEndOf="@+id/textViewCityName"
                 app:layout_constraintStart_toStartOf="@+id/textViewCityName"
                 app:layout_constraintTop_toBottomOf="@+id/textViewCityName" />
@@ -92,7 +91,7 @@
                 android:fontFamily="@font/inter_semibold"
                 android:text=""
                 android:textColor="@color/white"
-                android:textSize="@dimen/_18ssp"
+                android:textSize="@dimen/_16ssp"
                 app:layout_constraintEnd_toEndOf="@+id/textViewTemp"
                 app:layout_constraintStart_toStartOf="@+id/textViewTemp"
                 app:layout_constraintTop_toBottomOf="@+id/textViewTemp" />

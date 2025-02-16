@@ -15,6 +15,8 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,8 +47,6 @@ public class Setting extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_setting);
 
-        updateVersionNumber();
-
         imageViewBack = findViewById(R.id.imageViewBack);
         imageViewGreaterThanCircle = findViewById(R.id.imageViewGreaterThanCircle);     //Privacy Policy
         imageViewGreaterThanCircle2 = findViewById(R.id.imageViewGreaterThanCircle2);   //Share Our App
@@ -69,6 +69,8 @@ public class Setting extends AppCompatActivity {
         textViewLanguage = findViewById(R.id.textViewLanguage);
         toggleSwitch = findViewById(R.id.toggleSwitch);
         textViewVersion = findViewById(R.id.textViewVersion);
+
+        updateVersionNumber();
 
         thumbOnColor = ContextCompat.getColor(this, R.color.switch_thumb_on);
         thumbOffColor = ContextCompat.getColor(this, R.color.switch_thumb_off);
@@ -147,61 +149,7 @@ public class Setting extends AppCompatActivity {
         });
 
         cardView5.setOnClickListener(v -> {
-            AlertDialog dialog = new AlertDialog.Builder(this).setView(dialogView).create();
-            dialog.setOnShowListener(dialogInterface -> {
-                Window window = dialog.getWindow();
-                if (window != null) {
-                    window.setLayout( int)
-                    (getResources().getDisplayMetrics().widthPixels * 0.90), WindowManager.LayoutParams.WRAP_CONTENT)
-                    ;
-                    GradientDrawable drawable = new GradientDrawable();
-                    drawable.setCornerRadius(60);
-                    drawable.setColor(Color.WHITE);
-
-                    window.setBackgroundDrawable(drawable);
-                }
-            });
-            //AlertDialog.Builder builder = new AlertDialog.Builder(Setting.this);
-            android.view.LayoutInflater inflater = getLayoutInflater();
-            android.view.View dialogView = inflater.inflate(R.layout.custom_multi_language_selection, null);
-            builder.setView(dialogView);
-
-            android.widget.RadioGroup radioGroup = dialogView.findViewById(R.id.radioGroup);
-            android.widget.TextView textViewAccept = dialogView.findViewById(R.id.textViewAccept);
-            android.widget.TextView textViewCancel = dialogView.findViewById(R.id.textViewCancel);
-
-            android.app.AlertDialog dialog = builder.create();
-
-            SharedPreferences sharedPreferences = getSharedPreferences("AppSetting", MODE_PRIVATE);
-            String selectedLanguageCode = sharedPreferences.getString("Language", "en"); // Default to "en"
-
-            // Check the corresponding radio button based on the stored language code
-            if (selectedLanguageCode.equals("en")) {
-                radioGroup.check(R.id.radioButtonEnglish);
-            } else if (selectedLanguageCode.equals("ne")) {
-                radioGroup.check(R.id.radioButtonNepali);
-            } else if (selectedLanguageCode.equals("it")) {
-                radioGroup.check(R.id.radioButtonItalian);
-            } else if (selectedLanguageCode.equals("ko")) {
-                radioGroup.check(R.id.radioButtonKorean);
-            }
-
-            textViewAccept.setOnClickListener(v1 -> {
-                int selectedId = radioGroup.getCheckedRadioButtonId();
-                String newLanguageCode = "en"; // Default to English
-
-                if (selectedId == R.id.radioButtonNepali) {
-                    newLanguageCode = "ne";
-                } else if (selectedId == R.id.radioButtonItalian) {
-                    newLanguageCode = "it";
-                } else if (selectedId == R.id.radioButtonKorean) {
-                    newLanguageCode = "ko";
-                }
-                setLocale(newLanguageCode);
-                dialog.dismiss();
-            });
-            textViewCancel.setOnClickListener(v1 -> dialog.dismiss());
-            dialog.show();
+           showLanguageSelectionDialog();
         });
 
         cardView4.setOnClickListener(v -> {
@@ -221,33 +169,11 @@ public class Setting extends AppCompatActivity {
         });
 
         cardView2.setOnClickListener(v -> {
-            AlertDialog dialog = new AlertDialog.Builder(this).setView(dialogView).create();
-            dialog.setOnShowListener(dialogInterface -> {
-                Window window = dialog.getWindow();
-                if (window != null) {
-                    window.setLayout( int)
-                    (getResources().getDisplayMetrics().widthPixels * 0.90), WindowManager.LayoutParams.WRAP_CONTENT)
-                    ;
-                    GradientDrawable drawable = new GradientDrawable();
-                    drawable.setCornerRadius(60);
-                    drawable.setColor(Color.WHITE);
-
-                    window.setBackgroundDrawable(drawable);
-                }
-            });
+           showUnitSelectionDialog("Temperature Unit");
         });
 
         cardView3.setOnClickListener(v -> {
-            AlertDialog dialog = new AlertDialog.Builder(this).setView(dialogView).create();
-            dialog.setOnShowListener(dialogInterface -> {
-                Window window = dialog.getWindow();
-                if (window.setLayout( int)
-                (getResources().getDisplayMetrics().widthPixels * 0.90), WindowManager.LayoutParams.WRAP_CONTENT)
-                ;
-                GradientDrawable drawable = new GradientDrawable();
-                drawable.setCornerRadius(60);
-                drawable.setColor(Color.WHITE);
-            });
+          showUnitSelectionDialog("Wind Speed Unit");
         });
 
         imageViewBack.setOnClickListener(v -> {
@@ -256,6 +182,84 @@ public class Setting extends AppCompatActivity {
 
 
     }
+
+    private void showUnitSelectionDialog(String title) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setView(R.layout.custom_alert_temp_unit);
+        AlertDialog dialog = builder.create();
+
+        dialog.setOnShowListener(dialogInterface -> {
+            Window window = dialog.getWindow();
+            if (window != null) {
+                window.setLayout((int) (getResources().getDisplayMetrics().widthPixels * 0.90), WindowManager.LayoutParams.WRAP_CONTENT);
+                GradientDrawable drawable = new GradientDrawable();
+                drawable.setCornerRadius(60);
+                drawable.setColor(Color.WHITE);
+                window.setBackgroundDrawable(drawable);
+            }
+        });
+        dialog.show();
+    }
+
+    private void showLanguageSelectionDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        android.view.LayoutInflater inflater = getLayoutInflater();
+        android.view.View dialogView = inflater.inflate(R.layout.custom_multi_language_selection, null);
+        builder.setView(dialogView);
+
+        RadioGroup radioGroup = dialogView.findViewById(R.id.radioGroup);
+        TextView textViewAccept = dialogView.findViewById(R.id.textViewAccept);
+        TextView textViewCancel = dialogView.findViewById(R.id.textViewCancel);
+
+        AlertDialog dialog = builder.create();
+
+        dialog.setOnShowListener(dialogInterface -> {
+            Window window = dialog.getWindow();
+            if (window != null) {
+                window.setLayout((int) (getResources().getDisplayMetrics().widthPixels * 0.90), WindowManager.LayoutParams.WRAP_CONTENT);
+                GradientDrawable drawable = new GradientDrawable();
+                drawable.setCornerRadius(60);
+                drawable.setColor(Color.WHITE);
+                window.setBackgroundDrawable(drawable);
+            }
+        });
+
+        SharedPreferences sharedPreferences = getSharedPreferences("AppSetting", MODE_PRIVATE);
+        String selectedLanguageCode = sharedPreferences.getString("Language", "en");
+        if (selectedLanguageCode.equals("en")){
+            radioGroup.check(R.id.radioButtonEnglish);
+        }else if (selectedLanguageCode.equals("ne")){
+            radioGroup.check(R.id.radioButtonNepali);
+        } else if (selectedLanguageCode.equals("it")) {
+            radioGroup.check(R.id.radioButtonItalian);
+        } else if (selectedLanguageCode.equals("ko")) {
+            radioGroup.check(R.id.radioButtonKorean);
+        }
+
+        textViewAccept.setOnClickListener(view -> {
+            int selectedId = radioGroup.getCheckedRadioButtonId();
+            String newLanguageCode = "en";
+
+            if (selectedId == R.id.radioButtonNepali){
+                newLanguageCode = "ne";
+            } else if (selectedId == R.id.radioButtonItalian){
+                newLanguageCode = "it";
+            } else if (selectedId == R.id.radioButtonKorean){
+                newLanguageCode = "ko";
+            }
+
+            setLocale(newLanguageCode);
+            recreate();
+            dialog.dismiss();
+        });
+
+        textViewCancel.setOnClickListener(view -> {
+            dialog.dismiss();
+        });
+        dialog.show();
+    }
+
 
     void scheduleDailyNotification() {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
