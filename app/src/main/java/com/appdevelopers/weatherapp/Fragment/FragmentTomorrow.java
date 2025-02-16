@@ -100,7 +100,7 @@ public class FragmentTomorrow extends Fragment {
         Retrofit retrofit = ApiClient.getClient();
         OpenWeatherMapService service = retrofit.create(OpenWeatherMapService.class);
 
-        Call<WeatherResponse> call = service.getForecastByCity(city, API_KEY, "metric");
+        Call<WeatherResponse> call = service.getCurrentWeatherByCity(city, API_KEY, "metric");
         call.enqueue(new Callback<WeatherResponse>() {
             @Override
             public void onResponse(@NonNull Call<WeatherResponse> call, @NonNull Response<WeatherResponse> response) {
