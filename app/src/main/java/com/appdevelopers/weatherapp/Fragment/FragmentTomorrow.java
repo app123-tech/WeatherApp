@@ -107,7 +107,7 @@ public class FragmentTomorrow extends Fragment {
                 if (response.isSuccessful() && response.body() != null) {
                     WeatherResponse weatherResponse = response.body();
                     updateTomorrowWeatherUI(weatherResponse);
-                    fetchTomorrowAqiData(weatherResponse);
+                    fetchTomorrowAqiData(weatherResponse.getCoord().getLat(), weatherResponse.getCoord().getLon());
                 } else {
                     Toast.makeText(getContext(), "Failed to retrieve weather data", Toast.LENGTH_SHORT).show();
                 }
@@ -120,18 +120,17 @@ public class FragmentTomorrow extends Fragment {
         });
     }
 
-    private void fetchTomorrowAqiData(WeatherResponse weatherResponse) {
+    private void fetchTomorrowAqiData(double lat, double lon) {
         Retrofit retrofit = ApiClient.getClient();
         OpenWeatherMapService service = retrofit.create(OpenWeatherMapService.class);
 
-        Call<AqiResponse> aqiCall = service.getAirQualityIndex(weatherResponse.getWind().getDeg(), weatherResponse.getWind().getSpeed(), API_KEY);
+        Call<AqiResponse> aqiCall = service.getAirQualityIndex(lat, lon, API_KEY);
         aqiCall.enqueue(new Callback<AqiResponse>() {
             @Override
             public void onResponse(@NonNull Call<AqiResponse> call, @NonNull Response<AqiResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    AqiResponse aqiResponse = response.body();
-                    int aqi = aqiResponse.getList().get(0).getMain().getAqi();
-                    textViewAQIValue.setText("AQI: " + aqi);
+                if (response.isSuccessful() && response.body() != null && !response.body().getList().isEmpty()) {
+                    int aqi = response.body().getList().get(0).getMain().getAqi();
+                    textViewAQIValue.setText("" + aqi);
                 } else {
                     textViewAQIValue.setText("AQI: Data not available");
                 }
@@ -145,16 +144,23 @@ public class FragmentTomorrow extends Fragment {
     }
 
     private void updateTomorrowWeatherUI(WeatherResponse weatherResponse) {
+        if (weatherResponse == null || weatherResponse.getMain() == null || weatherResponse.getMain() == null) {
+            Toast.makeText(getContext(), "Weather data unavailable", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_YEAR, 1);
         String tomorrowDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.getTime());
 
         // Loop through the hourly forecast to find tomorrow's data
         for (WeatherResponse.Hourly hourly : weatherResponse.getHourly()) {
-            if (hourly.getDt_txt().contains(tomorrowDate + " 12:00:00")) { // Midday forecast for tomorrow
+            if (hourly.getDt_txt().contains(tomorrowDate + " 12:00:00")) {// Midday forecast for tomorrow
+                int windSpeed = (int) Math.round(weatherResponse.getWind().getSpeed() * 3.6);
+                textViewWindSpeed.setText(windSpeed + " km/h");
+
                 textViewTempNow.setText(hourly.getMain().getTemp() + "°C");
                 textViewHumidityValue.setText(hourly.getMain().getHumidity() + "%");
-                textViewWindSpeed.setText(weatherResponse.getWind().getSpeed() * 3.6 + " km/h");
+                // textViewWindSpeed.setText(weatherResponse.getWind().getSpeed() * 3.6 + " km/h");
                 textViewDirectionSpeed.setText(weatherResponse.getWind().getDeg() + "° " + weatherResponse.getWind().getDirection());
 
                 // Calculate dew point
@@ -180,14 +186,18 @@ public class FragmentTomorrow extends Fragment {
                     String iconUrl = "https://openweathermap.org/img/wn/" + hourly.getWeather().get(0).getIcon() + ".png";
                     Glide.with(getContext()).load(iconUrl).into(imageView);
                 }
-
-                // Set sunrise and sunset times
-                long sunriseTime = weatherResponse.getSys().getSunrise();
-                long sunsetTime = weatherResponse.getSys().getSunset();
-                textViewSunriseTime.setText("Sunrise: " + formatTime(sunriseTime));
-                textViewSunsetTime.setText("Sunset: " + formatTime(sunsetTime));
             }
         }
+
+        if (weatherResponse.getSys() != null) {
+            long sunriseTime = weatherResponse.getSys().getSunrise();
+            long sunsetTime = weatherResponse.getSys().getSunset();
+            String sunrise = new java.text.SimpleDateFormat("hh:mm a").format(new java.util.Date(sunriseTime * 1000));
+            String sunset = new java.text.SimpleDateFormat("hh:mm a").format(new java.util.Date(sunsetTime * 1000));
+            textViewSunriseTime.setText(sunrise);
+            textViewSunsetTime.setText(sunset);
+        }
+
     }
 
 
@@ -202,23 +212,35 @@ public class FragmentTomorrow extends Fragment {
 
     private TextView getHourlyTextView(int index) {
         switch (index) {
-            case 1: return textViewTemp2;
-            case 2: return textViewTemp3;
-            case 3: return textViewTemp4;
-            case 4: return textViewTemp5;
-            case 5: return textViewTemp6;
-            default: return textViewTempNow;
+            case 1:
+                return textViewTemp2;
+            case 2:
+                return textViewTemp3;
+            case 3:
+                return textViewTemp4;
+            case 4:
+                return textViewTemp5;
+            case 5:
+                return textViewTemp6;
+            default:
+                return textViewTempNow;
         }
     }
 
     private TextView getHourlyTimeTextView(int index) {
         switch (index) {
-            case 1: return textViewHourlyForecast2;
-            case 2: return textViewHourlyForecast3;
-            case 3: return textViewHourlyForecast4;
-            case 4: return textViewHourlyForecast5;
-            case 5: return textViewHourlyForecast6;
-            default: return textViewHourlyForecast;
+            case 1:
+                return textViewHourlyForecast2;
+            case 2:
+                return textViewHourlyForecast3;
+            case 3:
+                return textViewHourlyForecast4;
+            case 4:
+                return textViewHourlyForecast5;
+            case 5:
+                return textViewHourlyForecast6;
+            default:
+                return textViewHourlyForecast;
         }
     }
 
