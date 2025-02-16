@@ -106,6 +106,7 @@ public class FragmentTomorrow extends Fragment {
             public void onResponse(@NonNull Call<WeatherResponse> call, @NonNull Response<WeatherResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     WeatherResponse weatherResponse = response.body();
+
                     updateTomorrowWeatherUI(weatherResponse);
                     fetchTomorrowAqiData(weatherResponse.getCoord().getLat(), weatherResponse.getCoord().getLon());
                 } else {
@@ -144,7 +145,7 @@ public class FragmentTomorrow extends Fragment {
     }
 
     private void updateTomorrowWeatherUI(WeatherResponse weatherResponse) {
-        if (weatherResponse == null || weatherResponse.getMain() == null || weatherResponse.getMain() == null) {
+        if (weatherResponse == null || weatherResponse.getMain() == null || weatherResponse.getWind() == null) {
             Toast.makeText(getContext(), "Weather data unavailable", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -152,16 +153,23 @@ public class FragmentTomorrow extends Fragment {
         calendar.add(Calendar.DAY_OF_YEAR, 1);
         String tomorrowDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.getTime());
 
+        if (weatherResponse.getHourly() == null || weatherResponse.getHourly().isEmpty()) {
+            Toast.makeText(getContext(), "Hourly forecast data unavailable", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         // Loop through the hourly forecast to find tomorrow's data
         for (WeatherResponse.Hourly hourly : weatherResponse.getHourly()) {
-            if (hourly.getDt_txt().contains(tomorrowDate + " 12:00:00")) {// Midday forecast for tomorrow
+            // Extract the date part (ignore time)
+            String hourDate = hourly.getDt_txt().split(" ")[0];
+
+            if (hourDate.equals(tomorrowDate)) { // Check if the forecast is for tomorrow
+                // Update hourly forecast for tomorrow
                 int windSpeed = (int) Math.round(weatherResponse.getWind().getSpeed() * 3.6);
                 textViewWindSpeed.setText(windSpeed + " km/h");
 
                 textViewTempNow.setText(hourly.getMain().getTemp() + "°C");
                 textViewHumidityValue.setText(hourly.getMain().getHumidity() + "%");
-                // textViewWindSpeed.setText(weatherResponse.getWind().getSpeed() * 3.6 + " km/h");
-                textViewDirectionSpeed.setText(weatherResponse.getWind().getDeg() + "° " + weatherResponse.getWind().getDirection());
 
                 // Calculate dew point
                 double temperature = hourly.getMain().getTemp();
@@ -171,20 +179,22 @@ public class FragmentTomorrow extends Fragment {
 
                 // Set hourly forecast (next 6 hours)
                 for (int i = 0; i < 6; i++) {
-                    WeatherResponse.Hourly nextHourly = weatherResponse.getHourly().get(i);
+                    if (i < weatherResponse.getHourly().size()) {
+                        WeatherResponse.Hourly nextHourly = weatherResponse.getHourly().get(i);
 
-                    // Set temperature text for the hourly forecast
-                    TextView tempTextView = getHourlyTextView(i);
-                    tempTextView.setText(hourly.getMain().getTemp() + "°C");
+                        // Set temperature text for the hourly forecast
+                        TextView tempTextView = getHourlyTextView(i);
+                        tempTextView.setText(nextHourly.getMain().getTemp() + "°C");
 
-                    // Set the forecast time text (e.g., "3 PM")
-                    TextView timeTextView = getHourlyTimeTextView(i);
-                    timeTextView.setText(hourly.getDt_txt());
+                        // Set the forecast time text (e.g., "3 PM")
+                        TextView timeTextView = getHourlyTimeTextView(i);
+                        timeTextView.setText(nextHourly.getDt_txt());
 
-                    // Set the weather icon and description
-                    ImageView imageView = getHourlyImageView(i);
-                    String iconUrl = "https://openweathermap.org/img/wn/" + hourly.getWeather().get(0).getIcon() + ".png";
-                    Glide.with(getContext()).load(iconUrl).into(imageView);
+                        // Set the weather icon and description
+                        ImageView imageView = getHourlyImageView(i);
+                        String iconUrl = "https://openweathermap.org/img/wn/" + nextHourly.getWeather().get(0).getIcon() + ".png";
+                        Glide.with(getContext()).load(iconUrl).into(imageView);
+                    }
                 }
             }
         }
@@ -192,13 +202,13 @@ public class FragmentTomorrow extends Fragment {
         if (weatherResponse.getSys() != null) {
             long sunriseTime = weatherResponse.getSys().getSunrise();
             long sunsetTime = weatherResponse.getSys().getSunset();
-            String sunrise = new java.text.SimpleDateFormat("hh:mm a").format(new java.util.Date(sunriseTime * 1000));
-            String sunset = new java.text.SimpleDateFormat("hh:mm a").format(new java.util.Date(sunsetTime * 1000));
+            String sunrise = new SimpleDateFormat("hh:mm a").format(new java.util.Date(sunriseTime * 1000));
+            String sunset = new SimpleDateFormat("hh:mm a").format(new java.util.Date(sunsetTime * 1000));
             textViewSunriseTime.setText(sunrise);
             textViewSunsetTime.setText(sunset);
         }
-
     }
+
 
 
     private double calculateDewPoint(double temperature, double humidity) {
