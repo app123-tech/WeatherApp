@@ -53,7 +53,7 @@ public class FragmentTenDays extends Fragment {
         // Replace with a valid city or coordinates for testing
         String city = "London"; // Replace with actual city name
 
-        service.getForecastByCity(city, apiKey, units).enqueue(new Callback<WeatherResponse>() {
+        service.getFiveDayForecastByCity(city, apiKey, units).enqueue(new Callback<WeatherResponse>() {
             @Override
             public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
                 if (response.isSuccessful()) {

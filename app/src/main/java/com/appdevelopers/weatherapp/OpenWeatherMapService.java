@@ -24,7 +24,7 @@ public interface OpenWeatherMapService {
     );
 
     @GET("data/2.5/forecast")
-    Call<WeatherResponse> getForecastByCity(
+    Call<WeatherResponse> getFiveDayForecastByCity(
             @Query("q") String city,
             @Query("appid") String apiKey,
             @Query("units") String units
