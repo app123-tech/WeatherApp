@@ -101,7 +101,7 @@ public class FragmentTodayActivity extends Fragment {
                 if (response.isSuccessful() && response.body() != null) {
                     WeatherResponse weatherResponse = response.body();
                     updateUI(weatherResponse);
-                    fetchAqiData(weatherResponse);
+                    fetchAqiData(weatherResponse.getCoord().getLat(), weatherResponse.getCoord().getLon());
                 } else {
                     Toast.makeText(getContext(), "Failed to retrieve weather data", Toast.LENGTH_SHORT).show();
                 }
@@ -114,20 +114,19 @@ public class FragmentTodayActivity extends Fragment {
         });
     }
 
-    private void fetchAqiData(WeatherResponse weatherResponse) {
+    private void fetchAqiData(double lat, double lon) {
         Retrofit retrofit = ApiClient.getClient();
         OpenWeatherMapService service = retrofit.create(OpenWeatherMapService.class);
 
-        Call<AqiResponse> aqiCall = service.getAirQualityIndex(weatherResponse.getWind().getDeg(), weatherResponse.getWind().getSpeed(), API_KEY);
+        Call<AqiResponse> aqiCall = service.getAirQualityIndex(lat, lon, API_KEY);
         aqiCall.enqueue(new Callback<AqiResponse>() {
             @Override
             public void onResponse(@NonNull Call<AqiResponse> call, @NonNull Response<AqiResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    AqiResponse aqiResponse = response.body();
-                    int aqi = aqiResponse.getList().get(0).getMain().getAqi();
-                    textViewAQIValue.setText("AQI: " + aqi);
+                if (response.isSuccessful() && response.body() != null && !response.body().getList().isEmpty()) {
+                    int aqi = response.body().getList().get(0).getMain().getAqi();
+                    textViewAQIValue.setText("" + aqi);
                 } else {
-                    textViewAQIValue.setText("AQI: Data not available");
+                    textViewAQIValue.setText("AQI: Data unavailable");
                 }
             }
 
@@ -137,22 +136,24 @@ public class FragmentTodayActivity extends Fragment {
             }
         });
     }
-
     private void updateUI(WeatherResponse weatherResponse) {
         if (weatherResponse == null || weatherResponse.getMain() == null || weatherResponse.getWind() == null) {
             Toast.makeText(getContext(), "Weather data unavailable", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        int windSpeed = (int) Math.round(weatherResponse.getWind().getSpeed() * 3.6);
+        textViewWindSpeed.setText(windSpeed + " km/h");
+
         textViewTempNow.setText(weatherResponse.getMain().getTemp() + "°C");
         textViewHumidityValue.setText(weatherResponse.getMain().getHumidity() + "%");
-        textViewWindSpeed.setText(weatherResponse.getWind().getSpeed() * 3.6 + " km/h");
         textViewDirectionSpeed.setText(weatherResponse.getWind().getDeg() + "° " + weatherResponse.getWind().getDirection());
 
         double temperature = weatherResponse.getMain().getTemp();
         double humidity = weatherResponse.getMain().getHumidity();
         double dewPoint = calculateDewPoint(temperature, humidity);
-        textViewHumidityContent.setText("The dew point is " + Math.round(dewPoint) + "° tomorrow");
+        textViewHumidityContent.setText("The dew point is " + Math.round(dewPoint) + "° today");
+       // fetchAqiData(weatherResponse.getCoord().getLat(), weatherResponse.getCoord().getLon());
 
         // Check if hourly data is available
         if (weatherResponse.getHourly() != null && !weatherResponse.getHourly().isEmpty()) {

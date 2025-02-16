@@ -9,6 +9,7 @@ public class WeatherResponse {
     private Sys sys;
     private Wind wind;
     private List<Hourly> hourly; // Added for 3-hour forecast
+    private Coord coord;
 
     public Main getMain() {
         return main;
@@ -32,6 +33,10 @@ public class WeatherResponse {
 
     public List<Hourly> getHourly() {
         return hourly;
+    }
+
+    public Coord getCoord(){
+        return coord;
     }
 
     // Wind class to hold wind data
@@ -137,6 +142,19 @@ public class WeatherResponse {
 
         public String getDt_txt() {
             return dt_txt;
+        }
+    }
+
+    public static class Coord {
+        private double lat;
+        private double lon;
+
+        public double getLat() {
+            return lat;
+        }
+
+        public double getLon() {
+            return lon;
         }
     }
 }

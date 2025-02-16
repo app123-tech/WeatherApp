@@ -5,7 +5,7 @@ public class tenDaysWeatherItemModel {
     private String weatherTitle;
     private String maxTemperature;
     private String minTemperature;
-    private Integer weatherImage;
+    private String weatherImage;
 
     public tenDaysWeatherItemModel(String weatherDay, String weatherTitle, String maxTemperature, String minTemperature, String weatherImage){
         this.weatherDay = weatherDay;
@@ -47,11 +47,11 @@ public class tenDaysWeatherItemModel {
         this.minTemperature = minTemperature;
     }
 
-    public Integer getWeatherImage() {
+    public String getWeatherImage() {
         return weatherImage;
     }
 
-    public void setWeatherImage(Integer weatherImage) {
+    public void setWeatherImage(String weatherImage) {
         this.weatherImage = weatherImage;
     }
 }
