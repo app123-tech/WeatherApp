@@ -153,6 +153,20 @@ public class FragmentTomorrow extends Fragment {
         calendar.add(Calendar.DAY_OF_YEAR, 1);
         String tomorrowDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.getTime());
 
+        // Update hourly forecast for tomorrow
+        int windSpeed = (int) Math.round(weatherResponse.getWind().getSpeed() * 3.6);
+        textViewWindSpeed.setText(windSpeed + " km/h");
+
+        textViewTempNow.setText(weatherResponse.getMain().getTemp() + "°C");
+        textViewHumidityValue.setText(weatherResponse.getMain().getHumidity() + "%");
+        textViewDirectionSpeed.setText(weatherResponse.getWind().getDeg() + "° " + weatherResponse.getWind().getDirection());
+
+        // Calculate dew point
+        double temperature = weatherResponse.getMain().getTemp();
+        double humidity = weatherResponse.getMain().getHumidity();
+        double dewPoint = calculateDewPoint(temperature, humidity);
+        textViewHumidityContent.setText("The dew point is " + Math.round(dewPoint) + "° tomorrow");
+
         if (weatherResponse.getHourly() == null || weatherResponse.getHourly().isEmpty()) {
             Toast.makeText(getContext(), "Hourly forecast data unavailable", Toast.LENGTH_SHORT).show();
             return;
@@ -164,18 +178,6 @@ public class FragmentTomorrow extends Fragment {
             String hourDate = hourly.getDt_txt().split(" ")[0];
 
             if (hourDate.equals(tomorrowDate)) { // Check if the forecast is for tomorrow
-                // Update hourly forecast for tomorrow
-                int windSpeed = (int) Math.round(weatherResponse.getWind().getSpeed() * 3.6);
-                textViewWindSpeed.setText(windSpeed + " km/h");
-
-                textViewTempNow.setText(hourly.getMain().getTemp() + "°C");
-                textViewHumidityValue.setText(hourly.getMain().getHumidity() + "%");
-
-                // Calculate dew point
-                double temperature = hourly.getMain().getTemp();
-                double humidity = hourly.getMain().getHumidity();
-                double dewPoint = calculateDewPoint(temperature, humidity);
-                textViewHumidityContent.setText("The dew point is " + Math.round(dewPoint) + "° tomorrow");
 
                 // Set hourly forecast (next 6 hours)
                 for (int i = 0; i < 6; i++) {
@@ -208,7 +210,6 @@ public class FragmentTomorrow extends Fragment {
             textViewSunsetTime.setText(sunset);
         }
     }
-
     private double calculateDewPoint(double temperature, double humidity) {
         return temperature - ((100 - humidity) / 5);
     }
