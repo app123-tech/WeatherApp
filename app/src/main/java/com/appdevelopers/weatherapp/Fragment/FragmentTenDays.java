@@ -67,6 +67,7 @@ public class FragmentTenDays extends Fragment {
                         for (int i = 0; i < 5; i++) { // Loop over the first 5 entries (3-hour intervals)
                             WeatherResponse.Hourly hourly = hourlyData.get(i * 8); // Every 8th entry represents a day
                             String day = hourly.getDt_txt().split(" ")[0]; // Extract the date (e.g., 2025-02-15)
+
                             String description = hourly.getWeather().get(0).getDescription();
                             String maxTemp = String.valueOf(hourly.getMain().getTemp_max());
                             String minTemp = String.valueOf(hourly.getMain().getTemp_min());
