@@ -1,13 +1,13 @@
 package com.appdevelopers.weatherapp.Model;
 
-public class tenDaysWeatherItemModel {
+public class FiveDaysWeatherItemModel {
     private String weatherDay;
     private String weatherTitle;
     private String maxTemperature;
     private String minTemperature;
     private String weatherImage;
 
-    public tenDaysWeatherItemModel(String weatherDay, String weatherTitle, String maxTemperature, String minTemperature, String weatherImage){
+    public FiveDaysWeatherItemModel(String weatherDay, String weatherTitle, String maxTemperature, String minTemperature, String weatherImage){
         this.weatherDay = weatherDay;
         this.weatherTitle = weatherTitle;
         this.maxTemperature = maxTemperature;

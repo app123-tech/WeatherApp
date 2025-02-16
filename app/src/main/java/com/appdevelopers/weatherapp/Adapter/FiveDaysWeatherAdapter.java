@@ -1,7 +1,5 @@
 package com.appdevelopers.weatherapp.Adapter;
 
-import android.media.Image;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,16 +9,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.appdevelopers.weatherapp.Model.tenDaysWeatherItemModel;
+import com.appdevelopers.weatherapp.Model.FiveDaysWeatherItemModel;
 import com.appdevelopers.weatherapp.R;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-public class tenDaysWeatherAdapter extends RecyclerView.Adapter<tenDaysWeatherAdapter.tenDaysWeatherViewHolder> {
-    private List<tenDaysWeatherItemModel> itemModels;
+public class FiveDaysWeatherAdapter extends RecyclerView.Adapter<FiveDaysWeatherAdapter.tenDaysWeatherViewHolder> {
+    private List<FiveDaysWeatherItemModel> itemModels;
 
-    public tenDaysWeatherAdapter(List<tenDaysWeatherItemModel> itemModels) {
+    public FiveDaysWeatherAdapter(List<FiveDaysWeatherItemModel> itemModels) {
         this.itemModels = itemModels;
     }
 
@@ -33,7 +31,7 @@ public class tenDaysWeatherAdapter extends RecyclerView.Adapter<tenDaysWeatherAd
 
     @Override
     public void onBindViewHolder(@NonNull tenDaysWeatherViewHolder holder, int position) {
-        tenDaysWeatherItemModel item = itemModels.get(position);
+        FiveDaysWeatherItemModel item = itemModels.get(position);
         holder.textViewWeatherDays.setText(item.getWeatherDay());
         holder.textViewWeatherTitle.setText(item.getWeatherTitle());
         holder.textViewMaxTemperature.setText(item.getMaxTemperature());
