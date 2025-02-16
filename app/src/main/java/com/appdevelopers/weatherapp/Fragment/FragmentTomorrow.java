@@ -209,8 +209,6 @@ public class FragmentTomorrow extends Fragment {
         }
     }
 
-
-
     private double calculateDewPoint(double temperature, double humidity) {
         return temperature - ((100 - humidity) / 5);
     }
