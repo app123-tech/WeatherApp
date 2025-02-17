@@ -48,7 +48,7 @@ public class MainActivity extends BaseActivity {
     private static final String KEY_LOW_TEMP = "LowTemp";
     private static final String KEY_LAST_UPDATED = "LastUpdated";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    private AppCompatButton buttonToday, buttonTomorrow, buttonTenDays;
+    private AppCompatButton buttonToday, buttonTomorrow;
     private ImageView imageViewSearch, imageViewSetting, imageViewIcon;
     private TextView textViewCityName, textViewFeelsLike, textViewHighTemp, textViewLowTemp, textViewTemp;
     private SharedPreferences sharedPreferences;
@@ -61,11 +61,11 @@ public class MainActivity extends BaseActivity {
     private void setButtonColors(AppCompatButton selectedButton) {
         buttonToday.setBackgroundTintList(getResources().getColorStateList(R.color.light));
         buttonTomorrow.setBackgroundTintList(getResources().getColorStateList(R.color.light));
-        buttonTenDays.setBackgroundTintList(getResources().getColorStateList(R.color.light));
+       // buttonTenDays.setBackgroundTintList(getResources().getColorStateList(R.color.light));
 
         buttonToday.setTextColor(getResources().getColor(R.color.blue));
         buttonTomorrow.setTextColor(getResources().getColor(R.color.blue));
-        buttonTenDays.setTextColor(getResources().getColor(R.color.blue));
+       // buttonTenDays.setTextColor(getResources().getColor(R.color.blue));
 
         selectedButton.setBackgroundTintList(getResources().getColorStateList(R.color.blue));
         selectedButton.setTextColor(getResources().getColor(R.color.light));
@@ -87,7 +87,7 @@ public class MainActivity extends BaseActivity {
 
         buttonToday = findViewById(R.id.buttonToday);
         buttonTomorrow = findViewById(R.id.buttonTomorrow);
-        buttonTenDays = findViewById(R.id.buttonTenDays);
+       // buttonTenDays = findViewById(R.id.buttonTenDays);
         imageViewSearch = findViewById(R.id.imageViewSearch);
         imageViewSetting = findViewById(R.id.imageViewSetting);
         imageViewIcon = findViewById(R.id.imageViewIcon);
@@ -125,10 +125,10 @@ public class MainActivity extends BaseActivity {
             setButtonColors(buttonTomorrow);
         });
 
-        buttonTenDays.setOnClickListener(v -> {
-            loadFragment(new FragmentFiveDays());
-            setButtonColors(buttonTenDays);
-        });
+//        buttonTenDays.setOnClickListener(v -> {
+//            loadFragment(new FragmentFiveDays());
+//            setButtonColors(buttonTenDays);
+//        });
 
         if (savedInstanceState == null) {
             loadFragment(new FragmentTodayActivity());

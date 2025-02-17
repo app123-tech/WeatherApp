@@ -1,5 +1,7 @@
 package com.appdevelopers.weatherapp;
 
+import com.appdevelopers.weatherapp.Model.FiveDaysWeatherItemModel;
+
 import java.util.List;
 
 public class WeatherResponse {
@@ -10,6 +12,7 @@ public class WeatherResponse {
     private Wind wind;
     private List<Hourly> hourly; // Added for 3-hour forecast
     private Coord coord;
+    private List<FiveDaysWeatherItemModel> list;
 
     public Main getMain() {
         return main;
@@ -39,6 +42,10 @@ public class WeatherResponse {
         return coord;
     }
 
+    public List<FiveDaysWeatherItemModel> getList() {
+        return list;
+    }
+
     // Wind class to hold wind data
     public static class Wind {
         private double speed;
@@ -53,6 +60,7 @@ public class WeatherResponse {
         }
 
         public String getDirection() {
+            if (speed == 0) return "Calm";
             if (deg >= 0 && deg < 45) return "N";
             if (deg >= 45 && deg < 90) return "NE";
             if (deg >= 90 && deg < 135) return "E";
@@ -155,6 +163,46 @@ public class WeatherResponse {
 
         public double getLon() {
             return lon;
+        }
+    }
+
+    public class FiveDaysWeatherItemModel {
+        // Define the fields for each weather item, such as temperature, weather description, etc.
+        private long dt;             // Unix timestamp of the forecast
+        private String dt_txt;       // Formatted date-time string (e.g., "2020-12-16 15:00:00")
+        private Main main;           // Main weather data (temperature, humidity, etc.)
+        private List<Weather> weather; // List of weather conditions (icon, description, etc.)
+
+        public long getDt() {
+            return dt;
+        }
+
+        public void setDt(long dt) {
+            this.dt = dt;
+        }
+
+        public String getDt_txt() {
+            return dt_txt;
+        }
+
+        public void setDt_txt(String dt_txt) {
+            this.dt_txt = dt_txt;
+        }
+
+        public Main getMain() {
+            return main;
+        }
+
+        public void setMain(Main main) {
+            this.main = main;
+        }
+
+        public List<Weather> getWeather() {
+            return weather;
+        }
+
+        public void setWeather(List<Weather> weather) {
+            this.weather = weather;
         }
     }
 }

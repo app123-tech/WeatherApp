@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
@@ -77,6 +78,12 @@ public class Setting extends AppCompatActivity {
         trackOnColor = ContextCompat.getColor(this, R.color.switch_track_on);
         trackOffColor = ContextCompat.getColor(this, R.color.switch_track_off);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("AppSetting", MODE_PRIVATE);
+        boolean isEnabled = sharedPreferences.getBoolean("DailyForecastNotification", false);
+        toggleSwitch.setChecked(isEnabled);
+        toggleSwitch.setThumbTintList(isEnabled ? ColorStateList.valueOf(thumbOnColor) : ColorStateList.valueOf(thumbOffColor));
+        toggleSwitch.setTrackTintList(isEnabled ? ColorStateList.valueOf(trackOnColor) : ColorStateList.valueOf(trackOffColor));
+        
         cardView10.setOnClickListener(v -> {
             Intent intent = new Intent(Setting.this, AboutOurApp.class);
             startActivity(intent);
@@ -153,8 +160,8 @@ public class Setting extends AppCompatActivity {
         });
 
         cardView4.setOnClickListener(v -> {
-            SharedPreferences sharedPreferences = getSharedPreferences("AppSetting", MODE_PRIVATE);
-            boolean isEnabled = sharedPreferences.getBoolean("DailyForecastNotification", false);
+//            SharedPreferences sharedPreferences = getSharedPreferences("AppSetting", MODE_PRIVATE);
+//            boolean isEnabled = sharedPreferences.getBoolean("DailyForecastNotification", false);
 
             SharedPreferences.Editor editor = sharedPreferences.edit();
             if (!isEnabled) {
@@ -303,6 +310,9 @@ public class Setting extends AppCompatActivity {
 
         LocaleHelper.setLocale(this, languageCode);  // Apply language using helper
         //recreate();  // Restart activity to apply language change
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
     }
 
     public void updateVersionNumber() {

@@ -1,5 +1,7 @@
 package com.appdevelopers.weatherapp;
 
+import com.appdevelopers.weatherapp.Model.GeoLocation;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -30,6 +32,13 @@ public interface OpenWeatherMapService {
             @Query("units") String units
     );
 
+    @GET("data/2.5/forecast")
+    Call<WeatherResponse> getWeatherByCoordinates(
+            @Query("lat") double latitude,
+            @Query("lon") double longitude,
+            @Query("appid") String apiKey,
+            @Query("units") String units
+    );
     @GET("data/2.5/air_pollution")
     Call<AqiResponse> getAirQualityIndex(
             @Query("lat") double latitude,
@@ -38,10 +47,9 @@ public interface OpenWeatherMapService {
     );
 
     @GET("geo/1.0/direct")
-    Call<List<GeoLocationService>> getLocations(
+    Call<List<GeoLocation>> getLocations(
             @Query("q") String city,
             @Query("limit") int limit,
             @Query("appid") String apiKey
     );
-
 }

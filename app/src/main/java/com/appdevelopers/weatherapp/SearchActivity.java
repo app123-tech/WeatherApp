@@ -2,6 +2,8 @@ package com.appdevelopers.weatherapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.appdevelopers.weatherapp.Adapter.SearchAdapter;
+import com.appdevelopers.weatherapp.Model.GeoLocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +30,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SearchActivity extends AppCompatActivity {
     private SearchView searchView;
     private SearchAdapter adapter;
-    private ArrayList<String> locationList;
+    private List<String> locationList;
     private OpenWeatherMapService apiService;
     private final String API_KEY = "151be366b244fa29f3132ffb1b84453d";
     private TextView noLocationFound;
     private RecyclerView searchRecycleView;
+    private final Handler handler = new Handler(Looper.getMainLooper());
+    private Runnable searchRunnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +70,9 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (newText.length() > 2) { // Start searching after 3 characters
-                    fetchLocations(newText);
+                    if (searchRunnable != null) handler.removeCallbacks(searchRunnable);
+                    searchRunnable = () -> fetchLocations(newText);
+                    handler.postDelayed(searchRunnable, 500); // Debounce to prevent excessive API calls
                 }
                 return false;
             }
@@ -74,24 +81,27 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void fetchLocations(String query) {
-        apiService.getLocations(query, 10, API_KEY).enqueue(new Callback<List<GeoLocationService>>() {
+        apiService.getLocations(query, 10, API_KEY).enqueue(new Callback<List<GeoLocation>>() {
             @Override
-            public void onResponse(Call<List<GeoLocationService>> call, Response<List<GeoLocationService>> response) {
+            public void onResponse(Call<List<GeoLocation>> call, Response<List<GeoLocation>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     locationList.clear();
-                    for (GeoLocationService location : response.body()) {
+                    for (GeoLocation location : response.body()) {
                         String name = location.getName();
                         String country = location.getCountry();
                         String state = location.getState();
-                        locationList.add(name + ", " + (state.isEmpty() ? "" : state + ", ") + country);
+                        String formattedLocation = name + (state != null && !state.isEmpty() ? ", " + state : "") + ", " + country;
+                        locationList.add(formattedLocation);
                     }
-                    adapter.notifyDataSetChanged();
+                    adapter.updateList(locationList);
                     noLocationFound.setVisibility(locationList.isEmpty() ? View.VISIBLE : View.GONE);
+                } else {
+                    Log.e("SearchActivity", "Error: No data received");
                 }
             }
 
             @Override
-            public void onFailure(Call<List<GeoLocationService>> call, Throwable t) {
+            public void onFailure(Call<List<GeoLocation>> call, Throwable t) {
                 Log.e("SearchActivity", "Error fetching locations: " + t.getMessage());
             }
         });

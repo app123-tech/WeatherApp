@@ -63,11 +63,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_semibold"
+                android:padding="@dimen/_2sdp"
                 android:text=""
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_22sdp"
-                android:padding="@dimen/_2sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageViewIcon" />
@@ -140,6 +140,8 @@
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="@dimen/_13ssp"
+        app:layout_constraintEnd_toStartOf="@+id/buttonTomorrow"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
@@ -155,25 +157,26 @@
         android:textColor="#004F98"
         android:textSize="@dimen/_13ssp"
         app:layout_constraintBottom_toBottomOf="@+id/buttonToday"
-        app:layout_constraintEnd_toStartOf="@+id/buttonTenDays"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/buttonToday"
         app:layout_constraintTop_toTopOf="@+id/buttonToday" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonTenDays"
-        android:layout_width="@dimen/_80sdp"
-        android:layout_height="@dimen/_40sdp"
-        android:layout_marginEnd="@dimen/_8sdp"
-        android:background="@drawable/custom_button_second"
-        android:backgroundTint="@color/white"
-        android:fontFamily="@font/inter_regular"
-        android:text="@string/_10_days"
-        android:textAllCaps="false"
-        android:textColor="#004F98"
-        android:textSize="@dimen/_13ssp"
-        app:layout_constraintBottom_toBottomOf="@+id/buttonTomorrow"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/buttonTomorrow" />
+    <!--    <androidx.appcompat.widget.AppCompatButton-->
+    <!--        android:id="@+id/buttonTenDays"-->
+    <!--        android:layout_width="@dimen/_80sdp"-->
+    <!--        android:layout_height="@dimen/_40sdp"-->
+    <!--        android:layout_marginEnd="@dimen/_8sdp"-->
+    <!--        android:background="@drawable/custom_button_second"-->
+    <!--        android:backgroundTint="@color/white"-->
+    <!--        android:fontFamily="@font/inter_regular"-->
+    <!--        android:text="@string/_10_days"-->
+    <!--        android:textAllCaps="false"-->
+    <!--        android:textColor="#004F98"-->
+    <!--        android:textSize="@dimen/_13ssp"-->
+    <!--        app:layout_constraintBottom_toBottomOf="@+id/buttonTomorrow"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="@+id/buttonTomorrow" />-->
 
     <FrameLayout
         android:id="@+id/fragment_container"
@@ -186,25 +189,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/buttonToday" />
 
-<!--    <ScrollView-->
-<!--        android:id="@+id/scrollView"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_marginTop="@dimen/_10sdp"-->
-<!--        android:fillViewport="true"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/buttonTomorrow">-->
+    <!--    <ScrollView-->
+    <!--        android:id="@+id/scrollView"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:layout_marginTop="@dimen/_10sdp"-->
+    <!--        android:fillViewport="true"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/buttonTomorrow">-->
 
-<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content">-->
+    <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content">-->
 
 
-<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
-<!--    </ScrollView>-->
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+    <!--    </ScrollView>-->
+</androidx.constraintlayout.widget.ConstraintLayout>
 
 <!--    <com.google.android.material.navigation.NavigationView-->
 <!--        android:id="@+id/nav_view"-->

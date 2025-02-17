@@ -61,7 +61,7 @@ public class FragmentTodayActivity extends Fragment {
         textViewHumidityValue = view.findViewById(R.id.textViewHumidityValue);
         textViewHumidityContent = view.findViewById(R.id.textViewHumidityContent);
 
-        textView24HourlyForecast = view.findViewById(R.id.textView24HourlyForecast);            // 3 hrs interval
+        textView24HourlyForecast = view.findViewById(R.id.textView24HourlyForecast);
         textViewHourlyForecast = view.findViewById(R.id.textViewHourlyForecast);      // 3 hrs interval
         textViewHourlyForecast2 = view.findViewById(R.id.textViewHourlyForecast2);    // 3 hrs interval
         textViewHourlyForecast3 = view.findViewById(R.id.textViewHourlyForecast3);    // 3 hrs interval
@@ -102,6 +102,7 @@ public class FragmentTodayActivity extends Fragment {
                     WeatherResponse weatherResponse = response.body();
                     updateUI(weatherResponse);
                     fetchAqiData(weatherResponse.getCoord().getLat(), weatherResponse.getCoord().getLon());
+                    fetchFiveDayForecast(city);
                 } else {
                     Toast.makeText(getContext(), "Failed to retrieve weather data", Toast.LENGTH_SHORT).show();
                 }
@@ -110,6 +111,29 @@ public class FragmentTodayActivity extends Fragment {
             @Override
             public void onFailure(@NonNull Call<WeatherResponse> call, @NonNull Throwable t) {
                 Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void fetchFiveDayForecast(String city) {
+        Retrofit retrofit = ApiClient.getClient();
+        OpenWeatherMapService service = retrofit.create(OpenWeatherMapService.class);
+
+        Call<WeatherResponse> forecastCall = service.getFiveDayForecastByCity(city, API_KEY, "metric");
+        forecastCall.enqueue(new Callback<WeatherResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<WeatherResponse> call, @NonNull Response<WeatherResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    WeatherResponse forecast = response.body();
+                    updateHourlyForecast(forecast);
+                } else {
+                    Toast.makeText(getContext(), "Failed to retrieve forecast", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<WeatherResponse> call, @NonNull Throwable t) {
+                Toast.makeText(getContext(), "Forecast error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -137,47 +161,24 @@ public class FragmentTodayActivity extends Fragment {
         });
     }
     private void updateUI(WeatherResponse weatherResponse) {
-        if (weatherResponse == null || weatherResponse.getMain() == null || weatherResponse.getWind() == null) {
-            Toast.makeText(getContext(), "Weather data unavailable", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         int windSpeed = (int) Math.round(weatherResponse.getWind().getSpeed() * 3.6);
-        textViewWindSpeed.setText(windSpeed + " km/h");
+        if (windSpeed == 0) {
+            textViewWindSpeed.setText("Calm");
+            textViewDirectionSpeed.setText("No wind");
+        } else {
+            textViewWindSpeed.setText(windSpeed + " km/h");
+            textViewDirectionSpeed.setText(weatherResponse.getWind().getDeg() + "° " + weatherResponse.getWind().getDirection());
+        }
+       // textViewWindSpeed.setText(windSpeed + " km/h");
 
         textViewTempNow.setText(weatherResponse.getMain().getTemp() + "°C");
         textViewHumidityValue.setText(weatherResponse.getMain().getHumidity() + "%");
-        textViewDirectionSpeed.setText(weatherResponse.getWind().getDeg() + "° " + weatherResponse.getWind().getDirection());
+       // textViewDirectionSpeed.setText(weatherResponse.getWind().getDeg() + "° " + weatherResponse.getWind().getDirection());
 
         double temperature = weatherResponse.getMain().getTemp();
         double humidity = weatherResponse.getMain().getHumidity();
         double dewPoint = calculateDewPoint(temperature, humidity);
         textViewHumidityContent.setText("The dew point is " + Math.round(dewPoint) + "° today");
-       // fetchAqiData(weatherResponse.getCoord().getLat(), weatherResponse.getCoord().getLon());
-
-        // Check if hourly data is available
-        if (weatherResponse.getHourly() != null && !weatherResponse.getHourly().isEmpty()) {
-            for (int i = 0; i < Math.min(6, weatherResponse.getHourly().size()); i++) {
-                WeatherResponse.Hourly hourly = weatherResponse.getHourly().get(i);
-
-                if (hourly != null && hourly.getMain() != null && hourly.getWeather() != null && !hourly.getWeather().isEmpty()) {
-                    // Set temperature text for the hourly forecast
-                    TextView tempTextView = getHourlyTextView(i);
-                    tempTextView.setText(hourly.getMain().getTemp() + "°C");
-
-                    // Set the forecast time text (e.g., "3 PM")
-                    TextView timeTextView = getHourlyTimeTextView(i);
-                    timeTextView.setText(hourly.getDt_txt());
-
-                    // Set the weather icon and description
-                    ImageView imageView = getHourlyImageView(i);
-                    String iconUrl = "https://openweathermap.org/img/wn/" + hourly.getWeather().get(0).getIcon() + ".png";
-                    Glide.with(getContext()).load(iconUrl).into(imageView);
-                }
-            }
-        } else {
-            Toast.makeText(getContext(), "Hourly forecast data not available", Toast.LENGTH_SHORT).show();
-        }
 
         // Handle sunrise and sunset times
         if (weatherResponse.getSys() != null) {
@@ -190,46 +191,71 @@ public class FragmentTodayActivity extends Fragment {
         }
     }
 
+    private void updateHourlyForecast(WeatherResponse forecast) {
+        // Use the 'list' field which contains the forecast data from the API
+        if (forecast == null || forecast.getList() == null || forecast.getList().isEmpty()) {
+            Toast.makeText(getContext(), "Hourly forecast data not available", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        java.text.SimpleDateFormat inputFormat = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        java.text.SimpleDateFormat outputFormat = new java.text.SimpleDateFormat("ha");
+
+        // Loop through up to 6 forecast data points (3-hour interval each)
+        for (int i = 0; i < Math.min(6, forecast.getList().size()); i++) {
+            // Assuming FiveDaysWeatherItemModel has methods getDtTxt(), getMain(), and getWeather()
+            WeatherResponse.FiveDaysWeatherItemModel forecastItem = forecast.getList().get(i);
+
+            String formattedTime;
+            try {
+                java.util.Date date = inputFormat.parse(forecastItem.getDt_txt());
+                formattedTime = outputFormat.format(date);
+            } catch (java.text.ParseException e) {
+                e.printStackTrace();
+                // Fallback: extract time using split if parsing fails
+                formattedTime = forecastItem.getDt_txt().split(" ")[1];
+            }
+
+            // Extract the time (assumes dtTxt is in the format "yyyy-MM-dd HH:mm:ss")
+            String temp = forecastItem.getMain().getTemp() + "°C";
+            String iconUrl = "https://openweathermap.org/img/wn/" + forecastItem.getWeather().get(0).getIcon() + ".png";
+
+            switch (i) {
+                case 0:
+                    textViewTempNow.setText(temp);
+                    textViewHourlyForecast.setText(formattedTime);
+                    Glide.with(getContext()).load(iconUrl).into(imageViewHourlyForecastNow);
+                    break;
+                case 1:
+                    textViewTemp2.setText(temp);
+                    textViewHourlyForecast2.setText(formattedTime);
+                    Glide.with(getContext()).load(iconUrl).into(imageViewHourlyForecast2);
+                    break;
+                case 2:
+                    textViewTemp3.setText(temp);
+                    textViewHourlyForecast3.setText(formattedTime);
+                    Glide.with(getContext()).load(iconUrl).into(imageViewHourlyForecast3);
+                    break;
+                case 3:
+                    textViewTemp4.setText(temp);
+                    textViewHourlyForecast4.setText(formattedTime);
+                    Glide.with(getContext()).load(iconUrl).into(imageViewHourlyForecast4);
+                    break;
+                case 4:
+                    textViewTemp5.setText(temp);
+                    textViewHourlyForecast5.setText(formattedTime);
+                    Glide.with(getContext()).load(iconUrl).into(imageViewHourlyForecast5);
+                    break;
+                case 5:
+                    textViewTemp6.setText(temp);
+                    textViewHourlyForecast6.setText(formattedTime);
+                    Glide.with(getContext()).load(iconUrl).into(imageViewHourlyForecast6);
+                    break;
+            }
+        }
+    }
+
     private double calculateDewPoint(double temperature, double humidity) {
         return temperature - ((100 - humidity) / 5);
-    }
-
-    private TextView getHourlyTextView(int index) {
-        switch (index) {
-            case 1: return textViewTemp2;
-            case 2: return textViewTemp3;
-            case 3: return textViewTemp4;
-            case 4: return textViewTemp5;
-            case 5: return textViewTemp6;
-            default: return textViewTempNow;
-        }
-    }
-
-    private TextView getHourlyTimeTextView(int index) {
-        switch (index) {
-            case 1: return textViewHourlyForecast2;
-            case 2: return textViewHourlyForecast3;
-            case 3: return textViewHourlyForecast4;
-            case 4: return textViewHourlyForecast5;
-            case 5: return textViewHourlyForecast6;
-            default: return textViewHourlyForecast;
-        }
-    }
-
-    private ImageView getHourlyImageView(int index) {
-        switch (index) {
-            case 1:
-                return imageViewHourlyForecast2;
-            case 2:
-                return imageViewHourlyForecast3;
-            case 3:
-                return imageViewHourlyForecast4;
-            case 4:
-                return imageViewHourlyForecast5;
-            case 5:
-                return imageViewHourlyForecast6;
-            default:
-                return imageViewHourlyForecastNow;
-        }
     }
 }

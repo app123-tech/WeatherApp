@@ -9,19 +9,21 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
-        private final String[] locations;
+        private final List<String> locations;
         private final OnItemClickListener listener;
 
         public interface OnItemClickListener {
             void onItemClick(String cityName);
         }
 
-        public SearchAdapter(ArrayList<String> locations, OnItemClickListener listener) {
-            this.locations = locations.toArray(new String[0]);
-            this.listener = listener;
-        }
+    public SearchAdapter(List<String> locations, OnItemClickListener listener) {
+        this.locations = locations;
+        this.listener = listener;
+    }
+
 
         @NonNull
         @Override
@@ -32,15 +34,21 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            String cityName = locations[position];
+            String cityName = locations.get(position);
             holder.textView.setText(cityName);
             holder.itemView.setOnClickListener(v -> listener.onItemClick(cityName));
         }
 
         @Override
         public int getItemCount() {
-            return locations.length;
+            return locations.size();
         }
+
+    public void updateList(List<String> newLocations) {
+        locations.clear();
+        locations.addAll(newLocations);
+        notifyDataSetChanged();
+    }
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
             TextView textView;

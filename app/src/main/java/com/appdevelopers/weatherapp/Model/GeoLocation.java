@@ -1,6 +1,6 @@
-package com.appdevelopers.weatherapp;
+package com.appdevelopers.weatherapp.Model;
 
-public class GeoLocationService {
+public class GeoLocation {
     private String name;
     private String country;
     private String state;
@@ -14,6 +14,6 @@ public class GeoLocationService {
     }
 
     public String getState() {
-        return state != null ? state : ""; // Ensure state is never null
+        return state;
     }
 }
