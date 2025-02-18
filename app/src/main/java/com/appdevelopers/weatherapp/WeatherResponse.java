@@ -5,6 +5,7 @@ import com.appdevelopers.weatherapp.Model.FiveDaysWeatherItemModel;
 import java.util.List;
 
 public class WeatherResponse {
+    private City city;
     private Main main;
     private List<Weather> weather;
     private String name;
@@ -14,26 +15,25 @@ public class WeatherResponse {
     private Coord coord;
     private List<FiveDaysWeatherItemModel> list;
 
+    public City getCity() {
+        return city;
+    }
+
     public Main getMain() {
         return main;
     }
-
     public List<Weather> getWeather() {
         return weather;
     }
-
     public String getName() {
         return name;
     }
-
     public Sys getSys() {
         return sys;
     }
-
     public Wind getWind() {
         return wind;
     }
-
     public List<Hourly> getHourly() {
         return hourly;
     }
@@ -150,6 +150,30 @@ public class WeatherResponse {
 
         public String getDt_txt() {
             return dt_txt;
+        }
+    }
+
+    public static class City {
+        private Coord coord;
+        private long sunrise;
+        private long sunset;
+        private String name;
+        // Add getters for these fields
+
+        public Coord getCoord() {
+            return coord;
+        }
+
+        public long getSunrise() {
+            return sunrise;
+        }
+
+        public long getSunset() {
+            return sunset;
+        }
+
+        public String getName() {
+            return name;
         }
     }
 

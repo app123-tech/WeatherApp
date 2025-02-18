@@ -100,7 +100,23 @@ public class MainActivity extends BaseActivity {
         sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         selectedCity = sharedPreferences.getString(KEY_CITY, "Kathmandu");
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        requestLocation();
+
+        if (getIntent().hasExtra("LATITUDE") &&
+                getIntent().hasExtra("LONGITUDE") &&
+                getIntent().hasExtra("CITY")) {
+
+            double lat = getIntent().getDoubleExtra("LATITUDE", 0);
+            double lon = getIntent().getDoubleExtra("LONGITUDE", 0);
+            String city = getIntent().getStringExtra("CITY");
+
+            // Update UI with the passed city name.
+            textViewCityName.setText(city);
+            // Fetch weather data for the selected location.
+            fetchWeatherData(lat, lon, city);
+        } else {
+            // No extras provided: use device location.
+            requestLocation();
+        }
 
         setButtonColors(buttonToday);
         loadHighAndLow();

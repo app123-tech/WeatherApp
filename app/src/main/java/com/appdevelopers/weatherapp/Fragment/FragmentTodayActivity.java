@@ -1,5 +1,6 @@
 package com.appdevelopers.weatherapp.Fragment;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -29,6 +30,7 @@ public class FragmentTodayActivity extends Fragment {
     private static final String API_KEY = "151be366b244fa29f3132ffb1b84453d";
     private static final String PREFS_NAME = "WeatherAppPrefs";
     private static final String DEFAULT_CITY = "Kathmandu";
+    private static final String KEY_CITY = "selected_city";
     private TextView textViewWind, textViewWindSecond, textViewWindSpeed, textViewAQI, textViewAQIValue, textViewDirection, textViewDirectionSpeed, textViewHumidity, textViewHumidityValue, textViewHumidityContent;
     private TextView textView24HourlyForecast, textViewHourlyForecast, textViewHourlyForecast2, textViewHourlyForecast3, textViewHourlyForecast4, textViewHourlyForecast5, textViewHourlyForecast6, textViewTempNow, textViewTemp2, textViewTemp3, textViewTemp4, textViewTemp5, textViewTemp6;
     private TextView textViewSunriseTime, textViewSunsetTime;
@@ -87,7 +89,10 @@ public class FragmentTodayActivity extends Fragment {
         imageViewHourlyForecast5 = view.findViewById(R.id.imageViewHourlyForecast5);        // hourly forecast image 3hrs interval
         imageViewHourlyForecast6 = view.findViewById(R.id.imageViewHourlyForecast6);        // hourly forecast image 3hrs interval
 
-        fetchWeatherData(DEFAULT_CITY);
+        sharedPreferences = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        String city = sharedPreferences.getString(KEY_CITY, DEFAULT_CITY);
+
+        fetchWeatherData(city);
     }
 
     private void fetchWeatherData(String city) {
@@ -217,7 +222,8 @@ public class FragmentTodayActivity extends Fragment {
             }
 
             // Extract the time (assumes dtTxt is in the format "yyyy-MM-dd HH:mm:ss")
-            String temp = forecastItem.getMain().getTemp() + "°C";
+            int roundedTemp = (int) Math.round(forecastItem.getMain().getTemp());  // Round the temperature to nearest integer
+            String temp = roundedTemp + "°C";  // Display without decimal
             String iconUrl = "https://openweathermap.org/img/wn/" + forecastItem.getWeather().get(0).getIcon() + ".png";
 
             switch (i) {

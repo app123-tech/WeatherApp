@@ -48,8 +48,16 @@ public interface OpenWeatherMapService {
 
     @GET("geo/1.0/direct")
     Call<List<GeoLocation>> getLocations(
-            @Query("q") String city,
+            @Query("q") String query,
             @Query("limit") int limit,
-            @Query("appid") String apiKey
+            @Query("appid") String appid
+    );
+
+    // Current weather API endpoint to get the main city name.
+    @GET("data/2.5/weather")
+    Call<WeatherResponse> getWeather(
+            @Query("lat") double lat,
+            @Query("lon") double lon,
+            @Query("appid") String appid
     );
 }

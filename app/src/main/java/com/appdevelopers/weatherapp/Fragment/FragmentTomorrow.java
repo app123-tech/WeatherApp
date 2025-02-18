@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,11 @@ import com.appdevelopers.weatherapp.OpenWeatherMapService;
 import com.appdevelopers.weatherapp.R;
 import com.appdevelopers.weatherapp.WeatherResponse;
 import com.bumptech.glide.Glide;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -100,10 +106,14 @@ public class FragmentTomorrow extends Fragment {
             @Override
             public void onResponse(@NonNull Call<WeatherResponse> call, @NonNull Response<WeatherResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    WeatherResponse weatherResponse = response.body();
-                    updateTomorrowWeatherUI(weatherResponse);
-                    fetchTomorrowAqiData(weatherResponse.getCoord().getLat(), weatherResponse.getCoord().getLon());
-                    fetchFiveDayForecast(city);
+                    WeatherResponse forecastResponse = response.body();
+                    updateTomorrowWeatherUI(forecastResponse);
+                    if (forecastResponse.getCity() != null && forecastResponse.getCity().getCoord() != null) {
+                        fetchTomorrowAqiData(forecastResponse.getCity().getCoord().getLat(), forecastResponse.getCity().getCoord().getLon());
+                    } else {
+                        Toast.makeText(getContext(), "City location data not available", Toast.LENGTH_SHORT).show();
+                    }
+                    updateHourlyForecastWeatherTomorrow(forecastResponse);
                 } else {
                     Toast.makeText(getContext(), "Failed to retrieve weather data", Toast.LENGTH_SHORT).show();
                 }
@@ -112,29 +122,6 @@ public class FragmentTomorrow extends Fragment {
             @Override
             public void onFailure(@NonNull Call<WeatherResponse> call, @NonNull Throwable t) {
                 Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void fetchFiveDayForecast(String city) {
-        Retrofit retrofit = ApiClient.getClient();
-        OpenWeatherMapService service = retrofit.create(OpenWeatherMapService.class);
-
-        Call<WeatherResponse> forecastCall = service.getFiveDayForecastByCity(city, API_KEY, "metric");
-        forecastCall.enqueue(new Callback<WeatherResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<WeatherResponse> call, @NonNull Response<WeatherResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    WeatherResponse forecast = response.body();
-                    updateHourlyForecastWeatherTomorrow(forecast);
-                } else {
-                    Toast.makeText(getContext(), "Failed to retrieve forecast", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<WeatherResponse> call, @NonNull Throwable t) {
-                Toast.makeText(getContext(), "Forecast error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -162,41 +149,88 @@ public class FragmentTomorrow extends Fragment {
         });
     }
 
-    private void updateTomorrowWeatherUI(WeatherResponse weatherResponse) {
-        int windSpeed = (int) Math.round(weatherResponse.getWind().getSpeed() * 3.6);
-        if (windSpeed == 0) {
-            textViewWindSpeed.setText("Calm");
-            textViewDirectionSpeed.setText("No wind");
+    private void updateTomorrowWeatherUI(WeatherResponse forecastResponse) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, 1);
+        String tomorrowDate = dateFormat.format(calendar.getTime());
+
+        WeatherResponse.FiveDaysWeatherItemModel tomorrowForecast = null;
+        for (WeatherResponse.FiveDaysWeatherItemModel item : forecastResponse.getList()) {
+            if (item.getDt_txt().startsWith(tomorrowDate)) {
+                tomorrowForecast = item;
+                break;
+            }
+        }
+
+        if (tomorrowForecast == null) {
+            Toast.makeText(getContext(), "Tomorrow's forecast data not available", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (forecastResponse.getWind() != null) {
+            int windSpeed = (int) Math.round(forecastResponse.getWind().getSpeed() * 3.6);
+            if (windSpeed == 0) {
+                textViewWindSpeed.setText("Calm");
+                textViewDirectionSpeed.setText("No wind");
+            } else {
+                textViewWindSpeed.setText(windSpeed + " km/h");
+                textViewDirectionSpeed.setText(forecastResponse.getWind().getDeg() + "° "
+                        + forecastResponse.getWind().getDirection());
+            }
         } else {
-            textViewWindSpeed.setText(windSpeed + " km/h");
-            textViewDirectionSpeed.setText(weatherResponse.getWind().getDeg() + "° " + weatherResponse.getWind().getDirection());
+            textViewWindSpeed.setText("N/A");
+            textViewDirectionSpeed.setText("N/A");
         }
         // textViewWindSpeed.setText(windSpeed + " km/h");
 
-        textViewTempNow.setText(weatherResponse.getMain().getTemp() + "°C");
-        textViewHumidityValue.setText(weatherResponse.getMain().getHumidity() + "%");
+        textViewTempNow.setText(tomorrowForecast.getMain().getTemp() + "°C");
+        textViewHumidityValue.setText(tomorrowForecast.getMain().getHumidity() + "%");
         // textViewDirectionSpeed.setText(weatherResponse.getWind().getDeg() + "° " + weatherResponse.getWind().getDirection());
 
-        double temperature = weatherResponse.getMain().getTemp();
-        double humidity = weatherResponse.getMain().getHumidity();
+        double temperature = tomorrowForecast.getMain().getTemp();
+        double humidity = tomorrowForecast.getMain().getHumidity();
         double dewPoint = calculateDewPoint(temperature, humidity);
-        textViewHumidityContent.setText("The dew point is " + Math.round(dewPoint) + "° today");
+        textViewHumidityContent.setText("The dew point is " + Math.round(dewPoint) + "° tomorrow");
+
 
         // Handle sunrise and sunset times
-        if (weatherResponse.getSys() != null) {
-            long sunriseTime = weatherResponse.getSys().getSunrise();
-            long sunsetTime = weatherResponse.getSys().getSunset();
+        if (forecastResponse.getSys() != null) {
+            long sunriseTime = forecastResponse.getSys().getSunrise();
+            long sunsetTime = forecastResponse.getSys().getSunset();
+            Log.d("Sunrise", "Sunrise timestamp: " + sunriseTime);
+            Log.d("Sunset", "Sunset timestamp: " + sunsetTime);
+            SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
             String sunrise = new java.text.SimpleDateFormat("hh:mm a").format(new java.util.Date(sunriseTime * 1000));
             String sunset = new java.text.SimpleDateFormat("hh:mm a").format(new java.util.Date(sunsetTime * 1000));
             textViewSunriseTime.setText(sunrise);
             textViewSunsetTime.setText(sunset);
+        } else {
+            textViewSunriseTime.setText("N/A");
+            textViewSunsetTime.setText("N/A");
         }
     }
 
-    private void updateHourlyForecastWeatherTomorrow(WeatherResponse forecast) {
+    private void updateHourlyForecastWeatherTomorrow(WeatherResponse forecastResponse) {
         // Use the 'list' field which contains the forecast data from the API
-        if (forecast == null || forecast.getList() == null || forecast.getList().isEmpty()) {
+        if (forecastResponse == null || forecastResponse.getList() == null || forecastResponse.getList().isEmpty()) {
             Toast.makeText(getContext(), "Hourly forecast data not available", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, 1);
+        String tomorrowDate = dateFormat.format(calendar.getTime());
+
+        List<WeatherResponse.FiveDaysWeatherItemModel> tomorrowItems = new ArrayList<>();
+        for (WeatherResponse.FiveDaysWeatherItemModel item : forecastResponse.getList()) {
+            if (item.getDt_txt().startsWith(tomorrowDate)) {
+                tomorrowItems.add(item);
+            }
+        }
+        if (tomorrowItems.isEmpty()) {
+            Toast.makeText(getContext(), "No hourly forecast data available for tomorrow", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -204,10 +238,9 @@ public class FragmentTomorrow extends Fragment {
         java.text.SimpleDateFormat outputFormat = new java.text.SimpleDateFormat("ha");
 
         // Loop through up to 6 forecast data points (3-hour interval each)
-        for (int i = 0; i < Math.min(6, forecast.getList().size()); i++) {
+        for (int i = 0; i < Math.min(6, tomorrowItems.size()); i++) {
             // Assuming FiveDaysWeatherItemModel has methods getDtTxt(), getMain(), and getWeather()
-            WeatherResponse.FiveDaysWeatherItemModel forecastItem = forecast.getList().get(i);
-
+            WeatherResponse.FiveDaysWeatherItemModel forecastItem = tomorrowItems.get(i);
             String formattedTime;
             try {
                 java.util.Date date = inputFormat.parse(forecastItem.getDt_txt());
@@ -219,7 +252,8 @@ public class FragmentTomorrow extends Fragment {
             }
 
             // Extract the time (assumes dtTxt is in the format "yyyy-MM-dd HH:mm:ss")
-            String temp = forecastItem.getMain().getTemp() + "°C";
+            int roundedTemp = (int) Math.round(forecastItem.getMain().getTemp());  // Round the temperature to nearest integer
+            String temp = roundedTemp + "°C";  // Display without decimal
             String iconUrl = "https://openweathermap.org/img/wn/" + forecastItem.getWeather().get(0).getIcon() + ".png";
 
             switch (i) {
