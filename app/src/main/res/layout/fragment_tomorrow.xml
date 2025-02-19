@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#FAF9F6"
     android:layout_height="match_parent"
     android:fillViewport="true">
 
@@ -35,6 +36,7 @@
                     android:layout_marginStart="@dimen/_8sdp"
                     android:layout_marginTop="@dimen/_8sdp"
                     app:cardCornerRadius="@dimen/_40sdp"
+                    android:background="#FAF9F6"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -197,6 +199,7 @@
                     android:layout_marginStart="@dimen/_8sdp"
                     android:layout_marginTop="@dimen/_8sdp"
                     app:cardCornerRadius="@dimen/_40sdp"
+                    android:background="#FAF9F6"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -285,6 +288,7 @@
                     android:layout_marginStart="@dimen/_8sdp"
                     android:layout_marginTop="@dimen/_8sdp"
                     app:cardCornerRadius="@dimen/_40sdp"
+                    android:background="#FAF9F6"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -566,6 +570,7 @@
                     android:layout_height="@dimen/_30sdp"
                     android:layout_marginStart="@dimen/_8sdp"
                     app:cardCornerRadius="@dimen/_40sdp"
+                    android:background="#FAF9F6"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -639,6 +644,7 @@
                     android:layout_height="@dimen/_30sdp"
                     android:layout_marginStart="@dimen/_8sdp"
                     app:cardCornerRadius="@dimen/_40sdp"
+                    android:background="#FAF9F6"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">

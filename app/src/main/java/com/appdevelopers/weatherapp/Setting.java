@@ -29,10 +29,12 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.util.Calendar;
+import java.util.Locale;
 
-public class Setting extends AppCompatActivity {
+public class Setting extends BaseActivity {
     private ImageView imageViewBack, imageViewGreaterThanCircle5, imageViewGreaterThanCircle, imageViewGreaterThanCircle2, imageViewGreaterThanCircle3, imageViewGreaterThanCircle4;
     private CardView cardView2, cardView3, cardView4, cardView5, cardView6, cardView7, cardView8, cardView9, cardView10;
     private TextView textViewTemperature, textViewWindSpeedInKilometerPerHour, textViewLanguage, textViewVersion;
@@ -72,6 +74,7 @@ public class Setting extends AppCompatActivity {
         textViewVersion = findViewById(R.id.textViewVersion);
 
         updateVersionNumber();
+        updateLanguageTextView();
 
         thumbOnColor = ContextCompat.getColor(this, R.color.switch_thumb_on);
         thumbOffColor = ContextCompat.getColor(this, R.color.switch_thumb_off);
@@ -83,6 +86,31 @@ public class Setting extends AppCompatActivity {
         toggleSwitch.setChecked(isEnabled);
         toggleSwitch.setThumbTintList(isEnabled ? ColorStateList.valueOf(thumbOnColor) : ColorStateList.valueOf(thumbOffColor));
         toggleSwitch.setTrackTintList(isEnabled ? ColorStateList.valueOf(trackOnColor) : ColorStateList.valueOf(trackOffColor));
+        String temperatureUnit = getTemperatureUnit();
+        textViewTemperature.setText(temperatureUnit.equals("C") ? "°C" : "°F");
+
+        // Load saved wind speed unit preference
+        String windSpeedUnit = getWindSpeedUnit();
+        textViewWindSpeedInKilometerPerHour.setText(windSpeedUnit.equals("km/h") ? "km/h" : "m/s");
+
+        toggleSwitch.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            Switch mySwitch = (Switch) compoundButton;  // Cast to Switch
+            if (isChecked) {
+                scheduleDailyNotification();
+                mySwitch.setThumbTintList(ColorStateList.valueOf(thumbOnColor));
+                mySwitch.setTrackTintList(ColorStateList.valueOf(trackOnColor));
+                Toast.makeText(Setting.this, "Daily forecast notifications enabled.", Toast.LENGTH_SHORT).show();
+            } else {
+                cancelDailyNotification();
+                mySwitch.setThumbTintList(ColorStateList.valueOf(thumbOffColor));
+                mySwitch.setTrackTintList(ColorStateList.valueOf(trackOffColor));
+                Toast.makeText(Setting.this, "Daily forecast notifications disabled.", Toast.LENGTH_SHORT).show();
+            }
+           // SharedPreferences sharedPreferences = getSharedPreferences("AppSetting", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("DailyForecastNotification", isChecked);
+            editor.apply();
+        });
         
         cardView10.setOnClickListener(v -> {
             Intent intent = new Intent(Setting.this, AboutOurApp.class);
@@ -159,54 +187,58 @@ public class Setting extends AppCompatActivity {
            showLanguageSelectionDialog();
         });
 
-        cardView4.setOnClickListener(v -> {
-//            SharedPreferences sharedPreferences = getSharedPreferences("AppSetting", MODE_PRIVATE);
-//            boolean isEnabled = sharedPreferences.getBoolean("DailyForecastNotification", false);
-
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            if (!isEnabled) {
-                scheduleDailyNotification();
-                Toast.makeText(Setting.this, "Daily forecast notifications enabled.", Toast.LENGTH_SHORT).show();
-            } else {
-                cancelDailyNotification();
-                Toast.makeText(Setting.this, "Daily forecast notifications disabled.", Toast.LENGTH_SHORT).show();
-            }
-            editor.putBoolean("DailyForecastNotification", !isEnabled);
-            editor.apply();
-        });
+        cardView4.setOnClickListener(v -> toggleSwitch.setChecked(!toggleSwitch.isChecked()));
 
         cardView2.setOnClickListener(v -> {
-           showUnitSelectionDialog("Temperature Unit");
+           showTempUnitSelectionDialog();
         });
 
         cardView3.setOnClickListener(v -> {
-          showUnitSelectionDialog("Wind Speed Unit");
+          showWindUnitSelectionDialog();
         });
 
         imageViewBack.setOnClickListener(v -> {
             getOnBackPressedDispatcher().onBackPressed();
         });
-
-
     }
 
-    private void showUnitSelectionDialog(String title) {
+    private void showTempUnitSelectionDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title);
-        builder.setView(R.layout.custom_alert_temp_unit);
-        AlertDialog dialog = builder.create();
+        builder.setTitle("Select Temperature Unit");
+        builder.setSingleChoiceItems(new String[]{"Celsius (°C)", "Fahrenheit (°F)"},
+                getTemperatureUnit().equals("C") ? 0 : 1, (dialog, which) -> {
+                    String newUnit = (which == 0) ? "C" : "F";
+                    saveTemperatureUnit(newUnit);
+                    convertTemperatureValues(newUnit);
+                    dialog.dismiss();
+                    Intent intent = new Intent(Setting.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                });
+        builder.show();
+    }
 
-        dialog.setOnShowListener(dialogInterface -> {
-            Window window = dialog.getWindow();
-            if (window != null) {
-                window.setLayout((int) (getResources().getDisplayMetrics().widthPixels * 0.90), WindowManager.LayoutParams.WRAP_CONTENT);
-                GradientDrawable drawable = new GradientDrawable();
-                drawable.setCornerRadius(60);
-                drawable.setColor(Color.WHITE);
-                window.setBackgroundDrawable(drawable);
-            }
-        });
-        dialog.show();
+    private void showWindUnitSelectionDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select Wind Speed Unit");
+        builder.setSingleChoiceItems(new String[]{"Kilometers per hour (km/h)", "Meters per second (m/s)"},
+                getWindSpeedUnit().equals("km/h") ? 0 : 1, (dialog, which) -> {
+                    String newUnit = (which == 0) ? "km/h" : "m/s";
+                    saveWindSpeedUnit(newUnit);
+                    convertWindSpeedValues(newUnit);
+
+                    Intent broadcastIntent = new Intent("WIND_SPEED_UNIT_CHANGED");
+                    broadcastIntent.putExtra("WIND_SPEED_UNIT", newUnit);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+                    dialog.dismiss();
+                    // Restart MainActivity to apply changes immediately
+                    Intent intent = new Intent(Setting.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                });
+        builder.show();
     }
 
     private void showLanguageSelectionDialog(){
@@ -257,7 +289,7 @@ public class Setting extends AppCompatActivity {
             }
 
             setLocale(newLanguageCode);
-            recreate();
+            updateLanguageTextView();
             dialog.dismiss();
         });
 
@@ -266,7 +298,6 @@ public class Setting extends AppCompatActivity {
         });
         dialog.show();
     }
-
 
     void scheduleDailyNotification() {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -308,11 +339,34 @@ public class Setting extends AppCompatActivity {
         editor.putString("Language", languageCode);
         editor.apply();
 
-        LocaleHelper.setLocale(this, languageCode);  // Apply language using helper
-        //recreate();  // Restart activity to apply language change
-        Intent intent = getIntent();
-        finish();
+        LocaleHelper.setLocale(this, languageCode);
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("isLanguageChange", true); // Pass the flag
+        // Clear the entire activity stack and start a new task
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        // Finish all current activities
+        finishAffinity();
+    }
+
+    private void updateLanguageTextView() {
+        SharedPreferences sharedPreferences = getSharedPreferences("AppSetting", MODE_PRIVATE);
+        String languageCode = sharedPreferences.getString("Language", "en");
+        String languageDisplay;
+        switch (languageCode) {
+            case "ne":
+                languageDisplay = "नेपाली";
+                break;
+            case "it":
+                languageDisplay = "Italian";
+                break;
+            case "ko":
+                languageDisplay = "한국어";
+                break;
+            default:
+                languageDisplay = "English";
+        }
+        textViewLanguage.setText(languageDisplay);
     }
 
     public void updateVersionNumber() {
@@ -324,4 +378,74 @@ public class Setting extends AppCompatActivity {
             textViewVersion.setText("Version is not available");
         }
     }
+
+    private void saveTemperatureUnit(String unit) {
+        SharedPreferences.Editor editor = getSharedPreferences("AppSetting", MODE_PRIVATE).edit();
+        editor.putString("TemperatureUnit", unit);
+        editor.apply();
+        textViewTemperature.setText(unit.equals("C") ? "°C" : "°F");
+    }
+
+    private void saveWindSpeedUnit(String unit) {
+        SharedPreferences.Editor editor = getSharedPreferences("AppSetting", MODE_PRIVATE).edit();
+        editor.putString("WindSpeedUnit", unit);
+        editor.apply();
+        textViewWindSpeedInKilometerPerHour.setText(unit.equals("km/h") ? "km/h" : "m/s");
+    }
+
+    private String getTemperatureUnit() {
+        SharedPreferences sharedPreferences = getSharedPreferences("AppSetting", MODE_PRIVATE);
+        return sharedPreferences.getString("TemperatureUnit", "C");
+    }
+
+    private String getWindSpeedUnit() {
+        SharedPreferences sharedPreferences = getSharedPreferences("AppSetting", MODE_PRIVATE);
+        return sharedPreferences.getString("WindSpeedUnit", "km/h");
+    }
+
+    private void convertTemperatureValues(String newUnit) {
+        SharedPreferences sharedPreferences = getSharedPreferences("WeatherAppPrefs", MODE_PRIVATE);
+        float highTemp = sharedPreferences.getFloat(Constants.KEY_HIGH_TEMP, 0.0f);
+        float lowTemp = sharedPreferences.getFloat(Constants.KEY_LOW_TEMP, 0.0f);
+        float currentTemp = sharedPreferences.getFloat("CurrentTemp", 0.0f);
+
+        if (newUnit.equals("F")) {
+            highTemp = (highTemp * 9 / 5) + 32;
+            lowTemp = (lowTemp * 9 / 5) + 32;
+            currentTemp = (currentTemp * 9 / 5) + 32;
+        } else {
+            highTemp = (highTemp - 32) * 5 / 9;
+            lowTemp = (lowTemp - 32) * 5 / 9;
+            currentTemp = (currentTemp - 32) * 5 / 9;
+        }
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putFloat(Constants.KEY_HIGH_TEMP, highTemp);
+        editor.putFloat(Constants.KEY_LOW_TEMP, lowTemp);
+        editor.putFloat("CurrentTemp", currentTemp);
+        editor.apply();
+    }
+
+    private void convertWindSpeedValues(String newUnit) {
+        // Access wind speed value stored in WeatherAppPrefs
+        SharedPreferences sharedPreferences = getSharedPreferences("WeatherAppPrefs", MODE_PRIVATE);
+        float windSpeed = sharedPreferences.getFloat("WindSpeed", 0.0f);
+
+        // If no wind speed is stored, there's nothing to convert.
+        if (windSpeed == 0.0f) {
+            return;
+        }
+
+        if (newUnit.equals("m/s")) {
+            windSpeed = windSpeed / 3.6f;
+        } else { // newUnit is "km/h"
+            windSpeed = windSpeed * 3.6f;
+        }
+
+        // Save the converted wind speed value back to SharedPreferences.
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putFloat("WindSpeed", windSpeed);
+        editor.apply();
+    }
+
 }

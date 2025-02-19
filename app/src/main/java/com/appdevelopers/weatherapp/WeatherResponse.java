@@ -229,4 +229,5 @@ public class WeatherResponse {
             this.weather = weather;
         }
     }
+
 }

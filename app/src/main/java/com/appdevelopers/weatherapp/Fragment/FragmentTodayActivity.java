@@ -1,11 +1,15 @@
 package com.appdevelopers.weatherapp.Fragment;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +35,7 @@ public class FragmentTodayActivity extends Fragment {
     private static final String PREFS_NAME = "WeatherAppPrefs";
     private static final String DEFAULT_CITY = "Kathmandu";
     private static final String KEY_CITY = "selected_city";
+    private SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceListener;
     private TextView textViewWind, textViewWindSecond, textViewWindSpeed, textViewAQI, textViewAQIValue, textViewDirection, textViewDirectionSpeed, textViewHumidity, textViewHumidityValue, textViewHumidityContent;
     private TextView textView24HourlyForecast, textViewHourlyForecast, textViewHourlyForecast2, textViewHourlyForecast3, textViewHourlyForecast4, textViewHourlyForecast5, textViewHourlyForecast6, textViewTempNow, textViewTemp2, textViewTemp3, textViewTemp4, textViewTemp5, textViewTemp6;
     private TextView textViewSunriseTime, textViewSunsetTime;
@@ -93,6 +98,43 @@ public class FragmentTodayActivity extends Fragment {
         String city = sharedPreferences.getString(KEY_CITY, DEFAULT_CITY);
 
         fetchWeatherData(city);
+
+        sharedPreferenceListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                if (key.equals("TemperatureUnit")) {
+                    // Re-fetch data with the new unit
+                    SharedPreferences weatherPrefs = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                    String city = weatherPrefs.getString(KEY_CITY, DEFAULT_CITY);
+                    fetchWeatherData(city);
+                }
+            }
+        };
+    }
+
+    private BroadcastReceiver windSpeedUnitChangeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String newUnit = intent.getStringExtra("WIND_SPEED_UNIT");
+            // Update the wind speed display based on the new unit
+            updateWindSpeedDisplay(newUnit);
+        }
+    };
+
+
+    private void updateWindSpeedDisplay(String unit) {
+        // Assuming you have a method to fetch the current wind speed value
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("WeatherAppPrefs", Context.MODE_PRIVATE);
+        float windSpeed = sharedPreferences.getFloat("WindSpeed", 0.0f);
+
+        if (unit.equals("m/s")) {
+            windSpeed = windSpeed / 3.6f;
+        } else { // unit is "km/h"
+            windSpeed = windSpeed * 3.6f;
+        }
+
+        // Update the UI with the new wind speed value
+        textViewWindSpeed.setText(String.format("%.1f %s", windSpeed, unit));
     }
 
     private void fetchWeatherData(String city) {
@@ -118,6 +160,11 @@ public class FragmentTodayActivity extends Fragment {
                 Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private String getTemperatureUnit() {
+        SharedPreferences appSettings = getActivity().getSharedPreferences("AppSetting", Context.MODE_PRIVATE);
+        return appSettings.getString("TemperatureUnit", "C"); // Default to Celsius if not set
     }
 
     private void fetchFiveDayForecast(String city) {
@@ -166,24 +213,44 @@ public class FragmentTodayActivity extends Fragment {
         });
     }
     private void updateUI(WeatherResponse weatherResponse) {
-        int windSpeed = (int) Math.round(weatherResponse.getWind().getSpeed() * 3.6);
+        String tempUnit = getTemperatureUnit();
+        double temp = weatherResponse.getMain().getTemp();
+        if (tempUnit.equals("F")) {
+            temp = (temp * 9 / 5) + 32; // Convert Celsius to Fahrenheit
+        }
+
+        SharedPreferences appSettings = getActivity().getSharedPreferences("AppSetting", Context.MODE_PRIVATE);
+        String windSpeedUnit = appSettings.getString("WindSpeedUnit", "km/h");
+
+        double windSpeed = weatherResponse.getWind().getSpeed();
+        if (windSpeedUnit.equals("m/s")) {
+            windSpeed = windSpeed / 3.6f;
+        } else { // unit is "km/h"
+            windSpeed = windSpeed * 3.6f;
+        }
+
         if (windSpeed == 0) {
             textViewWindSpeed.setText("Calm");
             textViewDirectionSpeed.setText("No wind");
         } else {
-            textViewWindSpeed.setText(windSpeed + " km/h");
+            textViewWindSpeed.setText(String.format("%.1f %s", windSpeed, windSpeedUnit));
             textViewDirectionSpeed.setText(weatherResponse.getWind().getDeg() + "° " + weatherResponse.getWind().getDirection());
         }
        // textViewWindSpeed.setText(windSpeed + " km/h");
 
-        textViewTempNow.setText(weatherResponse.getMain().getTemp() + "°C");
+        textViewTempNow.setText(String.format("%.1f°%s", temp, tempUnit));
+
+        //textViewTempNow.setText(weatherResponse.getMain().getTemp() + "°C");
         textViewHumidityValue.setText(weatherResponse.getMain().getHumidity() + "%");
        // textViewDirectionSpeed.setText(weatherResponse.getWind().getDeg() + "° " + weatherResponse.getWind().getDirection());
 
-        double temperature = weatherResponse.getMain().getTemp();
+      //  double temperature = weatherResponse.getMain().getTemp();
         double humidity = weatherResponse.getMain().getHumidity();
-        double dewPoint = calculateDewPoint(temperature, humidity);
-        textViewHumidityContent.setText("The dew point is " + Math.round(dewPoint) + "° today");
+        double dewPoint = calculateDewPoint(weatherResponse.getMain().getTemp(), humidity);
+        if (tempUnit.equals("F")) {
+            dewPoint = (dewPoint * 9 / 5) + 32;
+        }
+        textViewHumidityContent.setText(String.format("The dew point is %.1f°%s today", dewPoint, tempUnit));
 
         // Handle sunrise and sunset times
         if (weatherResponse.getSys() != null) {
@@ -197,6 +264,7 @@ public class FragmentTodayActivity extends Fragment {
     }
 
     private void updateHourlyForecast(WeatherResponse forecast) {
+        String tempUnit = getTemperatureUnit();
         // Use the 'list' field which contains the forecast data from the API
         if (forecast == null || forecast.getList() == null || forecast.getList().isEmpty()) {
             Toast.makeText(getContext(), "Hourly forecast data not available", Toast.LENGTH_SHORT).show();
@@ -221,39 +289,45 @@ public class FragmentTodayActivity extends Fragment {
                 formattedTime = forecastItem.getDt_txt().split(" ")[1];
             }
 
+            double temp = forecastItem.getMain().getTemp();
+            if (tempUnit.equals("F")) {
+                temp = (temp * 9 / 5) + 32;
+            }
+            String tempDisplay = String.format("%.1f°%s", temp, tempUnit);
+
             // Extract the time (assumes dtTxt is in the format "yyyy-MM-dd HH:mm:ss")
-            int roundedTemp = (int) Math.round(forecastItem.getMain().getTemp());  // Round the temperature to nearest integer
-            String temp = roundedTemp + "°C";  // Display without decimal
+           // int roundedTemp = (int) Math.round(forecastItem.getMain().getTemp());  // Round the temperature to nearest integer
+            //String temp = roundedTemp + "°C";  // Display without decimal
             String iconUrl = "https://openweathermap.org/img/wn/" + forecastItem.getWeather().get(0).getIcon() + ".png";
 
             switch (i) {
                 case 0:
-                    textViewTempNow.setText(temp);
+                    textViewTempNow.setText(tempDisplay);
                     textViewHourlyForecast.setText(formattedTime);
                     Glide.with(getContext()).load(iconUrl).into(imageViewHourlyForecastNow);
                     break;
                 case 1:
-                    textViewTemp2.setText(temp);
+                    textViewTemp2.setText(tempDisplay);
                     textViewHourlyForecast2.setText(formattedTime);
                     Glide.with(getContext()).load(iconUrl).into(imageViewHourlyForecast2);
                     break;
                 case 2:
-                    textViewTemp3.setText(temp);
+                    textViewTemp3.setText(tempDisplay);
                     textViewHourlyForecast3.setText(formattedTime);
                     Glide.with(getContext()).load(iconUrl).into(imageViewHourlyForecast3);
                     break;
                 case 3:
-                    textViewTemp4.setText(temp);
+                    textViewTemp4.setText(tempDisplay);
                     textViewHourlyForecast4.setText(formattedTime);
                     Glide.with(getContext()).load(iconUrl).into(imageViewHourlyForecast4);
                     break;
                 case 4:
-                    textViewTemp5.setText(temp);
+                    textViewTemp5.setText(tempDisplay);
                     textViewHourlyForecast5.setText(formattedTime);
                     Glide.with(getContext()).load(iconUrl).into(imageViewHourlyForecast5);
                     break;
                 case 5:
-                    textViewTemp6.setText(temp);
+                    textViewTemp6.setText(tempDisplay);
                     textViewHourlyForecast6.setText(formattedTime);
                     Glide.with(getContext()).load(iconUrl).into(imageViewHourlyForecast6);
                     break;
@@ -263,5 +337,24 @@ public class FragmentTodayActivity extends Fragment {
 
     private double calculateDewPoint(double temperature, double humidity) {
         return temperature - ((100 - humidity) / 5);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(
+                windSpeedUnitChangeReceiver, new IntentFilter("WIND_SPEED_UNIT_CHANGED"));
+        // Register listener
+        SharedPreferences appSettings = getActivity().getSharedPreferences("AppSetting", Context.MODE_PRIVATE);
+        appSettings.registerOnSharedPreferenceChangeListener(sharedPreferenceListener);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(windSpeedUnitChangeReceiver);
+        // Unregister listener
+        SharedPreferences appSettings = getActivity().getSharedPreferences("AppSetting", Context.MODE_PRIVATE);
+        appSettings.unregisterOnSharedPreferenceChangeListener(sharedPreferenceListener);
     }
 }

@@ -1,5 +1,6 @@
 package com.appdevelopers.weatherapp.Fragment;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -36,6 +37,7 @@ public class FragmentTomorrow extends Fragment {
     private static final String API_KEY = "151be366b244fa29f3132ffb1b84453d";
     private static final String PREFS_NAME = "WeatherAppPrefs";
     private static final String DEFAULT_CITY = "Kathmandu";
+    private SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceListener;
     private TextView textViewWind, textViewWindSecond, textViewWindSpeed, textViewAQI, textViewAQIValue, textViewDirection, textViewDirectionSpeed, textViewHumidity, textViewHumidityValue, textViewHumidityContent;
     private TextView textView24HourlyForecast, textViewHourlyForecast, textViewHourlyForecast2, textViewHourlyForecast3, textViewHourlyForecast4, textViewHourlyForecast5, textViewHourlyForecast6, textViewTempNow, textViewTemp2, textViewTemp3, textViewTemp4, textViewTemp5, textViewTemp6;
     private TextView textViewSunriseTime, textViewSunsetTime;
@@ -126,6 +128,11 @@ public class FragmentTomorrow extends Fragment {
         });
     }
 
+    private String getTemperatureUnit() {
+        SharedPreferences appSettings = getActivity().getSharedPreferences("AppSetting", Context.MODE_PRIVATE);
+        return appSettings.getString("TemperatureUnit", "C"); // Default to Celsius if not set
+    }
+
     private void fetchTomorrowAqiData(double lat, double lon) {
         Retrofit retrofit = ApiClient.getClient();
         OpenWeatherMapService service = retrofit.create(OpenWeatherMapService.class);
@@ -168,6 +175,12 @@ public class FragmentTomorrow extends Fragment {
             return;
         }
 
+        String tempUnit = getTemperatureUnit();
+        double temp = tomorrowForecast.getMain().getTemp();
+        if (tempUnit.equals("F")) {
+            temp = (temp * 9 / 5) + 32; // Convert Celsius to Fahrenheit
+        }
+
         if (forecastResponse.getWind() != null) {
             int windSpeed = (int) Math.round(forecastResponse.getWind().getSpeed() * 3.6);
             if (windSpeed == 0) {
@@ -184,14 +197,17 @@ public class FragmentTomorrow extends Fragment {
         }
         // textViewWindSpeed.setText(windSpeed + " km/h");
 
-        textViewTempNow.setText(tomorrowForecast.getMain().getTemp() + "°C");
+        textViewTempNow.setText(String.format("%.1f°%s", temp, tempUnit));
         textViewHumidityValue.setText(tomorrowForecast.getMain().getHumidity() + "%");
         // textViewDirectionSpeed.setText(weatherResponse.getWind().getDeg() + "° " + weatherResponse.getWind().getDirection());
 
-        double temperature = tomorrowForecast.getMain().getTemp();
+        //double temperature = tomorrowForecast.getMain().getTemp();
         double humidity = tomorrowForecast.getMain().getHumidity();
-        double dewPoint = calculateDewPoint(temperature, humidity);
-        textViewHumidityContent.setText("The dew point is " + Math.round(dewPoint) + "° tomorrow");
+        double dewPoint = calculateDewPoint(tomorrowForecast.getMain().getTemp(), humidity);
+        if (tempUnit.equals("F")) {
+            dewPoint = (dewPoint * 9 / 5) + 32;
+        }
+        textViewHumidityContent.setText(String.format("The dew point is %.1f°%s tomorrow", dewPoint, tempUnit));
 
 
         // Handle sunrise and sunset times
@@ -212,6 +228,7 @@ public class FragmentTomorrow extends Fragment {
     }
 
     private void updateHourlyForecastWeatherTomorrow(WeatherResponse forecastResponse) {
+        String tempUnit = getTemperatureUnit();
         // Use the 'list' field which contains the forecast data from the API
         if (forecastResponse == null || forecastResponse.getList() == null || forecastResponse.getList().isEmpty()) {
             Toast.makeText(getContext(), "Hourly forecast data not available", Toast.LENGTH_SHORT).show();
@@ -252,38 +269,42 @@ public class FragmentTomorrow extends Fragment {
             }
 
             // Extract the time (assumes dtTxt is in the format "yyyy-MM-dd HH:mm:ss")
-            int roundedTemp = (int) Math.round(forecastItem.getMain().getTemp());  // Round the temperature to nearest integer
-            String temp = roundedTemp + "°C";  // Display without decimal
+            double temp = forecastItem.getMain().getTemp();
+            if (tempUnit.equals("F")) {
+                temp = (temp * 9 / 5) + 32;
+            }
+            String tempDisplay = String.format("%.1f°%s", temp, tempUnit);
+
             String iconUrl = "https://openweathermap.org/img/wn/" + forecastItem.getWeather().get(0).getIcon() + ".png";
 
             switch (i) {
                 case 0:
-                    textViewTempNow.setText(temp);
+                    textViewTempNow.setText(tempDisplay);
                     textViewHourlyForecast.setText(formattedTime);
                     Glide.with(getContext()).load(iconUrl).into(imageViewHourlyForecastNow);
                     break;
                 case 1:
-                    textViewTemp2.setText(temp);
+                    textViewTemp2.setText(tempDisplay);
                     textViewHourlyForecast2.setText(formattedTime);
                     Glide.with(getContext()).load(iconUrl).into(imageViewHourlyForecast2);
                     break;
                 case 2:
-                    textViewTemp3.setText(temp);
+                    textViewTemp3.setText(tempDisplay);
                     textViewHourlyForecast3.setText(formattedTime);
                     Glide.with(getContext()).load(iconUrl).into(imageViewHourlyForecast3);
                     break;
                 case 3:
-                    textViewTemp4.setText(temp);
+                    textViewTemp4.setText(tempDisplay);
                     textViewHourlyForecast4.setText(formattedTime);
                     Glide.with(getContext()).load(iconUrl).into(imageViewHourlyForecast4);
                     break;
                 case 4:
-                    textViewTemp5.setText(temp);
+                    textViewTemp5.setText(tempDisplay);
                     textViewHourlyForecast5.setText(formattedTime);
                     Glide.with(getContext()).load(iconUrl).into(imageViewHourlyForecast5);
                     break;
                 case 5:
-                    textViewTemp6.setText(temp);
+                    textViewTemp6.setText(tempDisplay);
                     textViewHourlyForecast6.setText(formattedTime);
                     Glide.with(getContext()).load(iconUrl).into(imageViewHourlyForecast6);
                     break;
@@ -293,5 +314,21 @@ public class FragmentTomorrow extends Fragment {
 
     private double calculateDewPoint(double temperature, double humidity) {
         return temperature - ((100 - humidity) / 5);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Register listener
+        SharedPreferences appSettings = getActivity().getSharedPreferences("AppSetting", Context.MODE_PRIVATE);
+        appSettings.registerOnSharedPreferenceChangeListener(sharedPreferenceListener);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // Unregister listener
+        SharedPreferences appSettings = getActivity().getSharedPreferences("AppSetting", Context.MODE_PRIVATE);
+        appSettings.unregisterOnSharedPreferenceChangeListener(sharedPreferenceListener);
     }
 }

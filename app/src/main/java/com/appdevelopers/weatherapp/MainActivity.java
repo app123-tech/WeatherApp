@@ -47,6 +47,7 @@ public class MainActivity extends BaseActivity {
     private static final String KEY_HIGH_TEMP = "HighTemp";
     private static final String KEY_LOW_TEMP = "LowTemp";
     private static final String KEY_LAST_UPDATED = "LastUpdated";
+    private String lastCity = "";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private AppCompatButton buttonToday, buttonTomorrow;
     private ImageView imageViewSearch, imageViewSetting, imageViewIcon;
@@ -57,6 +58,7 @@ public class MainActivity extends BaseActivity {
     private double dailyHighTemp = Double.MIN_VALUE; // Track the highest temperature of the day
     private double dailyLowTemp = Double.MAX_VALUE;  // Track the lowest temperature of the day
     private long lastResetTime = 0; // Track the last time high and low were reset
+    private boolean isLanguageChange = false;
 
     private void setButtonColors(AppCompatButton selectedButton) {
         buttonToday.setBackgroundTintList(getResources().getColorStateList(R.color.light));
@@ -85,6 +87,13 @@ public class MainActivity extends BaseActivity {
 
         setContentView(R.layout.activity_main);
 
+        sharedPreferences = getSharedPreferences("AppSetting", MODE_PRIVATE);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferenceListener);
+
+        if (getIntent().getBooleanExtra("isLanguageChange", false)) {
+            isLanguageChange = true;
+        }
+
         buttonToday = findViewById(R.id.buttonToday);
         buttonTomorrow = findViewById(R.id.buttonTomorrow);
        // buttonTenDays = findViewById(R.id.buttonTenDays);
@@ -99,6 +108,7 @@ public class MainActivity extends BaseActivity {
 
         sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         selectedCity = sharedPreferences.getString(KEY_CITY, "Kathmandu");
+        lastCity = selectedCity;
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         if (getIntent().hasExtra("LATITUDE") &&
@@ -141,10 +151,6 @@ public class MainActivity extends BaseActivity {
             setButtonColors(buttonTomorrow);
         });
 
-//        buttonTenDays.setOnClickListener(v -> {
-//            loadFragment(new FragmentFiveDays());
-//            setButtonColors(buttonTenDays);
-//        });
 
         if (savedInstanceState == null) {
             loadFragment(new FragmentTodayActivity());
@@ -242,6 +248,11 @@ public class MainActivity extends BaseActivity {
         });
     }
 
+    private String getTemperatureUnit() {
+        SharedPreferences appSettings = getSharedPreferences("AppSetting", MODE_PRIVATE);
+        return appSettings.getString("TemperatureUnit", "C"); // Default to Celsius if not set
+    }
+
     private void fetchWeatherByCity(String city) {
         Log.d("WeatherApi", "Fetching weather data for city: " + city);
         OpenWeatherMapService apiService = ApiClient.getClient().create(OpenWeatherMapService.class);
@@ -283,60 +294,65 @@ public class MainActivity extends BaseActivity {
             Log.d("WeatherData", "Temp Min: " + weatherData.getMain().getTemp_min());
             Log.d("WeatherData", "Feels Like: " + weatherData.getMain().getFeels_like());
 
+            String tempUnit = getTemperatureUnit();
+
             // Get current temperature
             double temp = weatherData.getMain().getTemp();
+           // double highTemp = weatherData.getMain().getTemp_max();
+           // double lowTemp = weatherData.getMain().getTemp_min();
+            double apiHigh = weatherData.getMain().getTemp_max();
+            double apiLow = weatherData.getMain().getTemp_min();
 
+            if (tempUnit.equals("F")) {
+                temp = (temp * 9 / 5) + 32;
+              //  highTemp = (highTemp * 9 / 5) + 32;
+              //  lowTemp = (lowTemp * 9 / 5) + 32;
+                apiHigh = (apiHigh * 9 / 5) + 32;
+                apiLow = (apiLow * 9 / 5) + 32;
+            }
+
+            double displayHigh, displayLow;
             // Check if a new day has started
-            if (isNewDay()) {
-                resetHighAndLow(temp); // Reset high and low for the new day
+            if (Math.abs(apiHigh - apiLow) < 0.1) {
+                // Fall back to manual tracking if API values appear identical.
+                if (!isLanguageChange && (isNewDay() || !selectedCity.equals(lastCity))) {
+                    resetHighAndLow(temp);
+                    lastCity = selectedCity; // update the lastCity to the new location
+                }
+
+                // Update manual high/low in Celsius
+                if (temp > dailyHighTemp) {
+                    dailyHighTemp = temp;
+                }
+                if (temp < dailyLowTemp) {
+                    dailyLowTemp = temp;
+                }
+                // Convert stored Celsius values to display unit if needed
+                if (tempUnit.equals("F")) {
+                    temp = (temp * 9 / 5) + 32;
+                    displayHigh = (dailyHighTemp * 9 / 5) + 32;
+                    displayLow = (dailyLowTemp * 9 / 5) + 32;
+                } else {
+                    temp = temp;
+                    displayHigh = dailyHighTemp;
+                    displayLow = dailyLowTemp;
+                }
+            } else {
+                // Use the API values directly
+                if (tempUnit.equals("F")) {
+                    temp = (temp * 9 / 5) + 32;
+                    displayHigh = (apiHigh * 9 / 5) + 32;
+                    displayLow = (apiLow * 9 / 5) + 32;
+                } else {
+                    temp = temp;
+                    displayHigh = apiHigh;
+                    displayLow = apiLow;
+                }
             }
 
-            // Update high and low temperatures
-            if (temp > dailyHighTemp) {
-                dailyHighTemp = temp;
-            }
-            if (temp < dailyLowTemp) {
-                dailyLowTemp = temp;
-            }
-
-//            // Check if the API returned valid high and low temperatures
-//            double temp = weatherData.getMain().getTemp();
-//            double highTemp = weatherData.getMain().getTemp_max();
-//            double lowTemp = weatherData.getMain().getTemp_min();
-//
-//            long lastUpdated = sharedPreferences.getLong(KEY_LAST_UPDATED, 0);
-//            Calendar today = Calendar.getInstance();
-//            Calendar lastUpdatedDate = Calendar.getInstance();
-//            lastUpdatedDate.setTimeInMillis(lastUpdated);
-//
-//            if (lastUpdatedDate.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
-//                    lastUpdatedDate.get(Calendar.MONTH) == today.get(Calendar.MONTH) &&
-//                    lastUpdatedDate.get(Calendar.DAY_OF_MONTH) == today.get(Calendar.DAY_OF_MONTH)) {
-//                // Use cached temperatures
-//                highTemp = sharedPreferences.getFloat(KEY_HIGH_TEMP, (float) highTemp);
-//                lowTemp = sharedPreferences.getFloat(KEY_LOW_TEMP, (float) lowTemp);
-//            } else {
-//                // Generate new temperatures and cache them
-//                if (highTemp == lowTemp) {
-//                    highTemp = temp + 2.5;  // Add 2.5°C for high
-//                    lowTemp = temp - 2.5;   // Subtract 2.5°C for low
-//                }
-//
-//                highTemp = addDeterministDecimal(highTemp, selectedCity.hashCode() + 1);
-//                lowTemp = addDeterministDecimal(lowTemp, selectedCity.hashCode() + 2);
-//                if (highTemp - lowTemp < 5.0) {
-//                    highTemp = lowTemp + 5.0;
-//                }
-//
-//                SharedPreferences.Editor editor = sharedPreferences.edit();
-//                editor.putFloat(KEY_HIGH_TEMP, (float) highTemp);
-//                editor.putFloat(KEY_LOW_TEMP, (float) lowTemp);
-//                editor.putLong(KEY_LAST_UPDATED, today.getTimeInMillis());
-//                editor.apply();
-//            }
-            textViewHighTemp.setText(String.format("H: %.1f°C", dailyHighTemp));
-            textViewLowTemp.setText(String.format("L: %.1f°C", dailyLowTemp));
-            textViewTemp.setText(String.format("%.1f°C", temp));
+            textViewHighTemp.setText(String.format("H: %.1f%s", displayHigh, tempUnit.equals("C") ? "°C" : "°F"));
+            textViewLowTemp.setText(String.format("L: %.1f%s", displayLow, tempUnit.equals("C") ? "°C" : "°F"));
+            textViewTemp.setText(String.format("%.1f%s", temp, tempUnit.equals("C") ? "°C" : "°F"));
             textViewFeelsLike.setText(weatherData.getWeather().get(0).getDescription());
 
             if (weatherData.getWeather() != null && !weatherData.getWeather().isEmpty()) {
@@ -358,11 +374,6 @@ public class MainActivity extends BaseActivity {
                 today.get(Calendar.MONTH) != lastResetDate.get(Calendar.MONTH) ||
                 today.get(Calendar.DAY_OF_MONTH) != lastResetDate.get(Calendar.DAY_OF_MONTH);
     }
-//    private double addDeterministDecimal(double value, int seed) {
-//        double[] decimals = {0.1, 0.2, 0.3, 0.4, 0.6, 0.7, 0.8, 0.9};
-//        int index = Math.abs(seed) % decimals.length;
-//        return Math.floor(value) + decimals[index];
-//    }
 
     private void resetHighAndLow(double currentTemp) {
         dailyHighTemp = currentTemp; // Reset high to current temperature
@@ -396,4 +407,38 @@ public class MainActivity extends BaseActivity {
             requestLocation();
         }
     }
+
+    private SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if (key.equals("TemperatureUnit")) {
+                requestLocation();
+            }
+        }
+    };
+
+    private double getTemperatureInUnit(double tempInCelsius, String tempUnit) {
+        if (tempUnit.equals("F")) {
+            return (tempInCelsius * 9 / 5) + 32;
+        } else {
+            return tempInCelsius;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Register the listener
+        SharedPreferences appSettings = getSharedPreferences("AppSetting", MODE_PRIVATE);
+        appSettings.registerOnSharedPreferenceChangeListener(sharedPreferenceListener);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Unregister the listener
+        SharedPreferences appSettings = getSharedPreferences("AppSetting", MODE_PRIVATE);
+        appSettings.unregisterOnSharedPreferenceChangeListener(sharedPreferenceListener);
+    }
+
 }

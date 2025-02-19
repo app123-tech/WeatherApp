@@ -6,6 +6,7 @@
     android:paddingStart="@dimen/_20sdp"
     android:paddingTop="@dimen/_10sdp"
     android:paddingEnd="@dimen/_20sdp"
+    android:background="#FAF9F6"
     android:paddingBottom="@dimen/_10sdp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
