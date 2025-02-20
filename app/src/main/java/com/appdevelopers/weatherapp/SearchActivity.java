@@ -34,8 +34,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SearchActivity extends AppCompatActivity {
     private SearchView searchView;
     private SearchAdapter adapter;
-    //private List<GeoLocation> locationList = new ArrayList<>();
-   // private Map<GeoLocation, String> formattedLocations = new HashMap<>();
+    private List<GeoLocation> locationList = new ArrayList<>();
+   private Map<GeoLocation, String> formattedLocations = new HashMap<>();
     private OpenWeatherMapService apiService;
     private final String API_KEY = "151be366b244fa29f3132ffb1b84453d";
     private TextView noLocationFound;
@@ -56,8 +56,8 @@ public class SearchActivity extends AppCompatActivity {
 
         // Set Layout Manager for RecyclerView
         searchRecycleView.setLayoutManager(new LinearLayoutManager(this));
-        // locationList = new ArrayList<>();
-        adapter = new SearchAdapter(new ArrayList<>(), this::openWeatherActivity);
+        locationList = new ArrayList<>();
+        adapter = new SearchAdapter(locationList, formattedLocations, this::openWeatherActivity);
         searchRecycleView.setAdapter(adapter);
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -90,11 +90,15 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<GeoLocation>> call, Response<List<GeoLocation>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<GeoLocation> newLocations = response.body();
-                    adapter.updateList(newLocations);
-                    noLocationFound.setVisibility(newLocations.isEmpty() ? View.VISIBLE : View.GONE);
+                    locationList.clear();
+                    HashSet<String> seenFormatted = new HashSet<>();
+                    for (GeoLocation location : response.body()) {
+                        processLocation(location, seenFormatted);
+                    }
+                    adapter.updateList(locationList);
+                    noLocationFound.setVisibility(locationList.isEmpty() ? View.VISIBLE : View.GONE);
                 } else {
-                    Log.d("SearchActivity", "Error: No data received");
+                    Log.e("SearchActivity", "Error: No data received");
                 }
             }
 
@@ -105,105 +109,102 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
-//    private void processLocation(GeoLocation location, HashSet<String> seenFormatted) {
-//        // Convert the country code to its full country name (e.g., "NP" → "Nepal")
-//        final String fullCountry = getFullCountryName(location.getCountry());
-//
-//        // If there is no state information, assume it's a country-level result.
-//        if (location.getState() == null || location.getState().isEmpty()) {
-//            String formatted = capitalize(location.getName()) + ", " + fullCountry;
-//            if (!seenFormatted.contains(formatted)) {
-//                seenFormatted.add(formatted);
-//                formattedLocations.put(location, formatted);
-//                locationList.add(location);
-//                adapter.notifyDataSetChanged();
-//            }
-//            return;
-//        }
-//
-//        // Otherwise, use the weather API to determine the primary city for these coordinates.
-//        apiService.getWeather(location.getLat(), location.getLon(), API_KEY)
-//                .enqueue(new Callback<WeatherResponse>() {
-//                    @Override
-//                    public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
-//                        String formatted;
-//                        if (response.isSuccessful() && response.body() != null) {
-//                            String weatherCity = response.body().getName(); // e.g., "Kathmandu"
-//                            if (location.getName().equalsIgnoreCase(weatherCity)) {
-//                                // It’s a major city; show "City, Country"
-//                                formatted = capitalize(location.getName()) + ", " + fullCountry;
-//                            } else {
-//                                // It’s a sub-locality; display the full hierarchy
-//                                // (format the state field if it contains multiple parts)
-//                                String formattedState = formatState(location.getState());
-//                                formatted = capitalize(location.getName()) + ", " + formattedState + ", " + fullCountry;
-//                            }
-//                        } else {
-//                            // Fallback: use the geocoding state data
-//                            String formattedState = formatState(location.getState());
-//                            formatted = capitalize(location.getName()) + ", " + formattedState + ", " + fullCountry;
-//                        }
-//                        // Avoid duplicates based on the formatted address string
-//                        if (!seenFormatted.contains(formatted)) {
-//                            seenFormatted.add(formatted);
-//                            formattedLocations.put(location, formatted);
-//                            locationList.add(location);
-//                            adapter.notifyDataSetChanged();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<WeatherResponse> call, Throwable t) {
-//                        String formattedState = formatState(location.getState());
-//                        String formatted = capitalize(location.getName()) + ", " + formattedState + ", " + fullCountry;
-//                        if (!seenFormatted.contains(formatted)) {
-//                            seenFormatted.add(formatted);
-//                            formattedLocations.put(location, formatted);
-//                            locationList.add(location);
-//                            adapter.notifyDataSetChanged();
-//                        }
-//                    }
-//                });
-//    }
+    private void processLocation(GeoLocation location, HashSet<String> seenFormatted) {
+        // Convert the country code to its full country name (e.g., "NP" → "Nepal")
+        final String fullCountry = getFullCountryName(location.getCountry());
 
-//    private String getFullCountryName(String countryCode) {
-//        return new Locale("", countryCode).getDisplayCountry(Locale.ENGLISH);
-//    }
-//
-//    private String formatState(String state) {
-//        if (state == null || state.isEmpty()) {
-//            return "";
-//        }
-//        String[] parts = state.split(",");
-//        StringBuilder sb = new StringBuilder();
-//        for (String part : parts) {
-//            sb.append(capitalize(part.trim())).append(", ");
-//        }
-//        if (sb.length() > 2) {
-//            sb.setLength(sb.length() - 2); // Remove trailing comma and space.
-//        }
-//        return sb.toString();
-//    }
+        // If there is no state information, assume it's a country-level result.
+        if (location.getState() == null || location.getState().isEmpty()) {
+            String formatted = capitalize(location.getName()) + ", " + fullCountry;
+            if (!seenFormatted.contains(formatted)) {
+                seenFormatted.add(formatted);
+                formattedLocations.put(location, formatted); // Keep it in the map for later use
+                locationList.add(location); // Add the GeoLocation object to the list
+                adapter.notifyDataSetChanged();
+            }
+            return;
+        }
 
-//    private String capitalize(String str) {
-//        if (str == null || str.isEmpty()) return "";
-//        String[] words = str.split(" ");
-//        StringBuilder capitalized = new StringBuilder();
-//        for (String word : words) {
-//            if (!word.isEmpty()) {
-//                capitalized.append(Character.toUpperCase(word.charAt(0)))
-//                        .append(word.substring(1).toLowerCase())
-//                        .append(" ");
-//            }
-//        }
-//        return capitalized.toString().trim();
-//    }
+        // Otherwise, use the weather API to determine the primary city for these coordinates.
+        apiService.getWeather(location.getLat(), location.getLon(), API_KEY)
+                .enqueue(new Callback<WeatherResponse>() {
+                    @Override
+                    public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
+                        String formatted;
+                        if (response.isSuccessful() && response.body() != null) {
+                            String weatherCity = response.body().getName(); // e.g., "Kathmandu"
+                            if (location.getName().equalsIgnoreCase(weatherCity)) {
+                                formatted = capitalize(location.getName()) + ", " + fullCountry;
+                            } else {
+                                String formattedState = formatState(location.getState());
+                                formatted = capitalize(location.getName()) + ", " + formattedState + ", " + fullCountry;
+                            }
+                        } else {
+                            String formattedState = formatState(location.getState());
+                            formatted = capitalize(location.getName()) + ", " + formattedState + ", " + fullCountry;
+                        }
+
+                        // Avoid duplicates based on the formatted address string
+                        if (!seenFormatted.contains(formatted)) {
+                            seenFormatted.add(formatted);
+                            formattedLocations.put(location, formatted);
+                            locationList.add(location);
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<WeatherResponse> call, Throwable t) {
+                        String formattedState = formatState(location.getState());
+                        String formatted = capitalize(location.getName()) + ", " + formattedState + ", " + fullCountry;
+                        if (!seenFormatted.contains(formatted)) {
+                            seenFormatted.add(formatted);
+                            formattedLocations.put(location, formatted);
+                            locationList.add(location);
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                });
+    }
+
+    private String getFullCountryName(String countryCode) {
+        return new Locale("", countryCode).getDisplayCountry(Locale.ENGLISH);
+    }
+
+    private String formatState(String state) {
+        if (state == null || state.isEmpty()) {
+            return "";
+        }
+        String[] parts = state.split(",");
+        StringBuilder sb = new StringBuilder();
+        for (String part : parts) {
+            sb.append(capitalize(part.trim())).append(", ");
+        }
+        if (sb.length() > 2) {
+            sb.setLength(sb.length() - 2); // Remove trailing comma and space.
+        }
+        return sb.toString();
+    }
+
+    private String capitalize(String str) {
+        if (str == null || str.isEmpty()) return "";
+        String[] words = str.split(" ");
+        StringBuilder capitalized = new StringBuilder();
+        for (String word : words) {
+            if (!word.isEmpty()) {
+                capitalized.append(Character.toUpperCase(word.charAt(0)))
+                        .append(word.substring(1).toLowerCase())
+                        .append(" ");
+            }
+        }
+        return capitalized.toString().trim();
+    }
 
     private void openWeatherActivity(GeoLocation location) {
         Intent intent = new Intent(SearchActivity.this, MainActivity.class);
         intent.putExtra("LATITUDE", location.getLat());
         intent.putExtra("LONGITUDE", location.getLon());
-        //intent.putExtra("CITY", location.getName());
+        intent.putExtra("CITY", location.getName());
         startActivity(intent);
     }
 }

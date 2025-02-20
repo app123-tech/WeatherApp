@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
     private final List<GeoLocation> locations;
-   // private final Map<GeoLocation, String> formattedLocations;
+    private final Map<GeoLocation, String> formattedLocations;
     private final OnItemClickListener listener;
 
     public interface OnItemClickListener {
@@ -25,7 +25,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     public SearchAdapter(List<GeoLocation> locations, Map<GeoLocation, String> formattedLocations, OnItemClickListener listener) {
         this.locations = locations;
-        //this.formattedLocations = formattedLocations;
+        this.formattedLocations = formattedLocations;
         this.listener = listener;
     }
 
