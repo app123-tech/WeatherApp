@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
     private final List<GeoLocation> locations;
-    private final Map<GeoLocation, String> formattedLocations;
+   // private final Map<GeoLocation, String> formattedLocations;
     private final OnItemClickListener listener;
 
     public interface OnItemClickListener {
@@ -25,7 +25,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     public SearchAdapter(List<GeoLocation> locations, Map<GeoLocation, String> formattedLocations, OnItemClickListener listener) {
         this.locations = locations;
-        this.formattedLocations = formattedLocations;
+        //this.formattedLocations = formattedLocations;
         this.listener = listener;
     }
 
@@ -39,21 +39,23 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         GeoLocation location = locations.get(position);
-        // Get the formatted string; if missing, fallback to a basic format.
-        String formatted = formattedLocations.get(location);
-        if (formatted == null) {
-            formatted = location.getName() +
-                    (location.getState() != null && !location.getState().isEmpty() ? ", " + location.getState() : "") +
-                    ", " + location.getCountry();
-        }
-        holder.textView.setText(formatted);
+        String name = location.getName();
+        String country = location.getCountry();
+        String state = location.getState();
+        String formattedLocation = name + (state != null && !state.isEmpty() ? ", " + state : "") + ", " + country;
+        holder.textView.setText(formattedLocation);
         holder.itemView.setOnClickListener(v -> listener.onItemClick(location));
     }
-
 
     @Override
     public int getItemCount() {
         return locations.size();
+    }
+
+    public void updateList(List<GeoLocation> newLocations) {
+        locations.clear();
+        locations.addAll(newLocations);
+        notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

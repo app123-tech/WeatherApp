@@ -56,4 +56,5 @@ dependencies {
     implementation ("com.squareup.okhttp3:okhttp:4.9.3")
     implementation ("com.google.android.gms:play-services-location:21.3.0")
     implementation ("com.github.bumptech.glide:glide:4.16.0")
+    implementation ("com.google.android.play:app-update:2.1.0")
 }
