@@ -1,6 +1,7 @@
 package com.appdevelopers.weatherapp;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.appdevelopers.weatherapp.Adapter.SearchAdapter;
 import com.appdevelopers.weatherapp.Model.GeoLocation;
+import com.appdevelopers.weatherapp.Model.NominatimLocation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -86,125 +88,131 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void fetchLocations(String query) {
-        apiService.getLocations(query, 10, API_KEY).enqueue(new Callback<List<GeoLocation>>() {
+        // Clear previous results
+        locationList.clear();
+        formattedLocations.clear();
+        adapter.notifyDataSetChanged();
+
+        // Use Nominatim to search for locations
+        //String nominatimUrl = "https://nominatim.openstreetmap.org/search?q=" + query + "&format=json&addressdetails=1&limit=10";
+
+        // Make a network request to Nominatim (you can use Retrofit or HttpURLConnection)
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://nominatim.openstreetmap.org/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        NominatimService nominatimService = retrofit.create(NominatimService.class);
+
+        nominatimService.getLocations(query).enqueue(new Callback<List<NominatimLocation>>() {
             @Override
-            public void onResponse(Call<List<GeoLocation>> call, Response<List<GeoLocation>> response) {
+            public void onResponse(Call<List<NominatimLocation>> call, Response<List<NominatimLocation>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    locationList.clear();
+                    List<NominatimLocation> newLocations = response.body();
                     HashSet<String> seenFormatted = new HashSet<>();
-                    for (GeoLocation location : response.body()) {
-                        processLocation(location, seenFormatted);
+
+                    for (NominatimLocation nominatimLocation : newLocations) {
+                        processLocation(nominatimLocation, seenFormatted);
                     }
-                    adapter.updateList(locationList);
-                    noLocationFound.setVisibility(locationList.isEmpty() ? View.VISIBLE : View.GONE);
+
+                    // Toggle view visibility based on results
+                    if (locationList.isEmpty()) {
+                        noLocationFound.setVisibility(View.VISIBLE);
+                        searchRecycleView.setVisibility(View.GONE);
+                    } else {
+                        noLocationFound.setVisibility(View.GONE);
+                        searchRecycleView.setVisibility(View.VISIBLE);
+                    }
                 } else {
-                    Log.e("SearchActivity", "Error: No data received");
+                    Log.e("SearchActivity", "Error: No data received or empty response");
+                    noLocationFound.setVisibility(View.VISIBLE);
+                    searchRecycleView.setVisibility(View.GONE);
                 }
             }
 
             @Override
-            public void onFailure(Call<List<GeoLocation>> call, Throwable t) {
+            public void onFailure(Call<List<NominatimLocation>> call, Throwable t) {
                 Log.e("SearchActivity", "Error fetching locations: " + t.getMessage());
+                noLocationFound.setVisibility(View.VISIBLE);
+                searchRecycleView.setVisibility(View.GONE);
             }
         });
     }
 
-    private void processLocation(GeoLocation location, HashSet<String> seenFormatted) {
-        // Convert the country code to its full country name (e.g., "NP" → "Nepal")
-        final String fullCountry = getFullCountryName(location.getCountry());
+    private void processLocation(NominatimLocation nominatimLocation, HashSet<String> seenFormatted) {
+        // Create formatted location name
+        String formatted = nominatimLocation.getDisplayName();
 
-        // If there is no state information, assume it's a country-level result.
-        if (location.getState() == null || location.getState().isEmpty()) {
-            String formatted = capitalize(location.getName()) + ", " + fullCountry;
-            if (!seenFormatted.contains(formatted)) {
-                seenFormatted.add(formatted);
-                formattedLocations.put(location, formatted); // Keep it in the map for later use
-                locationList.add(location); // Add the GeoLocation object to the list
-                adapter.notifyDataSetChanged();
+        // Avoid duplicates based on the formatted address string
+        if (!seenFormatted.contains(formatted)) {
+            seenFormatted.add(formatted);
+            String country = "";
+            String state = "";
+            if (nominatimLocation.getAddress() != null) {
+                Map<String, String> address = nominatimLocation.getAddress();
+                country = address.getOrDefault("country", "");
+                state = address.getOrDefault("state", "");
             }
-            return;
+
+            GeoLocation geoLocation = new GeoLocation(nominatimLocation.getLat(), nominatimLocation.getLon(), formatted, country, state);
+            formattedLocations.put(geoLocation, formatted);
+            locationList.add(geoLocation);
+            adapter.notifyDataSetChanged();
+
+            // Fetch weather data for the selected location using OpenWeatherMap
+            fetchWeather(geoLocation);
         }
-
-        // Otherwise, use the weather API to determine the primary city for these coordinates.
-        apiService.getWeather(location.getLat(), location.getLon(), API_KEY)
-                .enqueue(new Callback<WeatherResponse>() {
-                    @Override
-                    public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
-                        String formatted;
-                        if (response.isSuccessful() && response.body() != null) {
-                            String weatherCity = response.body().getName(); // e.g., "Kathmandu"
-                            if (location.getName().equalsIgnoreCase(weatherCity)) {
-                                formatted = capitalize(location.getName()) + ", " + fullCountry;
-                            } else {
-                                String formattedState = formatState(location.getState());
-                                formatted = capitalize(location.getName()) + ", " + formattedState + ", " + fullCountry;
-                            }
-                        } else {
-                            String formattedState = formatState(location.getState());
-                            formatted = capitalize(location.getName()) + ", " + formattedState + ", " + fullCountry;
-                        }
-
-                        // Avoid duplicates based on the formatted address string
-                        if (!seenFormatted.contains(formatted)) {
-                            seenFormatted.add(formatted);
-                            formattedLocations.put(location, formatted);
-                            locationList.add(location);
-                            adapter.notifyDataSetChanged();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<WeatherResponse> call, Throwable t) {
-                        String formattedState = formatState(location.getState());
-                        String formatted = capitalize(location.getName()) + ", " + formattedState + ", " + fullCountry;
-                        if (!seenFormatted.contains(formatted)) {
-                            seenFormatted.add(formatted);
-                            formattedLocations.put(location, formatted);
-                            locationList.add(location);
-                            adapter.notifyDataSetChanged();
-                        }
-                    }
-                });
     }
 
-    private String getFullCountryName(String countryCode) {
-        return new Locale("", countryCode).getDisplayCountry(Locale.ENGLISH);
-    }
-
-    private String formatState(String state) {
-        if (state == null || state.isEmpty()) {
-            return "";
-        }
-        String[] parts = state.split(",");
-        StringBuilder sb = new StringBuilder();
-        for (String part : parts) {
-            sb.append(capitalize(part.trim())).append(", ");
-        }
-        if (sb.length() > 2) {
-            sb.setLength(sb.length() - 2); // Remove trailing comma and space.
-        }
-        return sb.toString();
-    }
-
-    private String capitalize(String str) {
-        if (str == null || str.isEmpty()) return "";
-        String[] words = str.split(" ");
-        StringBuilder capitalized = new StringBuilder();
-        for (String word : words) {
-            if (!word.isEmpty()) {
-                capitalized.append(Character.toUpperCase(word.charAt(0)))
-                        .append(word.substring(1).toLowerCase())
-                        .append(" ");
+    private void fetchWeather(GeoLocation location) {
+        // OpenWeatherMap API URL
+        apiService.getWeather(location.getLat(), location.getLon(), API_KEY).enqueue(new Callback<WeatherResponse>() {
+            @Override
+            public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    WeatherResponse weather = response.body();
+                    // Use the weather data as needed (for example, update the UI)
+                    Log.d("Weather", "Weather for " + location.getName() + ": " +
+                            weather.getMain().getTemp());
+                } else {
+                    Log.e("Weather", "Error fetching weather data");
+                }
             }
-        }
-        return capitalized.toString().trim();
+
+            @Override
+            public void onFailure(Call<WeatherResponse> call, Throwable t) {
+                Log.e("Weather", "Error fetching weather data: " + t.getMessage());
+            }
+        });
     }
 
     private void openWeatherActivity(GeoLocation location) {
+        // Retrieve the full formatted string from the map if available.
+        String fullFormatted = formattedLocations.get(location);
+        String shortName;
+
+        if (fullFormatted != null) {
+            // Split the full formatted string by commas.
+            String[] parts = fullFormatted.split(",");
+            // If there are at least two parts, use them for the short name.
+            if (parts.length >= 2) {
+                shortName = parts[0].trim() + ", " + parts[1].trim();
+            } else {
+                shortName = fullFormatted;
+            }
+        } else {
+            // Fallback: if no formatted string is available, use state if present, otherwise country.
+            if (location.getState() != null && !location.getState().isEmpty()) {
+                shortName = location.getName() + ", " + location.getState();
+            } else {
+                shortName = location.getName() + ", " + location.getCountry();
+            }
+        }
+
         Intent intent = new Intent(SearchActivity.this, MainActivity.class);
         intent.putExtra("LATITUDE", location.getLat());
         intent.putExtra("LONGITUDE", location.getLon());
-        intent.putExtra("CITY", location.getName());
+        intent.putExtra("CITY", shortName); // Pass the computed short name
         startActivity(intent);
     }
 }

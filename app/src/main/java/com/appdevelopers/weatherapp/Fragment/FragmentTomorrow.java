@@ -162,8 +162,8 @@ public class FragmentTomorrow extends Fragment {
         calendar.add(Calendar.DATE, 1);
         String tomorrowDate = dateFormat.format(calendar.getTime());
 
-        WeatherResponse.FiveDaysWeatherItemModel tomorrowForecast = null;
-        for (WeatherResponse.FiveDaysWeatherItemModel item : forecastResponse.getList()) {
+        WeatherResponse.ForecastItem tomorrowForecast = null;
+        for (WeatherResponse.ForecastItem item : forecastResponse.getList()) {
             if (item.getDt_txt().startsWith(tomorrowDate)) {
                 tomorrowForecast = item;
                 break;
@@ -240,8 +240,8 @@ public class FragmentTomorrow extends Fragment {
         calendar.add(Calendar.DATE, 1);
         String tomorrowDate = dateFormat.format(calendar.getTime());
 
-        List<WeatherResponse.FiveDaysWeatherItemModel> tomorrowItems = new ArrayList<>();
-        for (WeatherResponse.FiveDaysWeatherItemModel item : forecastResponse.getList()) {
+        List<WeatherResponse.ForecastItem> tomorrowItems = new ArrayList<>();
+        for (WeatherResponse.ForecastItem item : forecastResponse.getList()) {
             if (item.getDt_txt().startsWith(tomorrowDate)) {
                 tomorrowItems.add(item);
             }
@@ -256,8 +256,8 @@ public class FragmentTomorrow extends Fragment {
 
         // Loop through up to 6 forecast data points (3-hour interval each)
         for (int i = 0; i < Math.min(6, tomorrowItems.size()); i++) {
-            // Assuming FiveDaysWeatherItemModel has methods getDtTxt(), getMain(), and getWeather()
-            WeatherResponse.FiveDaysWeatherItemModel forecastItem = tomorrowItems.get(i);
+            // Assuming ForecastItem has methods getDtTxt(), getMain(), and getWeather()
+            WeatherResponse.ForecastItem forecastItem = tomorrowItems.get(i);
             String formattedTime;
             try {
                 java.util.Date date = inputFormat.parse(forecastItem.getDt_txt());

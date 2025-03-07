@@ -8,7 +8,6 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
@@ -61,7 +60,7 @@
     <string name="humidity">HUMIDITY</string>
     <string name="_37">37%</string>
     <string name="the_dew_point_is_5_u00b0_right_now">The dew point is 5° right now</string>
-    <string name="hourly_forecast">24 HOUR FORECAST</string>
+    <string name="hourly_forecast">HOURLY FORECAST</string>
     <string name="now">Now</string>
     <string name="_10am">10AM</string>
     <string name="_11am">11AM</string>
@@ -94,4 +93,12 @@
     <string name="nepali">Nepali</string>
     <string name="u00b0f">°F</string>
     <string name="m_h">m/h</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="app_widget_description">This is an app widget description</string>
+    <string name="_2025_feb_22">2025 Feb 22</string>
+    <string name="five_days_forecast">Five Days Forecast</string>
+
+    <string name="open">Open Drawer</string>
+    <string name="close">Close Drawer</string>
 </resources>

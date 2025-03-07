@@ -15,47 +15,49 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-//public class FiveDaysWeatherAdapter extends RecyclerView.Adapter<FiveDaysWeatherAdapter.ViewHolder> {
-//    private List<FiveDaysWeatherItemModel> itemModels;
-//
-//    public FiveDaysWeatherAdapter(List<FiveDaysWeatherItemModel> itemModels) {
-//        this.itemModels = itemModels;
-//    }
-//
-//    @NonNull
-//    @Override
-//    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ten_days_weather_item, parent, false);
-//        return new ViewHolder(view);
-//    }
-//
-//    @Override
-//    public void onBindViewHolder(@NonNull FiveDaysWeatherAdapter.ViewHolder holder, int position) {
-//        FiveDaysWeatherItemModel item = itemModels.get(position);
-//        holder.textViewWeatherDays.setText(item.getWeatherDay());
-//        holder.textViewWeatherTitle.setText(item.getWeatherTitle());
-//        holder.textViewMaxTemperature.setText(item.getMaxTemperature());
-//        holder.textViewMinTemperature.setText(item.getMinTemperature());
-//        Glide.with(holder.imageViewWeather.getContext())
-//                .load(item.getWeatherImage())
-//                .into(holder.imageViewWeather);
-//    }
-//
-//    @Override
-//    public int getItemCount() {
-//        return itemModels.size();
-//    }
-//
-//    public class ViewHolder extends RecyclerView.ViewHolder {
-//        TextView textViewWeatherDays, textViewWeatherTitle, textViewMaxTemperature,textViewMinTemperature;
-//        ImageView imageViewWeather;
-//        public ViewHolder(@NonNull View itemView) {
-//            super(itemView);
-//            textViewWeatherDays = itemView.findViewById(R.id.textViewWeatherDays);
-//            textViewWeatherTitle = itemView.findViewById(R.id.textViewWeatherTitle);
-//            textViewMaxTemperature = itemView.findViewById(R.id.textViewMaxTemperature);
-//            textViewMinTemperature = itemView.findViewById(R.id.textViewMinTemperature);
-//            imageViewWeather = itemView.findViewById(R.id.imageViewWeather);
-//        }
-//    }
-//}
+public class FiveDaysWeatherAdapter extends RecyclerView.Adapter<FiveDaysWeatherAdapter.ViewHolder> {
+    private List<FiveDaysWeatherItemModel> itemModels;
+
+    public FiveDaysWeatherAdapter(List<FiveDaysWeatherItemModel> itemModels) {
+        this.itemModels = itemModels;
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.five_days_weather_item, parent, false);
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull FiveDaysWeatherAdapter.ViewHolder holder, int position) {
+        FiveDaysWeatherItemModel item = itemModels.get(position);
+        holder.textViewWeatherDays.setText(item.getWeatherDay());
+        holder.textViewWeatherDate.setText(item.getWeatherDate());
+        holder.textViewWeatherTitle.setText(item.getWeatherTitle());
+        holder.textViewMaxTemperature.setText(item.getMaxTemperature());
+        holder.textViewMinTemperature.setText(item.getMinTemperature());
+        Glide.with(holder.imageViewWeather.getContext())
+                .load(item.getWeatherImage())
+                .into(holder.imageViewWeather);
+    }
+
+    @Override
+    public int getItemCount() {
+        return itemModels.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView textViewWeatherDays, textViewWeatherDate, textViewWeatherTitle, textViewMaxTemperature,textViewMinTemperature;
+        ImageView imageViewWeather;
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            textViewWeatherDays = itemView.findViewById(R.id.textViewWeatherDays);
+            textViewWeatherDate = itemView.findViewById(R.id.textViewWeatherDate);
+            textViewWeatherTitle = itemView.findViewById(R.id.textViewWeatherTitle);
+            textViewMaxTemperature = itemView.findViewById(R.id.textViewMaxTemperature);
+            textViewMinTemperature = itemView.findViewById(R.id.textViewMinTemperature);
+            imageViewWeather = itemView.findViewById(R.id.imageViewWeather);
+        }
+    }
+}

@@ -7,6 +7,14 @@ public class GeoLocation {
     private double lat; // Added latitude field
     private double lon; // Added longitude field
 
+    public GeoLocation(double lat, double lon, String name, String country, String state) {
+        this.lat = lat;
+        this.lon = lon;
+        this.name = name;
+        this.country = country;
+        this.state = state;
+    }
+
     public String getName() {
         return name;
     }

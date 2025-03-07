@@ -1,7 +1,5 @@
 package com.appdevelopers.weatherapp;
 
-import com.appdevelopers.weatherapp.Model.FiveDaysWeatherItemModel;
-
 import java.util.List;
 
 public class WeatherResponse {
@@ -13,7 +11,7 @@ public class WeatherResponse {
     private Wind wind;
     private List<Hourly> hourly; // Added for 3-hour forecast
     private Coord coord;
-    private List<FiveDaysWeatherItemModel> list;
+    private List<ForecastItem> list;
 
     public City getCity() {
         return city;
@@ -42,7 +40,7 @@ public class WeatherResponse {
         return coord;
     }
 
-    public List<FiveDaysWeatherItemModel> getList() {
+    public List<ForecastItem> getList() {
         return list;
     }
 
@@ -190,7 +188,7 @@ public class WeatherResponse {
         }
     }
 
-    public class FiveDaysWeatherItemModel {
+    public class ForecastItem {
         // Define the fields for each weather item, such as temperature, weather description, etc.
         private long dt;             // Unix timestamp of the forecast
         private String dt_txt;       // Formatted date-time string (e.g., "2020-12-16 15:00:00")

@@ -60,4 +60,12 @@ public interface OpenWeatherMapService {
             @Query("lon") double lon,
             @Query("appid") String appid
     );
+
+    @GET("data/2.5/forecast")
+    Call<WeatherResponse> getFiveDayForecast(
+            @Query("lat") double latitude,
+            @Query("lon") double longitude,
+            @Query("appid") String apikey,
+            @Query("units") String units
+    );
 }
